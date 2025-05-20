@@ -3,8 +3,8 @@ import Badge from "./Badge";
 function BannerTicket() {
   return (
     <>
-      <div className="relavice w-full h-[806px]">
-        <div className="w-full rounded-[48px] h-[520px] flex flex-row items-end justify-start text-left bg-[url(/src/assets/images/heading-ticket.png)] p-10 rounded-[48px] bg-no-repeat bg-cover bg-center relative overflow-hidden">
+      <div className="relative w-full h-[806px]">
+        <div className="w-full rounded-[48px] h-[520px] flex flex-row items-end justify-start text-left bg-[url(/src/assets/images/tickitz2.png)] p-10 rounded-[48px] bg-no-repeat bg-cover bg-center relative overflow-hidden">
           <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-[linear-gradient(180deg,rgba(15,16,13,0)_0%,rgba(15,16,13,0.8)_65.1%)] z-10"></div>
           <div></div>
         </div>

@@ -14,7 +14,7 @@ function Navbar() {
             <div className="h-[8px] flex justify-center w-[8px] bg-orange-500 rounded-full items-center"></div>
           </div>
         </Link>
-        <Link to="/movie">MOVIE</Link>
+        <Link to="/movies">MOVIE</Link>
         <Link to="/buy-ticket">BUY TICKET</Link>
       </div>
       <div className="flex-1 flex gap-2 justify-end text-right">

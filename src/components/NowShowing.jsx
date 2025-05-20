@@ -1,38 +1,82 @@
-import React from "react";
-import Button from "./Button";
+import { fetchData } from "../utils/apiClient";
+import { useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import Card from "./Card";
+import { Link } from "react-router-dom";
+import RenderGenres from "./renderGenres";
+import { useNavigate } from "react-router-dom";
 
 function NowShowing() {
+  const [movies, setMovies] = useState([]);
+  const [genresList, setGenresList] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDataAll = async () => {
+      try {
+        // Fetch movie list
+        const movieRes = await fetchData.getNowPlaying();
+        setMovies(movieRes.data.results || []);
+
+        // Fetch genre list
+        const genreRes = await fetchData.getMovieGenres();
+        setGenresList(genreRes.data.genres || []);
+      } catch (error) {
+        console.error(
+          "Error fetching data:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    fetchDataAll();
+  }, []);
+
   return (
-    <>
-      <section className="flex flex-col  w-full gap-5 px-20">
-        <div className="flex flex-row items-center justify-between">
-          <Button variant="secondary" className="h-[54px]">
-            <FaArrowLeft className="h-[24px]" />
-          </Button>
-          <span className="text-4xl font-medium">Now Showing in Cinemas</span>
-          <Button variant="primary" className="h-[54px]">
-            <FaArrowRight className="h-[24px]" />
-          </Button>
-        </div>
-        <div className="flex flex-row w-full gap-8 flex-wrap">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </div>
-        <div className="h-2 w-full bg-sixth rounded-full">
-          <div className="h-2 w-[40%] bg-primary rounded-full"></div>
-        </div>
-        <div className="flex items-center justify-center mb-10">
-          <Button variant="primary" className="flex items-center gap-2">
-            VIEW ALL <FaArrowRight />
-          </Button>
-        </div>
-      </section>
-    </>
+    <div className="w-full px-20 mb-10">
+      <div className="flex justify-between items-center overflow-hidden">
+        <button className="button-icon md:text-lg text-sm">
+          <FaArrowLeft />
+        </button>
+        <p className="md:font-semibold font-bold md:text-4xl sm:text-2xl text-xl">
+          Now Showing in Cinemas
+        </p>
+        <button className="button-icon md:text-lg text-sm">
+          <FaArrowRight />
+        </button>
+      </div>
+      <div className="scroll-x overflow-x-auto flex gap-5 justify-items-center pt-8 ">
+        {movies.map((item) => (
+          <div key={item.id} className="mb-2">
+            <div className="relative lg:w-70 w-50 mb-4">
+              {item.vote_average > 7 && (
+                <div className="absolute text-primary bg-third font-bold px-2 py-1 rounded-b-lg ">
+                  Recommended
+                </div>
+              )}
+              <img
+                onClick={() => navigate(`/buy-ticket/${item.id}`)}
+                className="rounded-xl object-cover cursor-pointer"
+                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                alt="image-film"
+              />
+            </div>
+            <h3 className="text-xl font-bold">{item.title}</h3>
+            <div className="flex flex-row itens-center  justify-center gap-2 mt-2">
+              <RenderGenres genreIds={item.genre_ids} genresList={genresList} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex-center mt-4">
+        <Link
+          to="/movies"
+          className="flex items-center bg-primary text-white rounded-full px-4 py-2"
+        >
+          <span>VIEW ALL</span>
+          <FaArrowRight />
+        </Link>
+      </div>
+    </div>
   );
 }
 

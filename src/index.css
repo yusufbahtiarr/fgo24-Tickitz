@@ -50,3 +50,26 @@
   font-family: var(--font-dmsans);
   box-sizing: border-box;
 }
+
+/* Untuk WebKit (Chrome, Edge, Safari) */
+.-webkit-scrollbar {
+  height: 8px;
+  width: 1svw;
+}
+
+.-webkit-scrollbar-track {
+  background: #888;
+}
+
+.-webkit-scrollbar-thumb {
+  background-color: oklch(70% 0.213 47.604);
+}
+.-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Untuk Firefox */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: orange #f0f0f0;
+}

@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "./Button";
 import Choose from "./Choose";
-import Tes from "./Tes";
 import { FaArrowRight } from "react-icons/fa";
 
 function BookingTicket() {

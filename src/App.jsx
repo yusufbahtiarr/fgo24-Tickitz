@@ -3,6 +3,7 @@ import MoviePage from "./pages/MoviePage";
 import BuyTicketPage from "./pages/BuyTicketPage";
 import NotFound from "./pages/NotFound";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -10,11 +11,15 @@ const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/movie",
+    path: "/movies",
     element: <MoviePage />,
   },
   {
-    path: "/buy-ticket",
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/buy-ticket/:id",
     element: <BuyTicketPage />,
   },
   {
