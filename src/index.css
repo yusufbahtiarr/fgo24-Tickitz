@@ -22,10 +22,12 @@ body {
   --color-seventh: #e951021f;
   --color-gray1: #dedede;
   --color-gray2: #d6d8e7;
+  --color-gray3: #696f79;
   --color-violet: #6e7191;
   --color-pink: #f589d7;
   --color-violet2: #a0a3bd;
   --color-green: #00ba88;
+  --color-green2: #008000;
   --color-red: #e82c2c;
   --color-blue: #5d5fef;
 }

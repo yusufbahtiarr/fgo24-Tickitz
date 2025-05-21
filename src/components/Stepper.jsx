@@ -1,13 +1,11 @@
-import React from "react";
-
-function Stepper() {
+function Stepper({ step2, step3 }) {
   return (
     <div className="w-full h-fit flex justify center">
-      <div class="flex mx-auto w-[50%] h-fit items-center justify-center py-10 gap-10">
-        <div class="flex items-center justify-center flex-col gap-4">
-          <div class="w-12 h-12 bg-green text-white rounded-full flex items-center justify-center">
+      <div className="flex mx-auto w-[50%] h-fit items-center justify-center py-10 gap-10">
+        <div className="flex items-center justify-center flex-col gap-4">
+          <div className="w-12 h-12 bg-green2 text-white rounded-full flex items-center justify-center">
             <svg
-              class="w-5 h-5"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -21,24 +19,28 @@ function Stepper() {
               ></path>
             </svg>
           </div>
-          <span class="text-sm">Dates and Time</span>
+          <span className="text-sm">Dates and Time</span>
         </div>
-        <div class="flex-1 border-t-3 border-dashed border-violet"></div>
+        <div className="flex-1 border-t-3 border-dashed border-violet"></div>
 
-        <div class="flex items-center justify-center flex-col gap-4">
-          <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center">
+        <div className="flex items-center justify-center flex-col gap-4">
+          <div
+            className={`w-12 h-12 ${step2} text-white rounded-full flex items-center justify-center `}
+          >
             2
           </div>
-          <span class="text-sm">Seat</span>
+          <span className="text-sm">Seat</span>
         </div>
 
-        <div class="flex-1 border-t-3 border-dashed border-violet"></div>
+        <div className="flex-1 border-t-3 border-dashed border-violet"></div>
 
-        <div class="flex items-center justify-center flex-col gap-4">
-          <div class="w-12 h-12 bg-violet text-white rounded-full flex items-center justify-center">
+        <div className="flex items-center justify-center flex-col gap-4">
+          <div
+            className={`w-12 h-12 ${step3}  text-white rounded-full flex items-center justify-center`}
+          >
             3
           </div>
-          <span class="text-sm">Payment</span>
+          <span className="text-sm">Payment</span>
         </div>
       </div>
     </div>

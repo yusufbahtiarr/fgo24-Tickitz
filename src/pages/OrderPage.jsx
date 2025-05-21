@@ -25,7 +25,7 @@ function OrderPage() {
     <div className="w-screen h-fit bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
       <div className="h-fit w-full mt-21 px-43">
-        <Stepper />
+        <Stepper step2="bg-primary" step3="bg-violet" />
         <section className="w-full h-full flex flex-row gap-8 mb-20">
           <div className="w-[65%] py-10 px-6 flex flex-col gap-10  bg-white">
             <div className="border flex flex-row border-gray1 gap-4 py-4 px-6 w-full">
