@@ -10,6 +10,8 @@ function Button({ variant, className, children, ...props }) {
       "px-5 py-3 border rounded-full border-black hover:bg-orange-600 hover:text-white hover:border-1 hover:border-orange-600";
   } else if (variant === "third") {
     selectedVariant = "px-3 py-1 bg-primary rounded";
+  } else if (variant === "outline") {
+    selectedVariant = "px-4 py-2 border border-primary text-primary rounded";
   }
 
   return (
