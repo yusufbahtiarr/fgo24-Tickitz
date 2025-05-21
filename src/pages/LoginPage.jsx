@@ -1,6 +1,5 @@
 import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 function LoginPage() {
   return (
