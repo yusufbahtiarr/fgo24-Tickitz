@@ -2,7 +2,7 @@ import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-function LoginPage() {
+function RegisterPage() {
   return (
     <div className="w-screen h-screen bg-[url(./src/assets/images/background.png)]  object-cover bg-no-repeat bg-center">
       <div className="w-full h-full flex justify-center items-center">
@@ -120,4 +120,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
