@@ -55,7 +55,7 @@ function BuyTicketPage() {
       <main className="flex flex-col mt-25 items-center">
         <div className="relative w-full h-[806px]">
           <div
-            className="w-full rounded-[48px] h-[520px] flex flex-row items-end justify-start text-left p-10 bg-no-repeat bg-cover bg-center relative"
+            className="w-full rounded-[48px] h-[520px] flex flex-row items-end justify-start text-left p-10 bg-no-repeat bg-cover bg-center relative overflow-hidden"
             style={{
               backgroundImage: `url(https://image.tmdb.org/t/p/original${movies.backdrop_path})`,
             }}

@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 
 function NotFound() {
   return (
-    <div>
-      <span>NotFound </span>
-      <span>NotFound </span>
-      <span>NotFound </span>
+    <div className="h-screen w-screen flex flex-col justify-center items-center gap-6">
+      <span className="text-8xl font-bold">404 </span>
+      <span className="text-4xl font-medium">Oops, This Page Not Found!</span>
     </div>
   );
 }

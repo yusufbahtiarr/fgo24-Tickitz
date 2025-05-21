@@ -18,8 +18,13 @@ function Navbar() {
         <Link to="/buy-ticket">BUY TICKET</Link>
       </div>
       <div className="flex-1 flex gap-2 justify-end text-right">
-        <Button variant="secondary">login</Button>
-        <Button variant="primary">sign up</Button>
+        <Button variant="secondary">
+          <Link to="/login">login</Link>
+        </Button>
+        <Button variant="primary">
+          {" "}
+          <Link to="/register">sign up</Link>
+        </Button>
       </div>
     </nav>
   );

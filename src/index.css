@@ -1,10 +1,17 @@
-@import url("https://fonts.cdnfonts.com/css/satoshi");
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import "tailwindcss";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
 
 @theme {
   --font-dmsans: "DM Sans", sans-serif;
   --font-satoshi: "Satoshi", sans-serif;
+  --font-exile: "Exile", sans-serif;
 
   --color-primary: #e95102;
   --color-secondary: #0f100d;
@@ -13,6 +20,25 @@
   --color-fifth: #878786;
   --color-sixth: #e0e0e0;
   --color-seventh: #e951021f;
+  --color-gray1: #dedede;
+  --color-gray2: #d6d8e7;
+  --color-violet: #6e7191;
+  --color-pink: #f589d7;
+  --color-violet2: #a0a3bd;
+  --color-green: #00ba88;
+  --color-red: #e82c2c;
+  --color-blue: #5d5fef;
+}
+
+@layer base {
+  @import url("https://fonts.cdnfonts.com/css/satoshi");
+  @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Exile&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap");
+  html {
+    font-family: "Roboto Condesned", "Times New Roman", Times, serif;
+  }
 }
 
 @layer utilities {
@@ -39,10 +65,10 @@
     @apply font-semibold text-[64px] leading-[64px] text-left;
   }
   .title-footer {
-    @apply font-bold text-[20px] text-left;
+    @apply font-bold text-[50px] text-left text-amber-800;
   }
   .badge-film {
-    @apply font-medium absolute top-0 left-0 bg-third text-primary py-[8px] px-[12px] rounded-br-2xl;
+    @apply font-semibold absolute top-0 left-0 bg-third text-primary py-[8px] px-[12px] rounded-br-2xl border-2;
   }
 }
 

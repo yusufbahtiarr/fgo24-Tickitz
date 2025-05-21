@@ -6,7 +6,7 @@ import { SiYoutube } from "react-icons/si";
 function Footer() {
   return (
     <>
-      <div className="bg-black rounded-t-4xl h-105 w-full flex p-20 text-sixth">
+      <div className="bg-black rounded-t-4xl h-105 w-full flex p-20 text-sixth box-border">
         <div className="flex flex-row justify-between gap-20 w-full">
           <div className="flex flex-col w-full">
             <div className="w-full">

@@ -4,6 +4,8 @@ import BuyTicketPage from "./pages/BuyTicketPage";
 import NotFound from "./pages/NotFound";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import OrderPage from "./pages/OrderPage";
 
 const router = createBrowserRouter([
   {
@@ -15,8 +17,16 @@ const router = createBrowserRouter([
     element: <MoviePage />,
   },
   {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/order",
+    element: <OrderPage />,
   },
   {
     path: "/buy-ticket/:id",
