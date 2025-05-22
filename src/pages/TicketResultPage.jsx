@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import Button from "../components/Button";
+import { HiOutlineDownload } from "react-icons/hi";
 
 function TicketResultPage() {
   return (
@@ -105,8 +106,11 @@ function TicketResultPage() {
               <div></div>
             </div>
             <div className="h-[15%] w-full flex flex-col gap-2">
-              <Button variant="outline" className="">
-                Download
+              <Button
+                variant="outline"
+                className="flex justify-center items-center gap-2"
+              >
+                <HiOutlineDownload className="size-6" /> Download
               </Button>
               <Button variant="third" className=" text-white">
                 Done
