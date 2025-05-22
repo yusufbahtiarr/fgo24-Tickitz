@@ -17,7 +17,7 @@ function HomePage() {
       </header>
       <main className="flex flex-col mt-25 items-center text-center">
         <section className="flex flex-col items-center justify-center gap-4 mb-8">
-          <div className=" w-120 text-primary bg-third font-bold text-xl rounded-full px-6 py-3 primary sm:text-m">
+          <div className=" w-fit text-primary bg-third font-bold text-xl rounded-full px-6 py-3 primary sm:text-m">
             MOVIE TICKET PURCHASES #1 IN INDONESIA
           </div>
           <div className="flex flex-col items-center text-[64px] leading-none">

@@ -21,7 +21,7 @@ function MoviePage() {
                 <div>
                   <Badge
                     variant="secondary"
-                    className="font-black h-[54px] w-[300px] flex items-center justify-center text-[20px]"
+                    className="font-black h-[54px] w-[350px] flex items-center justify-center text-[20px]"
                   >
                     LIST MOVIE OF THE WEEK
                   </Badge>
