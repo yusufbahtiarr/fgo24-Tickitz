@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Badge from "../components/Badge";
 import Button from "../components/Button";
-import { id } from "date-fns/locale";
 
 function ChairSelector() {
   const chairElements = Array.from({ length: 49 }, (_, i) => (

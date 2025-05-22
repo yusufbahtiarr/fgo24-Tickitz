@@ -7,7 +7,7 @@ function Navbar() {
       <div className="flex-1">
         <img className="w-30" src="/src/assets/images/Tickitz.png" alt="logo" />
       </div>
-      <div className="flex-1 flex font-light justify-center text-l h-10 gap-4">
+      <div className="flex-1 flex font-light justify-center text-l h-10 gap-15">
         <Link to="/">
           <div className="flex justify-center flex-col items-center font-dmsans">
             <span className="font-semibold">HOME</span>
