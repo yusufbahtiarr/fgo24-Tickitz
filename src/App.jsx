@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import OrderPage from "./pages/OrderPage";
 import PaymentPage from "./pages/PaymentPage";
 import TicketResultPage from "./pages/TicketResultPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: "/payment",
     element: <PaymentPage />,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
   },
   {
     path: "/buy-ticket/:id",
