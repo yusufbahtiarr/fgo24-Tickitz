@@ -72,7 +72,7 @@ function TicketResultPage() {
                         Spider-Man: ..
                       </span>
                     </div>
-                    <div className="flex w-[4 0%] flex-col gap-2">
+                    <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Category</span>
                       <span className="text-sm text-secondary">PG-13</span>
                     </div>
@@ -82,7 +82,7 @@ function TicketResultPage() {
                       <span className="text-xs text-gray1">Date</span>
                       <span className="text-sm text-secondary">07 Jul</span>
                     </div>
-                    <div className="flex w-[4 0%] flex-col gap-2">
+                    <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Time</span>
                       <span className="text-sm text-secondary">2:00pm</span>
                     </div>
@@ -92,7 +92,7 @@ function TicketResultPage() {
                       <span className="text-xs text-gray1">Count</span>
                       <span className="text-sm text-secondary">3 pcs</span>
                     </div>
-                    <div className="flex w-[4 0%] flex-col gap-2">
+                    <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Seats</span>
                       <span className="text-sm text-secondary">C4, C5, C6</span>
                     </div>

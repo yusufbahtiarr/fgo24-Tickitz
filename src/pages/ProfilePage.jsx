@@ -2,7 +2,7 @@ import React from "react";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { GoStarFill } from "react-icons/go";
+import Button from "./../components/Button";
 
 function ProfilePage() {
   return (
@@ -54,7 +54,7 @@ function ProfilePage() {
                 <div className="absolute top-0 right-0 rotate-20">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="w-20 h-20"
+                    className="w-20 h-20"
                     viewBox="0 0 24 24"
                     fill="url(#starGradient)"
                   >
@@ -66,8 +66,8 @@ function ProfilePage() {
                         x2="0%"
                         y2="100%"
                       >
-                        <stop offset="0%" stop-color="#fef08a" />
-                        <stop offset="100%" stop-color="#facc15" />
+                        <stop offset="0%" stopColor="#fef08a" />
+                        <stop offset="100%" stopColor="#facc15" />
                       </linearGradient>
                     </defs>
                     <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
@@ -84,7 +84,126 @@ function ProfilePage() {
               </div>
             </div>
           </div>
-          <div className="w-[70%] h-300 rounded-4xl bg-white"></div>
+          <div className="w-[70%] h-300 rounded-4xl flex flex-col gap-14">
+            <form className=" flex flex-col gap-12">
+              <div className="flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
+                <span className="font-normal border-b-2 border-primary py-6">
+                  Account Settings
+                </span>
+                <span className="text-fourth">Order History</span>
+              </div>
+              <div className="bg-white rounded-3xl flex flex-col px-8 py-10 gap-4">
+                <div>
+                  <span className="font-normal">Details Information</span>
+                </div>
+                <hr className="border-1 border-gray2 mb-4" />
+                <div className="flex flex-row gap-9">
+                  <div className="flex flex-1 flex-col gap-3">
+                    <label htmlFor="firstname" className="text-fourth">
+                      First Name
+                    </label>
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                      <input
+                        type="text"
+                        name="firstname"
+                        id="firstname"
+                        placeholder="Jonas"
+                        className="outline-0 w-[85%]"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-3">
+                    <label htmlFor="lastname" className="text-fourth">
+                      Last Name
+                    </label>
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                      <input
+                        type="text"
+                        name="lastname"
+                        id="lastname"
+                        placeholder="El Rodriguez"
+                        className="outline-0 w-[85%]"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-row gap-9 mb-4">
+                  <div className="flex flex-1 flex-col gap-3">
+                    <label htmlFor="email" className="text-fourth">
+                      E-mail
+                    </label>
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="jonasrodrigu123@gmail.com"
+                        className="outline-0 w-[85%]  "
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-3">
+                    <label htmlFor="Phone Number" className="text-fourth">
+                      Last Name
+                    </label>
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                      <input
+                        type="tel"
+                        name="phone"
+                        id="phone"
+                        placeholder="+6281445687121"
+                        className="outline-0 w-[85%]  "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-3xl flex flex-col px-8 py-10 gap-4">
+                <div>
+                  <span className="font-normal">Account and Privacy</span>
+                </div>
+                <hr className="border-1 border-gray2 mb-4" />
+                <div className="flex flex-row gap-9">
+                  <div className="flex flex-1 flex-col gap-3">
+                    <label htmlFor="new-password" className="text-fourth">
+                      New Password
+                    </label>
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                      <input
+                        type="password"
+                        name="new-password"
+                        id="new-password"
+                        placeholder="Write your password"
+                        className="outline-0 w-[85%] "
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-3">
+                    <label htmlFor="confirm-password" className="text-fourth">
+                      Last Name
+                    </label>
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                      <input
+                        type="password"
+                        name="confirm-password"
+                        id="confirm-password"
+                        placeholder="Confirm your password"
+                        className="outline-0 w-[85%]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full">
+                <Button
+                  variant="third"
+                  className="text-white w-[30%] capitalize rounded-2xl"
+                >
+                  Update changes
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
