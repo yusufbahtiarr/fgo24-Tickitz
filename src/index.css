@@ -72,6 +72,18 @@ body {
   .badge-film {
     @apply font-semibold absolute top-0 left-0 bg-third text-primary py-[8px] px-[12px] rounded-br-2xl border-2;
   }
+  .ticket-used {
+    @apply flex justify-center-safe items-center text-sm font-bold w-50 h-12 text-gray3 bg-gray3/20 rounded-xl;
+  }
+  .ticket-active {
+    @apply flex justify-center-safe items-center text-sm font-bold w-50 h-12 bg-green/20 text-green rounded-xl;
+  }
+  .paid {
+    @apply flex justify-center-safe items-center text-sm font-bold w-44 h-12 bg-blue/20  text-blue rounded-xl;
+  }
+  .not-paid {
+    @apply flex justify-center-safe items-center text-sm font-bold w-44 h-12 bg-red/20 text-red rounded-xl;
+  }
 }
 
 * {

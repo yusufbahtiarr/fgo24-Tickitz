@@ -9,6 +9,7 @@ import OrderPage from "./pages/OrderPage";
 import PaymentPage from "./pages/PaymentPage";
 import TicketResultPage from "./pages/TicketResultPage";
 import ProfilePage from "./pages/ProfilePage";
+import OrderHistoryPage from "./pages/OrderHistoryPage";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProfilePage />,
+  },
+  {
+    path: "/order-history",
+    element: <OrderHistoryPage />,
   },
   {
     path: "/buy-ticket/:id",
