@@ -84,6 +84,15 @@ body {
   .not-paid {
     @apply flex justify-center-safe items-center text-sm font-bold w-44 h-12 bg-red/20 text-red rounded-xl;
   }
+  .ticket-info {
+    @apply text-[18px] font-normal;
+  }
+  .ticket-title {
+    @apply text-[12px] font-semibold text-gray3;
+  }
+  .ticket-desc {
+    @apply text-sm font-semibold text-secondary;
+  }
 }
 
 * {

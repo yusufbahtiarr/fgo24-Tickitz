@@ -8,8 +8,8 @@ function OrderHistoryPage() {
   return (
     <div>
       <Navbar2 />
-      <div className="mt-22 h-full w-full bg-gray1 p-18">
-        <div className="p-10 flex flex-row gap-8">
+      <div className="mt-22 bg-gray1 p-18">
+        <div className="p-10 flex flex-row gap-8 mb-110">
           <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
               <div className="flex flex-row justify-between items-center w-full">
@@ -109,20 +109,82 @@ function OrderHistoryPage() {
                 </div>
               </div>
               <hr className="border-1 border-gray2 mb-4" />
-              <div className="flex flex-row justify-between items-center px-12 pb-10">
-                <div className="flex flex-1 flex-row gap-10">
-                  <div className="ticket-active">Ticket in active</div>
-                  <div className="not-paid">Not Paid</div>
+              <div className="flex flex-col">
+                <div className="flex flex-row justify-between items-center px-12 pb-10">
+                  <div className="flex flex-1 flex-row gap-10">
+                    <div className="ticket-active">Ticket in active</div>
+                    <div className="not-paid">Not Paid</div>
+                  </div>
+                  <div className="flex flex-1 flex-row justify-end gap-3">
+                    <select
+                      name="details"
+                      id="detail"
+                      className="text-fourth text-[18px] p-3"
+                    >
+                      <option value="">Show Details </option>
+                      <option value="tes">11</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="flex flex-1 flex-row justify-end gap-3">
-                  <select
-                    name="details"
-                    id="detail"
-                    className="text-fourth text-[18px] p-3"
-                  >
-                    <option value="">Show Details </option>
-                    <option value="tes">11</option>
-                  </select>
+                <div className="px-12 pb-10 flex flex-col gap-4">
+                  <div>
+                    <span className="ticket-info">Ticket Information</span>
+                  </div>
+                  <div className="flex flex-row w-full">
+                    <div className="flex-1 flex flx-row justify-between items-center">
+                      <div className="w-[32%] flex justify-between items-center text-gray3">
+                        <div>No. Rekening Virtual</div>
+                        <div>:</div>
+                      </div>
+                    </div>
+                    <div className="flex-1 flex flex-row justify-end items-center gap-8">
+                      <div>
+                        <span className="text-[18px] font-bold">
+                          12321328913829724
+                        </span>
+                      </div>
+                      <div>
+                        <Button
+                          variant="outline"
+                          className="font-normal text-sm"
+                        >
+                          Copy
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-row w-full">
+                    <div className="flex-1 flex flx-row justify-between items-center">
+                      <div className="w-[32%] flex justify-between items-center  text-gray3">
+                        <div>Total Payment</div>
+                        <div>:</div>
+                      </div>
+                    </div>
+                    <div className="flex-1 flex flex-row justify-end items-center">
+                      <div>
+                        <span className="text-[18px] font-bold text-blue">
+                          $30
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-row w-full">
+                    <span className=" text-gray3">
+                      Pay this payment bill before it is due,
+                      <span className="text-red">on June 23, 2023</span>. If the
+                      bill has not been paid by the specified time, it will be
+                      forfeited
+                    </span>
+                  </div>
+
+                  <div className="w-full flex gap-4 flex-col">
+                    <Button
+                      variant="third"
+                      className="font-bold text-white w-fit px-12 capitalize"
+                    >
+                      Cek Pembayaran
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -144,20 +206,69 @@ function OrderHistoryPage() {
                 </div>
               </div>
               <hr className="border-1 border-gray2 mb-4" />
-              <div className="flex flex-row justify-between items-center px-12 pb-10">
-                <div className="flex flex-1 flex-row gap-10">
-                  <div className="ticket-used">Ticket used</div>
-                  <div className="paid">Paid</div>
+              <div className="flex flex-col">
+                <div className="flex flex-row justify-between items-center px-12 pb-10">
+                  <div className="flex flex-1 flex-row gap-10">
+                    <div className="ticket-used">Ticket used</div>
+                    <div className="paid">Paid</div>
+                  </div>
+                  <div className="flex flex-1 flex-row justify-end gap-3">
+                    <select
+                      name="details"
+                      id="detail"
+                      className="text-fourth text-[18px] p-3"
+                    >
+                      <option value="">Show Details </option>
+                    </select>
+                  </div>
                 </div>
-                <div className="flex flex-1 flex-row justify-end gap-3">
-                  <select
-                    name="details"
-                    id="detail"
-                    className="text-fourth text-[18px] p-3"
-                  >
-                    <option value="">Show Details </option>
-                    <option value="tes">11</option>
-                  </select>
+                <div className="px-12 pb-10">
+                  <div>
+                    <span className="ticket-info">Ticket Information</span>
+                  </div>
+                  <div className="flex flex-row items-center gap-15">
+                    <div>
+                      <img
+                        src="./src/assets/images/qr.png"
+                        alt="qr"
+                        className="size-[174px]"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-6">
+                      <div className="flex flex-row gap-8">
+                        <div className="flex flex-col">
+                          <span className="ticket-title">Category</span>
+                          <span className="ticket-desc">PG-13</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="ticket-title">Time</span>
+                          <span className="ticket-desc">2:00pm</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="ticket-title">Seats</span>
+                          <span className="ticket-desc">C4, C5, C6</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-row gap-8">
+                        <div className="flex flex-col">
+                          <span className="ticket-title">Movie</span>
+                          <span className="ticket-desc">Spider-Man: ..</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="ticket-title">Date</span>
+                          <span className="ticket-desc">07 Jul</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="ticket-title">Count</span>
+                          <span className="ticket-desc">3 pcs</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                      <span className="font-normal">Total</span>
+                      <span className="text-2xl font-semibold">$30.00</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
