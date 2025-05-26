@@ -13,6 +13,9 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 import AdminPage from "./pages/AdminPage";
 import AdminMoviePage from "./pages/AdminMoviePage";
 import AdminNewMoviePage from "./pages/AdminNewMoviePage";
+import { Provider } from "react-redux";
+import { PersistGate } from "./../node_modules/redux-persist/es/integration/react";
+import { persistor, store } from "./redux/store";
 
 const router = createBrowserRouter([
   {
@@ -72,9 +75,14 @@ const router = createBrowserRouter([
     element: <NotFound />,
   },
 ]);
-
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
+    </Provider>
+  );
 };
 
 export default App;

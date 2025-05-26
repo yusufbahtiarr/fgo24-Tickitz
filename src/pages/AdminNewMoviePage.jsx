@@ -6,8 +6,8 @@ function AdminNewMoviePage() {
   return (
     <div className="w-screen min-h-screen h-fit bg-gray2 ">
       <Navbar />
-      <div className="flex flex-col items-center mt-22 px-33 py-11 gap-10 w-full h-full md:mx-40">
-        <div className="w-180 h-fit bg-white rounded">
+      <div className="flex flex-col items-center mt-22 py-11 gap-10 w-full h-full">
+        <div className="w-180 h-fit bg-white rounded max-wd-md mx-auto max-sm:max-w-100">
           <div className="p-10">
             <span className="text-2xl">Add New Movie</span>
           </div>
