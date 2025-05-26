@@ -5,6 +5,7 @@ import { CiCalendar } from "react-icons/ci";
 import { IoMdEye } from "react-icons/io";
 import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function AdminMoviePage() {
   return (
@@ -26,7 +27,7 @@ function AdminMoviePage() {
                 <option value="november">November 2023</option>
               </select>
               <Button variant="third" className="text-white rounded-xl px-4">
-                Add Movies
+                <Link to="/admin-new-movie">Add Movies</Link>
               </Button>
             </div>
           </div>

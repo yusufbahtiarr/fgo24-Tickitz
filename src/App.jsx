@@ -12,6 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import AdminPage from "./pages/AdminPage";
 import AdminMoviePage from "./pages/AdminMoviePage";
+import AdminNewMoviePage from "./pages/AdminNewMoviePage";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
   {
     path: "/admin-movie",
     element: <AdminMoviePage />,
+  },
+  {
+    path: "/admin-new-movie",
+    element: <AdminNewMoviePage />,
   },
   {
     path: "/order-history",
