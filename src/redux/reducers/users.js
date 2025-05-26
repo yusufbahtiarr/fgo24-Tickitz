@@ -19,11 +19,19 @@ const users = createSlice({
     loginUser: (state, action) => {
       const { email, password } = action.payload;
       const encodedPassword = btoa(password);
+      // console.log(email);
+      // console.log(password);
+
       const user = state.data.find(
         (item) => item.email === email && item.password === encodedPassword
       );
+      // console.log(user);
+
       state.isAuthenticated = !!user;
+      // console.log(state.isAuthenticated);
+
       state.currentUser = user || null;
+      // console.log(state.currentUser);
     },
     logoutUser: (state) => {
       state.isAuthenticated = false;

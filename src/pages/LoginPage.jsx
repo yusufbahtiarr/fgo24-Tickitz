@@ -1,7 +1,26 @@
+import { useForm } from "react-hook-form";
 import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../redux/reducers/users";
 
 function LoginPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.users.isAuthenticated);
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    // console.log(data);
+
+    dispatch(loginUser(data));
+
+    if (isAuthenticated) {
+      navigate("/profile");
+    }
+  };
+
   return (
     <div className="w-screen h-screen bg-[url(./src/assets/images/background.png)]  object-cover bg-no-repeat bg-center">
       <div className="absolute w-full h-full top-0 left-0 right-0 bg-black/60 z-0"></div>
@@ -19,6 +38,7 @@ function LoginPage() {
               </span>
             </div>
             <form
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col w-full items-center gap-5"
               autoComplete="off"
             >
@@ -28,6 +48,7 @@ function LoginPage() {
                 </label>
                 <div className="border rounded border-gray-400">
                   <input
+                    {...register("email")}
                     type="email"
                     name="email"
                     id="email"
@@ -43,6 +64,7 @@ function LoginPage() {
                 </label>
                 <div className="border rounded border-gray-400">
                   <input
+                    {...register("password")}
                     type="password"
                     name="password"
                     id="password"
