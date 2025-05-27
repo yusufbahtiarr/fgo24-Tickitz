@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar2 from "../components/Navbar2";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 function OrderHistoryPage() {
   const users = useSelector((state) => state.users.currentUser);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (users === null) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <div>
       <Navbar2 />
