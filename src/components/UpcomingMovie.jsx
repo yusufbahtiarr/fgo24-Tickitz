@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import Badge from "./Badge";
@@ -27,12 +27,23 @@ function UpcomingMovie() {
     fetchDataAll();
   }, []);
 
+  const sliderRef = useRef(null);
+  const scrollLeft = () => {
+    sliderRef.current.scrollBy({ left: -600, behavior: "smooth" });
+  };
+  const scrollRight = () => {
+    sliderRef.current.scrollBy({ left: 600, behavior: "smooth" });
+  };
+
   return (
     <>
       <section className="w-full">
         <div className="flex flex-row p-20 w-full gap-8">
-          <div className="flex flex-row justify-between w-[73%] scroll-x overflow-x-auto gap-8 justify-items-center">
-            {upcomingMovies.slice(0, 4).map((item) => (
+          <div
+            ref={sliderRef}
+            className="flex flex-row justify-start w-[73%] scroll-x overflow-hidden gap-10 justify-items-center scrollbar-hide"
+          >
+            {upcomingMovies.slice(0, 10).map((item) => (
               <div key={item.id} className="">
                 <div className="flex col gap-8">
                   <div className="flex flex-col gap-2 relative items-center h-fit w-[190px]">
@@ -69,12 +80,14 @@ function UpcomingMovie() {
             <div className="flex flex-row justify-between items-center w-full">
               <div className="flex gap-4">
                 <Button
+                  onClick={scrollLeft}
                   variant="secondary"
                   className="h-[56px]"
                   children={<FaArrowLeft />}
                 />
 
                 <Button
+                  onClick={scrollRight}
                   variant="primary"
                   className="h-[56px]"
                   children={<FaArrowRight />}
