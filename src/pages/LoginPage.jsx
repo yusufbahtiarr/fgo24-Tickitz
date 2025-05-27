@@ -22,7 +22,6 @@ function LoginPage() {
       .email("Format Tidak Valid")
       .required("Email wajib diisi")
       .test("isEmailExists", "Email tidak terdaftar", function (value) {
-        if (!value) return true;
         const isExist = isEmailExists(users, value);
         return isExist;
       }),
