@@ -1,14 +1,58 @@
-import React from "react";
 import Navbar2 from "../components/Navbar2";
-import Footer from "../components/Footer";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { Link, NavigationType, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { editUserAction } from "../redux/reducers/users";
 
 function ProfilePage() {
+  // const users = useSelector((state) => state.users.data);
+  const users = useSelector((state) => state.users.currentUser);
+  const navigate = useNavigate();
+  // console.log(users);
+  const [isValidError, setIsValidError] = useState(false);
+
+  useEffect(() => {
+    if (users === null) {
+      navigate("/login");
+    }
+  }, []);
+
+  const schema = yup.object({
+    firstname: yup.string().required("Nama depan wajib diisi"),
+    lastname: yup.string().required("Nama belakang wajib diisi"),
+    email: yup.string().required("Email wajib diisi"),
+    phone: yup.string().required("Nomor telepon wajib diisi"),
+  });
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    if (data.newpassword !== data.confirmpassword) {
+      console.log("password tidak sama");
+      setIsValidError(true);
+      return;
+    }
+    console.log(data);
+    dispatch(editUserAction(data));
+
+    setIsValidError(false);
+  };
+
   return (
     <div>
       <Navbar2 />
-      <div className="mt-22 h-full w-full bg-gray1 p-18">
+      <div className="mt-6 h-full w-full bg-gray2 p-18">
         <div className="p-10 flex flex-row gap-8">
           <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
@@ -27,7 +71,9 @@ function ProfilePage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  Jonas El Rodriguez
+                  {users?.firstname
+                    ? `${users?.firstname} ${users?.lastname}`
+                    : users?.email}
                 </span>
               </div>
               <div>
@@ -85,12 +131,18 @@ function ProfilePage() {
             </div>
           </div>
           <div className="w-[70%] h-300 rounded-4xl flex flex-col gap-14">
-            <form className=" flex flex-col gap-12">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className=" flex flex-col gap-12"
+              autoComplete="off"
+            >
               <div className="flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
                 <span className="font-normal border-b-2 border-primary py-6">
                   Account Settings
                 </span>
-                <span className="text-fourth">Order History</span>
+                <span className="text-fourth">
+                  <Link to="/order-history">Order History</Link>
+                </span>
               </div>
               <div className="bg-white rounded-3xl flex flex-col px-8 py-10 gap-4">
                 <div>
@@ -104,13 +156,18 @@ function ProfilePage() {
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
+                        {...register("firstname")}
                         type="text"
                         name="firstname"
                         id="firstname"
                         placeholder="Jonas"
                         className="outline-0 w-[85%]"
+                        defaultValue={users?.firstname}
                       />
                     </div>
+                    <span className="text-red">
+                      {errors.firstname?.message}
+                    </span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="lastname" className="text-fourth">
@@ -118,13 +175,16 @@ function ProfilePage() {
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
+                        {...register("lastname")}
                         type="text"
                         name="lastname"
                         id="lastname"
                         placeholder="El Rodriguez"
                         className="outline-0 w-[85%]"
+                        defaultValue={users?.lastname}
                       />
                     </div>
+                    <span className="text-red">{errors.lastname?.message}</span>
                   </div>
                 </div>
                 <div className="flex flex-row gap-9 mb-4">
@@ -134,27 +194,33 @@ function ProfilePage() {
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
+                        {...register("email")}
                         type="email"
                         name="email"
                         id="email"
                         placeholder="jonasrodrigu123@gmail.com"
                         className="outline-0 w-[85%]  "
+                        defaultValue={users?.email}
                       />
                     </div>
+                    <span className="text-red">{errors.email?.message}</span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="Phone Number" className="text-fourth">
-                      Last Name
+                      Phone Number
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
+                        {...register("phone")}
                         type="tel"
                         name="phone"
                         id="phone"
                         placeholder="+6281445687121"
                         className="outline-0 w-[85%]  "
+                        defaultValue={users?.phone}
                       />
                     </div>
+                    <span className="text-red">{errors.phone?.message}</span>
                   </div>
                 </div>
               </div>
@@ -165,34 +231,39 @@ function ProfilePage() {
                 <hr className="border-1 border-gray2 mb-4" />
                 <div className="flex flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="new-password" className="text-fourth">
+                    <label htmlFor="newpassword" className="text-fourth">
                       New Password
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
+                        {...register("newpassword")}
                         type="password"
-                        name="new-password"
-                        id="new-password"
+                        name="newpassword"
+                        id="newpassword"
                         placeholder="Write your password"
                         className="outline-0 w-[85%] "
                       />
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="confirm-password" className="text-fourth">
-                      Last Name
+                    <label htmlFor="confirmpassword" className="text-fourth">
+                      Confirm Password
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
+                        {...register("confirmpassword")}
                         type="password"
-                        name="confirm-password"
-                        id="confirm-password"
+                        name="confirmpassword"
+                        id="confirmpassword"
                         placeholder="Confirm your password"
                         className="outline-0 w-[85%]"
                       />
                     </div>
                   </div>
                 </div>
+                {isValidError && (
+                  <span className="text-red">Password tidak sama</span>
+                )}
               </div>
               <div className="w-full">
                 <Button

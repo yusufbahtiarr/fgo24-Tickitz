@@ -2,14 +2,18 @@ import React from "react";
 import Button from "./Button";
 import Choose from "./Choose";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function BookingTicket() {
+  const navigate = useNavigate();
   return (
     <div className="w-full h-fit p-20">
       <div className="flex flex-col gap-10">
         <div className="flex justify-between">
           <span className="text-[36px] font-semibold">Book Tickets</span>
-          <Button variant="primary">BOOK NOW</Button>
+          <Button variant="primary" onClick={() => navigate("/order")}>
+            BOOK NOW
+          </Button>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex flex-row gap-5">

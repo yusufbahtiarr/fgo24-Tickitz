@@ -34,7 +34,7 @@ function FilterCinemas() {
             Find movie
           </div>
           <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <Input
                 {...register("search")}
                 type="text"

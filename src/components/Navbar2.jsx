@@ -1,9 +1,17 @@
-import { Link } from "react-router-dom";
-import Button from "./Button";
-import { FaAngleDown } from "react-icons/fa";
-import { IoSearchSharp } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/reducers/users";
+import { useState } from "react";
 
 function Navbar2() {
+  const users = useSelector((state) => state.users.currentUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [dropdown, setDropdown] = useState(false);
+  function logout() {
+    dispatch(logoutUser());
+    navigate("/login");
+  }
   return (
     <nav className="fixed top-0 right-0 left-0 flex flex-between flex-row  bg-white px-20 py-4 z-100 items-center justify-center ">
       <div className="flex-1">
@@ -17,19 +25,34 @@ function Navbar2() {
         <Link to="/buy-ticket">BUY TICKET</Link>
       </div>
       <div className="flex-1 flex justify-end items-center">
-        <div className="flex flex-row gap-4 items-center">
-          <span className="font-semibold">Location</span>
-          <button>
-            <FaAngleDown className="size-[18px]" />
-          </button>
-          <button>
-            <IoSearchSharp className="size-[24px]" />
-          </button>
+        <div className="flex flex-row gap-4 items-center relative">
+          <span className="font-semibold">
+            {users?.firstname
+              ? `${users?.firstname} ${users?.lastname}`
+              : users?.email}
+          </span>
           <img
             src="./src/assets/images/profile.png"
             alt="profile"
             className="size-14 rounded-full object-cover"
+            onClick={() => setDropdown(!dropdown)}
           />
+          {dropdown && (
+            <div className="absolute flex flex-col h-fit p-5 gap-4 top-19 right-0 z-99 bg-white shadow rounded w-46">
+              <button
+                onClick={() => navigate("/profile")}
+                className="p-2 rounded text-white bg-primary  hover:bg-primary/80"
+              >
+                Profile
+              </button>
+              <button
+                onClick={logout}
+                className="p-2 rounded text-white bg-primary hover:bg-primary/80"
+              >
+                Log Out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>

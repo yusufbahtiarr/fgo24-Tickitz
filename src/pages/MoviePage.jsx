@@ -93,7 +93,7 @@ function ShowMovie() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const PAGE = Number(searchParams.get("page")) || 1;
-  const LIMIT = Number(searchParams.get("limit")) || 5;
+  const LIMIT = Number(searchParams.get("limit")) || 10;
   const OFFSET = (PAGE - 1) * LIMIT;
   const TOTALPAGE = Math.ceil(movies.length / LIMIT);
 

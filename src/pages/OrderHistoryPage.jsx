@@ -1,14 +1,15 @@
 import React from "react";
 import Navbar2 from "../components/Navbar2";
-import Footer from "../components/Footer";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
-
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 function OrderHistoryPage() {
+  const users = useSelector((state) => state.users.currentUser);
   return (
     <div>
       <Navbar2 />
-      <div className="mt-22 bg-gray1 p-18">
+      <div className="mt-6 bg-gray2 p-18">
         <div className="p-10 flex flex-row gap-8 mb-110">
           <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
@@ -27,7 +28,9 @@ function OrderHistoryPage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  Jonas El Rodriguez
+                  {users?.firstname
+                    ? `${users?.firstname} ${users?.lastname}`
+                    : users?.email}
                 </span>
               </div>
               <div>
@@ -86,7 +89,9 @@ function OrderHistoryPage() {
           </div>
           <div className="w-[70%] h-300 rounded-4xl flex flex-col gap-14">
             <div className="flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
-              <span className="text-fourth ">Account Settings</span>
+              <span className="text-fourth ">
+                <Link to="/profile">Account Settings</Link>
+              </span>
               <span className="font-normal border-b-2 border-primary py-6">
                 Order History
               </span>
@@ -122,7 +127,6 @@ function OrderHistoryPage() {
                       className="text-fourth text-[18px] p-3"
                     >
                       <option value="">Show Details </option>
-                      <option value="tes">11</option>
                     </select>
                   </div>
                 </div>

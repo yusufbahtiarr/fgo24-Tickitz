@@ -2,8 +2,8 @@ import React from "react";
 import Stepper from "../components/Stepper";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Badge from "../components/Badge";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function ChairSelector() {
   const chairElements = Array.from({ length: 49 }, (_, i) => (
@@ -21,6 +21,7 @@ function ChairSelector() {
 }
 
 function PaymentPage() {
+  const navigate = useNavigate();
   return (
     <div className="w-screen h-fit bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
@@ -211,7 +212,13 @@ function PaymentPage() {
                 </div>
 
                 <div>
-                  <Button variant="third" className="text-white w-full">
+                  <Button
+                    variant="third"
+                    className="text-white w-full"
+                    onClick={() =>
+                      navigate("/order-history", { replace: true, search: "" })
+                    }
+                  >
                     Pay your order
                   </Button>
                 </div>

@@ -4,10 +4,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Badge from "./../components/Badge";
 import Button from "./../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function ChairSelector() {
   const chairElements = Array.from({ length: 49 }, (_, i) => (
-    <label key={i} htmlFor={`chair${i}`} className="p-2">
+    <label key={i} htmlFor={`chair${i}`} className="p-2 size-[36px] ">
       <input
         type="checkbox"
         name="chair"
@@ -21,13 +22,14 @@ function ChairSelector() {
 }
 
 function OrderPage() {
+  const navigate = useNavigate();
   return (
-    <div className="w-screen h-fit bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
+    <div className="w-screen h-screen bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
       <div className="h-fit w-full mt-21 px-43">
         <Stepper step2="bg-primary" step3="bg-violet" />
         <section className="w-full h-full flex flex-row gap-8 mb-20">
-          <div className="w-[65%] py-10 px-6 flex flex-col gap-10  bg-white">
+          <div className="w-300 py-10 px-6 flex flex-col gap-10  bg-white">
             <div className="border flex flex-row border-gray1 gap-4 py-4 px-6 w-full">
               <div class="h-[117px] w-[184px] overflow-y-hidden shrink-0">
                 <img src="../src/assets/images/order.png" alt="film" />
@@ -53,8 +55,8 @@ function OrderPage() {
             </div>
             <div className="font-bold text-2xl mb-10">Choose Your Seat</div>
             <div className="font-light text-[14px] mx-auto mb-6">Screen</div>
-            <div className="flex flex-row gap-6">
-              <div className="flex flex-col justify-start py-[12px] items-center w-[5%] gap-7 shrink-0 ">
+            <div className="flex flex-row gap-6 justify-center">
+              <div className="flex flex-col justify-start py-[12px] items-center w-10 gap-7 shrink-0 ">
                 <span>A</span>
                 <span>B</span>
                 <span>C</span>
@@ -63,7 +65,7 @@ function OrderPage() {
                 <span>F</span>
                 <span>G</span>
               </div>
-              <div className="grid col-7 gap-4 w-[41%]">
+              <div className="grid grid-col-7 gap-4 w-100">
                 {ChairSelector()}
                 <div className="pl-4 pr-13 flex flex-row items-center justify-between w-full">
                   <span>1</span>
@@ -75,9 +77,9 @@ function OrderPage() {
                   <span>7</span>
                 </div>
               </div>
-              <div className="grid col-7 gap-4 w-[41%] pl-6">
+              <div className="grid grid-col-7 gap-4 w-100">
                 {ChairSelector()}
-                <div className="pl-4 pr-6 flex flex-row items-center justify-between w-full">
+                <div className="pl-4 pr-14 flex flex-row items-center justify-between w-full">
                   <span>8</span>
                   <span>9</span>
                   <span>10</span>
@@ -141,7 +143,11 @@ function OrderPage() {
                 <span className="text-blue text-2xl font-bold">$30</span>
               </div>
             </div>
-            <Button variant="third" className="text-white mt-10">
+            <Button
+              variant="third"
+              className="text-white mt-10"
+              onClick={() => navigate("/payment")}
+            >
               Checkout now
             </Button>
           </div>

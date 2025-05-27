@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { fetchData } from "../utils/apiClient";
 import Button from "./Button";
@@ -11,44 +10,26 @@ function ShowMovie() {
   const [genresList, setGenresList] = useState([]);
   const navigate = useNavigate();
 
+  const fetchDataAll = async () => {
+    try {
+      // Fetch movie list
+      const movieRes = await fetchData.getNowPlaying();
+      setMovies(movieRes.data.results || []);
+
+      // Fetch genre list
+      const genreRes = await fetchData.getMovieGenres();
+      setGenresList(genreRes.data.genres || []);
+    } catch (error) {
+      console.error(
+        "Error fetching data:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   useEffect(() => {
-    const fetchDataAll = async () => {
-      try {
-        // Fetch movie list
-        const movieRes = await fetchData.getNowPlaying();
-        setMovies(movieRes.data.results || []);
-
-        // Fetch genre list
-        const genreRes = await fetchData.getMovieGenres();
-        setGenresList(genreRes.data.genres || []);
-      } catch (error) {
-        console.error(
-          "Error fetching data:",
-          error.response?.data || error.message
-        );
-      }
-    };
-
     fetchDataAll();
   }, []);
-
-  // const renderGenres = (genreIds) => {
-  //   const displayedGenres = genreIds.length > 3 ? genreIds.slice(2) : genreIds;
-
-  //   return displayedGenres.map((id) => {
-  //     const genre = genresList.find((g) => g.id === id);
-  //     return (
-  //       <div
-  //         key={id}
-  //         className={`text-sm bg-sixth text-fifth font-medium ${
-  //           genreIds.length > 3 ? "px-2 py-1" : "px-5 py-6"
-  //         } rounded-full`}
-  //       >
-  //         {genre?.name}
-  //       </div>
-  //     );
-  //   });
-  // };
 
   return (
     <div className="flex flex-col px-20 w-full">

@@ -1,5 +1,5 @@
 import { fetchData } from "../utils/apiClient";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import RenderGenres from "./renderGenres";
@@ -31,20 +31,34 @@ function NowShowing() {
     fetchDataAll();
   }, []);
 
+  const sliderRef = useRef(null);
+  const scrollLeft = () => {
+    sliderRef.current.scrollBy({ left: -600, behavior: "smooth" });
+  };
+  const scrollRight = () => {
+    sliderRef.current.scrollBy({ left: 600, behavior: "smooth" });
+  };
+
   return (
     <div className="w-full px-20 mb-10">
       <div className="flex justify-between items-center overflow-hidden">
-        <button className="button-icon md:text-lg text-sm">
+        <button onClick={scrollLeft} className="button-icon md:text-lg text-sm">
           <FaArrowLeft />
         </button>
         <p className="md:font-semibold font-bold md:text-4xl sm:text-2xl text-xl">
           Now Showing in Cinemas
         </p>
-        <button className="button-icon md:text-lg text-sm">
+        <button
+          onClick={scrollRight}
+          className="button-icon md:text-lg text-sm"
+        >
           <FaArrowRight />
         </button>
       </div>
-      <div className="scroll-x overflow-x-auto flex gap-5 justify-items-center pt-8 ">
+      <div
+        ref={sliderRef}
+        className="scroll-x overflow-x-auto flex gap-5 justify-items-center pt-8 "
+      >
         {movies.map((item) => (
           <div key={item.id} className="mb-2">
             <div className="relative lg:w-70 w-50 mb-4">

@@ -4,7 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/reducers/users";
-import { isEmailExists } from "../utils/authentication";
+import { comparePassword, isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
@@ -12,7 +12,6 @@ import { useState } from "react";
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.users.isAuthenticated);
   const users = useSelector((state) => state.users.data);
   const [loginError, setLoginError] = useState(false);
 
@@ -20,11 +19,7 @@ function LoginPage() {
     email: yup
       .string()
       .email("Format Tidak Valid")
-      .required("Email wajib diisi")
-      .test("isEmailExists", "Email tidak terdaftar", function (value) {
-        const isExist = isEmailExists(users, value);
-        return isExist;
-      }),
+      .required("Email wajib diisi"),
     password: yup.string().required("Password wajib diisi"),
   });
 
@@ -37,14 +32,23 @@ function LoginPage() {
   });
 
   const onSubmit = (data) => {
-    setLoginError(false);
-    dispatch(loginUser(data));
-    if (isAuthenticated) {
-      navigate("/profile");
-    } else {
+    const isExists = isEmailExists(users, data.email);
+    if (!isExists) {
       setLoginError(true);
+      return;
     }
+    const found = users.filter((user) => user.email === data.email)[0];
+    if (!comparePassword(found.password, data.password)) {
+      setLoginError(true);
+      return;
+    }
+    dispatch(loginUser(data));
+    navigate("/profile");
   };
+
+  setTimeout(() => {
+    setLoginError(false);
+  }, 4000);
 
   return (
     <div className="w-screen h-screen bg-[url(./src/assets/images/background.png)]  object-cover bg-no-repeat bg-center">
