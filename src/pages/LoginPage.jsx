@@ -4,20 +4,46 @@ import { FaFacebook } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/reducers/users";
+import { isEmailExists } from "../utils/authentication";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useState } from "react";
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.users.isAuthenticated);
-  const { register, handleSubmit } = useForm();
+  const users = useSelector((state) => state.users.data);
+  const [loginError, setLoginError] = useState(false);
+
+  const schema = yup.object({
+    email: yup
+      .string()
+      .email("Format Tidak Valid")
+      .required("Email wajib diisi")
+      .test("isEmailExists", "Email tidak terdaftar", function (value) {
+        if (!value) return true;
+        const isExist = isEmailExists(users, value);
+        return isExist;
+      }),
+    password: yup.string().required("Password wajib diisi"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = (data) => {
-    // console.log(data);
-
+    setLoginError(false);
     dispatch(loginUser(data));
-
     if (isAuthenticated) {
       navigate("/profile");
+    } else {
+      setLoginError(true);
     }
   };
 
@@ -54,9 +80,9 @@ function LoginPage() {
                     id="email"
                     placeholder="Enter your email"
                     className="outline-none py-3 px-4"
-                    required
                   />
                 </div>
+                <span className="text-red">{errors.email?.message}</span>
               </div>
               <div className="flex flex-col w-full gap-3">
                 <label htmlFor="password" className="w-full">
@@ -70,9 +96,9 @@ function LoginPage() {
                     id="password"
                     placeholder="Enter your password"
                     className="outline-none py-3 px-4"
-                    required
                   />
                 </div>
+                <span className="text-red">{errors.password?.message}</span>
               </div>
               <div className="flex flex-row justify-end w-full gap-3">
                 <span className="text-primary">Forgot your password?</span>
@@ -83,6 +109,11 @@ function LoginPage() {
               >
                 Login
               </button>
+              <span className="text-red">
+                {loginError && (
+                  <span className="text-red">Email atau Password salah!</span>
+                )}
+              </span>
               <div className="flex flex-row justify-between w-full gap-4 items-center text-gray-400">
                 <hr className="border-1 w-full" />
                 <span>Or</span>
