@@ -1,9 +1,20 @@
 import { FaAngleDown } from "react-icons/fa6";
-import Badge from "./Badge";
 import Button from "./Button";
 import Input from "./Input";
+import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
 function FilterCinemas() {
+  const { register, handleSubmit } = useForm();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // const searchTerm = searchParams.get("search");
+
+  function onSubmit(data) {
+    setSearchParams(data);
+  }
+  // console.log(searchParams);
+
   return (
     <div className="px-20 flex flex-col w-full gap-10">
       <div className="flex flex-row w-full justify-between items-center gap-10">
@@ -23,12 +34,15 @@ function FilterCinemas() {
             Find movie
           </div>
           <div>
-            <Input
-              type="text"
-              name="search"
-              id="name"
-              placeholder="Search your movie.."
-            />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Input
+                {...register("search")}
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Search your movie.."
+              />
+            </form>
           </div>
         </div>
         <div className="flex flex-col gap-4">

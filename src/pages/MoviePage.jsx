@@ -1,10 +1,24 @@
-import { FaAngleDown, FaAngleUp, FaCircle, FaRegCircle } from "react-icons/fa";
+import {
+  FaAngleDown,
+  FaAngleUp,
+  FaArrowLeft,
+  FaCircle,
+  FaRegCircle,
+} from "react-icons/fa";
 import Badge from "../components/Badge";
 import FilterCinemas from "../components/FilterCinemas";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import ShowMovie from "../components/ShowMovie";
+// import ShowMovie from "../components/ShowMovie";
 import Subscribe from "../components/Subscribe";
+import { useSearchParams } from "react-router-dom";
+// import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchData } from "../utils/apiClient";
+import Button from "../components/Button";
+import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import RenderGenres from "../components/renderGenres";
 
 function MoviePage() {
   return (
@@ -61,13 +75,111 @@ function MoviePage() {
           </div>
         </div>
         <FilterCinemas />
-        <ShowMovie />
+        {ShowMovie()}
         <Subscribe />
       </main>
       <footer>
         <Footer />
       </footer>
     </>
+  );
+}
+
+function ShowMovie() {
+  // const users = useSelector((state) => state.users.data);
+  const [movies, setMovies] = useState([]);
+  const [genresList, setGenresList] = useState([]);
+  const navigate = useNavigate();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const PAGE = Number(searchParams.get("page")) || 1;
+  const LIMIT = Number(searchParams.get("limit")) || 5;
+  const OFFSET = (PAGE - 1) * LIMIT;
+  const TOTALPAGE = Math.ceil(movies.length / LIMIT);
+
+  const searchData = searchParams.get("search");
+  // console.log(searchData);
+  // function changeparam(data) {
+  //   overrideParams(data, searchParams, setSearchParams);
+  // }
+
+  const fetchDataAll = async () => {
+    try {
+      // Fetch movie list
+      const movieRes = await fetchData.getNowPlaying();
+      setMovies(movieRes.data.results || []);
+
+      // Fetch genre list
+      const genreRes = await fetchData.getMovieGenres();
+      setGenresList(genreRes.data.genres || []);
+    } catch (error) {
+      console.error(
+        "Error fetching data:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchDataAll();
+  }, []);
+
+  return (
+    <div className="flex flex-col px-20 w-full">
+      <div className="grid grid-cols-5 gap-10 py-10">
+        {movies.slice(OFFSET, LIMIT * PAGE).map((item) => (
+          <div key={`list-movie-${item.id}`} className="mb-2 mx-auto">
+            <div className="relative lg:w-70 w-50 mb-4 mx-auto">
+              {item.vote_average > 7 && (
+                <div className="absolute text-primary bg-third font-bold px-2 py-1 rounded-br-lg ">
+                  Recommended
+                </div>
+              )}
+              <img
+                onClick={() => navigate(`/buy-ticket/${item.id}`)}
+                className="rounded-xl object-cover w-full cursor-pointer"
+                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                alt=""
+              />
+            </div>
+            <h3 className="text-xl font-bold">{item.title}</h3>
+            <div className="flex flex-row itens-center  justify-center gap-2 mt-2">
+              <RenderGenres genreIds={item.genre_ids} genresList={genresList} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-row justify-center items-center gap-5">
+        <Button
+          FaArrowRight
+          disabled={PAGE === 1}
+          onClick={() => setSearchParams({ page: String(PAGE - 1) })}
+          variant="primary"
+          className="text-[28px] p-2 size-[54px] flex justify-center items-center"
+        >
+          <FaArrowLeft />
+        </Button>
+        {Array.from({ length: TOTALPAGE }).map((_, index) => (
+          <Button
+            onClick={() => setSearchParams({ page: String(index + 1) })}
+            key={`list-button-${index}`}
+            variant={PAGE === index + 1 ? "primary" : "secondary"}
+            disabled={PAGE === index + 1}
+            className="text-2xl"
+          >
+            {index + 1}
+          </Button>
+        ))}
+        <Button
+          disabled={PAGE === TOTALPAGE}
+          onClick={() => setSearchParams({ page: String(PAGE + 1) })}
+          variant="primary"
+          className="text-[28px] size-[54px] flex justify-center items-center"
+        >
+          <FaArrowRight />
+        </Button>
+      </div>
+    </div>
   );
 }
 
