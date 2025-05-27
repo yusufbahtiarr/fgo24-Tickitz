@@ -3,19 +3,47 @@ import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { addUser } from "../redux/reducers/users";
+import { addUserAction } from "../redux/reducers/users";
+import { isEmailExists } from "../utils/authentication";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 function RegisterPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.users.data);
-  console.log(users);
-  const { register, handleSubmit } = useForm();
+  // console.log(users);
+  // const [alert, setAlert] = useState("");
 
+  const schema = yup.object({
+    email: yup
+      .string()
+      .email("Format Tidak Valid")
+      .required("Email wajib diisi")
+      .test("isEmailExists", "Email sudah terdaftar", function (value) {
+        if (!value) return true;
+        const isExist = isEmailExists(users, value);
+        return !isExist;
+      }),
+    password: yup.string().required("Password wajib diisi"),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const onSubmit = (data) => {
-    // console.log("Form data:", data); // Handle form data (e.g., dispatch to Redux)
-    const encodedPassword = btoa(data.password);
-    dispatch(addUser({ email: data.email, password: encodedPassword }));
+    // const isExists = isEmailExists(users, data.email);
+    // console.log(isExists);
+
+    // if (isExists) {
+    //   setAlert("User already exists");
+    //   console.log("User already exists");
+    //   return;
+    // }
+    dispatch(addUserAction(data));
     navigate("/login");
   };
 
@@ -79,9 +107,10 @@ function RegisterPage() {
                     id="email"
                     placeholder="Enter your email"
                     className="outline-none py-3 px-4"
-                    required
+                    // required
                   />
                 </div>
+                <span className="text-red">{errors.email?.message}</span>
               </div>
               <div className="flex flex-col w-full gap-3">
                 <label htmlFor="password" className="w-full">
@@ -95,21 +124,25 @@ function RegisterPage() {
                     id="password"
                     placeholder="Enter your password"
                     className="outline-none py-3 px-4"
-                    required
+                    // required
                   />
                 </div>
+                <span className="text-red">{errors.password?.message}</span>
               </div>
-              <div className="flex flex-row w-full gap-3">
-                <input
-                  type="checkbox"
-                  name="term"
-                  id="term"
-                  className="h-5 w-5"
-                  required
-                />
-                <label htmlFor="term" className="">
-                  I agree to terms & conditions
-                </label>
+              <div className="flex flex-col w-full gap-3">
+                <div className="flex flex-row gap-3">
+                  <input
+                    type="checkbox"
+                    name="term"
+                    id="term"
+                    className="h-5 w-5"
+                    required
+                  />
+                  <label htmlFor="term" className="">
+                    I agree to terms & conditions
+                  </label>
+                </div>
+                <span className="text-red">{errors.term?.message}</span>
               </div>
               <button
                 type="Submit"

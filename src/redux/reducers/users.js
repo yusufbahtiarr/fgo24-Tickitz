@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
 
 const initialState = {
   data: [],
@@ -10,11 +11,13 @@ const users = createSlice({
   name: "users",
   initialState,
   reducers: {
-    addUser: (state, action) => {
-      state.data.push({
-        id: Date.now(),
-        ...action.payload,
-      });
+    addUserAction: (state, action) => {
+      const newData = action.payload;
+      newData.id = nanoid();
+      newData.role = "User";
+      newData.password = window.btoa(newData.password);
+      state.data.push(newData);
+      return state;
     },
     loginUser: (state, action) => {
       const { email, password } = action.payload;
@@ -40,5 +43,5 @@ const users = createSlice({
   },
 });
 
-export const { addUser, loginUser, logoutUser } = users.actions;
+export const { addUserAction, loginUser, logoutUser } = users.actions;
 export default users.reducer;
