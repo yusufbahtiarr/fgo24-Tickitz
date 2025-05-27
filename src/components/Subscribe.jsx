@@ -3,7 +3,6 @@ import Button from "./Button";
 import { useForm } from "react-hook-form";
 import { addSubscribeAction } from "../redux/reducers/subscribes";
 import { useDispatch } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
 
 function Subscribe() {
   const dispatch = useDispatch();
