@@ -3,11 +3,12 @@ import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../redux/reducers/auths";
+// import { loginUser } from "../redux/reducers/auths";
 import { comparePassword, isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
+import { loginUser } from "../redux/reducers/auths";
 
 function LoginPage() {
   const dispatch = useDispatch();
@@ -44,8 +45,8 @@ function LoginPage() {
     }
 
     dispatch(loginUser(found));
-    console.log(data);
-    console.log(found);
+    // console.log(data);
+    // console.log(found);
 
     navigate("/profile");
   };

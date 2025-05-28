@@ -92,11 +92,14 @@ function ShowMovie() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const searchQuery = searchParams.get("search");
+  const filteredSearch = movies.filter((item) => {
+    return item.title?.toLowerCase().includes(searchQuery?.toLowerCase() || "");
+  });
   const PAGE = Number(searchParams.get("page")) || 1;
   const LIMIT = Number(searchParams.get("limit")) || 10;
   const OFFSET = (PAGE - 1) * LIMIT;
-  const TOTALPAGE = Math.ceil(movies.length / LIMIT);
-  const searchData = searchParams.get("search");
+  const TOTALPAGE = Math.ceil(filteredSearch.length / LIMIT);
 
   const fetchDataAll = async () => {
     try {
@@ -117,12 +120,12 @@ function ShowMovie() {
 
   useEffect(() => {
     fetchDataAll();
-  }, [searchParams]);
+  }, []);
 
   return (
     <div className="flex flex-col px-20 w-full">
       <div className="grid grid-cols-5 gap-10 py-10">
-        {movies.slice(OFFSET, LIMIT * PAGE).map((item) => (
+        {filteredSearch.slice(OFFSET, LIMIT * PAGE).map((item) => (
           <div key={`list-movie-${item.id}`} className="mb-2 mx-auto">
             <div className="relative lg:w-70 w-50 mb-4 mx-auto">
               {item.vote_average > 7 && (
@@ -144,36 +147,51 @@ function ShowMovie() {
           </div>
         ))}
       </div>
-      <div className="flex flex-row justify-center items-center gap-5">
-        <Button
-          FaArrowRight
-          disabled={PAGE === 1}
-          onClick={() => setSearchParams({ page: String(PAGE - 1) })}
-          variant="primary"
-          className="text-[28px] p-2 size-[54px] flex justify-center items-center"
-        >
-          <FaArrowLeft />
-        </Button>
-        {Array.from({ length: TOTALPAGE }).map((_, index) => (
+      {filteredSearch.length === 0 ? (
+        <span className="h-100 text-2xl font-medium">
+          Pencarian dengan judul "{searchQuery}" tidak ditemukan
+        </span>
+      ) : (
+        <div className="flex flex-row justify-center items-center gap-5">
           <Button
-            onClick={() => setSearchParams({ page: String(index + 1) })}
-            key={`list-button-${index}`}
-            variant={PAGE === index + 1 ? "primary" : "secondary"}
-            disabled={PAGE === index + 1}
-            className="text-2xl"
+            FaArrowRight
+            disabled={PAGE === 1}
+            onClick={() =>
+              setSearchParams({ search: searchQuery, page: String(PAGE - 1) })
+            }
+            variant="primary"
+            className="text-[28px] p-2 size-[54px] flex justify-center items-center"
           >
-            {index + 1}
+            <FaArrowLeft />
           </Button>
-        ))}
-        <Button
-          disabled={PAGE === TOTALPAGE}
-          onClick={() => setSearchParams({ page: String(PAGE + 1) })}
-          variant="primary"
-          className="text-[28px] size-[54px] flex justify-center items-center"
-        >
-          <FaArrowRight />
-        </Button>
-      </div>
+          {Array.from({ length: TOTALPAGE }).map((_, index) => (
+            <Button
+              onClick={() =>
+                setSearchParams({
+                  search: searchQuery,
+                  page: String(index + 1),
+                })
+              }
+              key={`list-button-${index}`}
+              variant={PAGE === index + 1 ? "primary" : "secondary"}
+              disabled={PAGE === index + 1}
+              className="text-2xl"
+            >
+              {index + 1}
+            </Button>
+          ))}
+          <Button
+            disabled={PAGE === TOTALPAGE}
+            onClick={() =>
+              setSearchParams({ search: searchQuery, page: String(PAGE + 1) })
+            }
+            variant="primary"
+            className="text-[28px] size-[54px] flex justify-center items-center"
+          >
+            <FaArrowRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

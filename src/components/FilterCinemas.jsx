@@ -3,17 +3,21 @@ import Button from "./Button";
 import Input from "./Input";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 function FilterCinemas() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // const searchTerm = searchParams.get("search");
+  const searchQuery = searchParams.get("search") || "";
 
-  function onSubmit(data) {
-    setSearchParams(data);
-  }
-  // console.log(searchParams);
+  useEffect(() => {
+    setValue("search", searchQuery);
+  }, [searchQuery, setValue]);
+
+  const onSubmit = (data) => {
+    setSearchParams({ search: data.search, page: 1 });
+  };
 
   return (
     <div className="px-20 flex flex-col w-full gap-10">
@@ -41,6 +45,7 @@ function FilterCinemas() {
                 name="search"
                 id="search"
                 placeholder="Search your movie.."
+                defaultValue={searchQuery}
               />
             </form>
           </div>
