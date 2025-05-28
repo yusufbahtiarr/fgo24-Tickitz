@@ -4,8 +4,10 @@ import Footer from "../components/Footer";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import Button from "../components/Button";
 import { HiOutlineDownload } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 
 function TicketResultPage() {
+  const navigate = useNavigate();
   return (
     <div>
       <Navbar />
@@ -112,7 +114,11 @@ function TicketResultPage() {
               >
                 <HiOutlineDownload className="size-6" /> Download
               </Button>
-              <Button variant="third" className=" text-white">
+              <Button
+                variant="third"
+                className=" text-white"
+                onClick={() => navigate("/order-history")}
+              >
                 Done
               </Button>
             </div>

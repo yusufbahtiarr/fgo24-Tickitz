@@ -90,18 +90,13 @@ function ShowMovie() {
   const [movies, setMovies] = useState([]);
   const [genresList, setGenresList] = useState([]);
   const navigate = useNavigate();
-
   const [searchParams, setSearchParams] = useSearchParams();
+
   const PAGE = Number(searchParams.get("page")) || 1;
   const LIMIT = Number(searchParams.get("limit")) || 10;
   const OFFSET = (PAGE - 1) * LIMIT;
   const TOTALPAGE = Math.ceil(movies.length / LIMIT);
-
   const searchData = searchParams.get("search");
-  // console.log(searchData);
-  // function changeparam(data) {
-  //   overrideParams(data, searchParams, setSearchParams);
-  // }
 
   const fetchDataAll = async () => {
     try {
@@ -122,7 +117,7 @@ function ShowMovie() {
 
   useEffect(() => {
     fetchDataAll();
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col px-20 w-full">

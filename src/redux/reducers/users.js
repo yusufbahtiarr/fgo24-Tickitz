@@ -10,7 +10,7 @@ const initialState = {
       role: "Admin",
     },
   ],
-  currentUser: null,
+  // currentUser: null,
 };
 
 const users = createSlice({
@@ -42,7 +42,6 @@ const users = createSlice({
         ...state.data[userIndex],
         firstname: firstname || state.data[userIndex].firstname,
         lastname: lastname || state.data[userIndex].lastname,
-        email: email || state.data[userIndex].email,
         phone: phone || state.data[userIndex].phone,
       };
 
@@ -56,19 +55,18 @@ const users = createSlice({
       return state;
     },
 
-    loginUser: (state, action) => {
-      const { email } = action.payload;
+    // loginUser: (state, action) => {
+    //   const { email } = action.payload;
 
-      const user = state.data.find((item) => item.email === email);
+    //   const user = state.data.find((item) => item.email === email);
 
-      state.currentUser = user || null;
-    },
-    logoutUser: (state) => {
-      state.currentUser = null;
-    },
+    //   state.currentUser = user || null;
+    // },
+    // logoutUser: (state) => {
+    //   state.currentUser = null;
+    // },
   },
 });
 
-export const { addUserAction, editUserAction, loginUser, logoutUser } =
-  users.actions;
+export const { addUserAction, editUserAction } = users.actions;
 export default users.reducer;

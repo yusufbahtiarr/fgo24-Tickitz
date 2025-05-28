@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { loginUser } from "../redux/reducers/users";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../redux/reducers/auths";
 import { comparePassword, isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -42,7 +42,11 @@ function LoginPage() {
       setLoginError(true);
       return;
     }
-    dispatch(loginUser(data));
+
+    dispatch(loginUser(found));
+    console.log(data);
+    console.log(found);
+
     navigate("/profile");
   };
 
@@ -116,6 +120,12 @@ function LoginPage() {
                 {loginError && (
                   <span className="text-red">Email atau Password salah!</span>
                 )}
+              </span>
+              <span>
+                Don't have an account?{" "}
+                <Link to="/register">
+                  <span className="text-primary">Register</span>
+                </Link>
               </span>
               <div className="flex flex-row justify-between w-full gap-4 items-center text-gray-400">
                 <hr className="border-1 w-full" />

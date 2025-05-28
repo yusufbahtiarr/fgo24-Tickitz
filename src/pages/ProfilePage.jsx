@@ -7,14 +7,16 @@ import { Link, NavigationType, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { editUserAction } from "../redux/reducers/users";
+// import { editUserAction } from "../redux/reducers/users";
+import { editUserAndSyncAuth } from "../redux/reducers/editUserAndSyncAuth";
 
 function ProfilePage() {
   // const users = useSelector((state) => state.users.data);
-  const users = useSelector((state) => state.users.currentUser);
+  const users = useSelector((state) => state.auths.currentUser);
   const navigate = useNavigate();
   // console.log(users);
   const [isValidError, setIsValidError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (users === null) {
@@ -32,6 +34,7 @@ function ProfilePage() {
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -43,10 +46,17 @@ function ProfilePage() {
       setIsValidError(true);
       return;
     }
-    console.log(data);
-    dispatch(editUserAction(data));
+    // console.log(data);
+    dispatch(editUserAndSyncAuth(data));
+    resetField("newpassword");
+    resetField("confirmpassword");
 
     setIsValidError(false);
+    setIsSuccess(true);
+
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 3000);
   };
 
   return (
@@ -73,7 +83,7 @@ function ProfilePage() {
                 <span className="text-secondary text-[20px] ffont-semibold">
                   {users?.firstname
                     ? `${users?.firstname} ${users?.lastname}`
-                    : users?.email}
+                    : users?.email.split("@")[0]}
                 </span>
               </div>
               <div>
@@ -160,7 +170,7 @@ function ProfilePage() {
                         type="text"
                         name="firstname"
                         id="firstname"
-                        placeholder="Jonas"
+                        placeholder="input your firstname"
                         className="outline-0 w-[85%]"
                         defaultValue={users?.firstname}
                       />
@@ -179,7 +189,7 @@ function ProfilePage() {
                         type="text"
                         name="lastname"
                         id="lastname"
-                        placeholder="El Rodriguez"
+                        placeholder="input your lastname"
                         className="outline-0 w-[85%]"
                         defaultValue={users?.lastname}
                       />
@@ -198,7 +208,7 @@ function ProfilePage() {
                         type="email"
                         name="email"
                         id="email"
-                        placeholder="jonasrodrigu123@gmail.com"
+                        placeholder="input your email"
                         className="outline-0 w-[85%]  "
                         defaultValue={users?.email}
                       />
@@ -215,7 +225,7 @@ function ProfilePage() {
                         type="tel"
                         name="phone"
                         id="phone"
-                        placeholder="+6281445687121"
+                        placeholder="input your phone"
                         className="outline-0 w-[85%]  "
                         defaultValue={users?.phone}
                       />
@@ -263,6 +273,9 @@ function ProfilePage() {
                 </div>
                 {isValidError && (
                   <span className="text-red">Password tidak sama</span>
+                )}
+                {isSuccess && (
+                  <span className="text-green">Data berhasil diperbaharui</span>
                 )}
               </div>
               <div className="w-full">

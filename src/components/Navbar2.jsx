@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../redux/reducers/users";
 import { useState } from "react";
+import { logoutUser } from "../redux/reducers/auths";
 
 function Navbar2() {
   const users = useSelector((state) => state.users.currentUser);
@@ -29,7 +29,7 @@ function Navbar2() {
           <span className="font-semibold">
             {users?.firstname
               ? `${users?.firstname} ${users?.lastname}`
-              : users?.email}
+              : users?.email.split("@")[0]}
           </span>
           <img
             src="./src/assets/images/profile.png"

@@ -15,7 +15,7 @@ function UpcomingMovie() {
         // Fetch upcoming movie list
         const upcomingRes = await fetchData.getUpcomingMovies();
         setUpcomingMovies(upcomingRes.data.results || []);
-        console.log(upcomingRes.data.results);
+        // console.log(upcomingRes.data.results);
       } catch (error) {
         console.error(
           "Error fetching data:",
