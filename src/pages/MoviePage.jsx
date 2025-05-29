@@ -9,10 +9,8 @@ import Badge from "../components/Badge";
 import FilterCinemas from "../components/FilterCinemas";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-// import ShowMovie from "../components/ShowMovie";
 import Subscribe from "../components/Subscribe";
 import { useSearchParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchData } from "../utils/apiClient";
 import Button from "../components/Button";
@@ -21,6 +19,32 @@ import { useNavigate } from "react-router-dom";
 import RenderGenres from "../components/renderGenres";
 
 function MoviePage() {
+  const [movies, setMovies] = useState([]);
+  const [genresList, setGenresList] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // const initialGenre = searchParams.get("genre") || null;
+
+  const fetchDataAll = async () => {
+    try {
+      const movieRes = await fetchData.getNowPlaying();
+      setMovies(movieRes.data.results || []);
+
+      const genreRes = await fetchData.getMovieGenres();
+      setGenresList(genreRes.data.genres || []);
+    } catch (error) {
+      console.error(
+        "Error fetching data:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchDataAll();
+  }, []);
   return (
     <>
       <header>
@@ -47,7 +71,6 @@ function MoviePage() {
                       Experience the Magic of Cinema:
                     </span>
                     <span className="text-[36px] font-black text-primary">
-                      {" "}
                       Book Your Tickets Today
                     </span>
                   </div>
@@ -74,8 +97,19 @@ function MoviePage() {
             </div>
           </div>
         </div>
-        <FilterCinemas />
-        {ShowMovie()}
+        <FilterCinemas
+          genresList={genresList}
+          selectedGenre={selectedGenre}
+          setSelectedGenre={setSelectedGenre}
+        />
+        <ShowMovie
+          movies={movies}
+          genresList={genresList}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          navigate={navigate}
+          selectedGenre={selectedGenre}
+        />
         <Subscribe />
       </main>
       <footer>
@@ -85,42 +119,43 @@ function MoviePage() {
   );
 }
 
-function ShowMovie() {
-  // const users = useSelector((state) => state.users.data);
-  const [movies, setMovies] = useState([]);
-  const [genresList, setGenresList] = useState([]);
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-
+function ShowMovie({
+  movies,
+  genresList,
+  searchParams,
+  setSearchParams,
+  navigate,
+  selectedGenre,
+}) {
   const searchQuery = searchParams.get("search");
   const filteredSearch = movies.filter((item) => {
-    return item.title?.toLowerCase().includes(searchQuery?.toLowerCase() || "");
+    const matchesSearch = item.title
+      ?.toLowerCase()
+      .includes(searchQuery?.toLowerCase() || "");
+    const matchesGenre =
+      !selectedGenre || item.genre_ids.includes(Number(selectedGenre));
+    return matchesSearch && matchesGenre;
   });
   const PAGE = Number(searchParams.get("page")) || 1;
   const LIMIT = Number(searchParams.get("limit")) || 10;
   const OFFSET = (PAGE - 1) * LIMIT;
   const TOTALPAGE = Math.ceil(filteredSearch.length / LIMIT);
 
-  const fetchDataAll = async () => {
-    try {
-      // Fetch movie list
-      const movieRes = await fetchData.getNowPlaying();
-      setMovies(movieRes.data.results || []);
+  const getNotFoundMessage = () => {
+    const genreName =
+      genresList.find((g) => g.id === Number(selectedGenre))?.name || "";
 
-      // Fetch genre list
-      const genreRes = await fetchData.getMovieGenres();
-      setGenresList(genreRes.data.genres || []);
-    } catch (error) {
-      console.error(
-        "Error fetching data:",
-        error.response?.data || error.message
-      );
+    if (searchQuery && selectedGenre) {
+      return `Pencarian dengan judul "${searchQuery}" dan genre "${genreName}" tidak ditemukan.`;
     }
+    if (searchQuery) {
+      return `Pencarian dengan judul "${searchQuery}" tidak ditemukan.`;
+    }
+    if (selectedGenre) {
+      return `Pencarian dengan genre "${genreName}" tidak ditemukan.`;
+    }
+    return "Data tidak ditemukan.";
   };
-
-  useEffect(() => {
-    fetchDataAll();
-  }, []);
 
   return (
     <div className="flex flex-col px-20 w-full">
@@ -148,8 +183,8 @@ function ShowMovie() {
         ))}
       </div>
       {filteredSearch.length === 0 ? (
-        <span className="h-100 text-2xl font-medium">
-          Pencarian dengan judul "{searchQuery}" tidak ditemukan
+        <span className="h-100 text-3xl font-medium">
+          {getNotFoundMessage()}
         </span>
       ) : (
         <div className="flex flex-row justify-center items-center gap-5">

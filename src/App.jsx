@@ -16,6 +16,7 @@ import AdminNewMoviePage from "./pages/AdminNewMoviePage";
 import { Provider } from "react-redux";
 import { PersistGate } from "./../node_modules/redux-persist/es/integration/react";
 import { persistor, store } from "./redux/store";
+import Test from "./pages/test";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,14 @@ const router = createBrowserRouter([
   {
     path: "/buy-ticket/:id",
     element: <BuyTicketPage />,
+  },
+  {
+    path: "/buy-ticket/:id/seat",
+    element: <OrderPage />,
+  },
+  {
+    path: "/test",
+    element: <Test />,
   },
   {
     path: "/*",

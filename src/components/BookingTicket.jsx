@@ -1,51 +1,185 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import Choose from "./Choose";
-import { FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { addDays, format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { id as LocaleID } from "date-fns/locale";
+import { IoSearch } from "react-icons/io5";
 
 function BookingTicket() {
+  const { id } = useParams();
+  function nowDate() {
+    const now = format(new Date(), "EEEE, dd MMMM yyyy", { locale: LocaleID });
+    const tomorrow = format(addDays(new Date(), 1), "EEEE, dd MMMM yyyy", {
+      locale: LocaleID,
+    });
+    const dayAfterTomorrow = format(
+      addDays(new Date(), 2),
+      "EEEE, dd MMMM yyyy",
+      { locale: LocaleID }
+    );
+    return [now, tomorrow, dayAfterTomorrow];
+  }
+
+  const date = nowDate();
+  const showtime = ["13.15", "15.45", "17.30", "18.40", "20.00", "22.15"];
+  const location = ["Jakarta", "Depok", "Tangerang", "Bogor", "Bekasi"];
+  const { register, handleSubmit } = useForm();
+
   const navigate = useNavigate();
+
+  const cinemas = [
+    {
+      name: "ebv.id",
+      id: 1,
+      image: "../src/assets/images/ebv-gray.png",
+    },
+    {
+      name: "hiflix",
+      id: 2,
+      image: "../src/assets/images/hiflix-gray.png",
+    },
+    {
+      name: "CineOne21",
+      id: 3,
+      image: "../src/assets/images/cineone-gray.png",
+    },
+    {
+      name: "xxi",
+      id: 4,
+      image: "../src/assets/images/xxi.svg",
+    },
+  ];
+
+  function CinemaSelector() {
+    const [selectedCinema, setSelectedCinema] = useState(null);
+
+    return (
+      <div className="flex gap-8 justify-center items-center w-full">
+        {cinemas.map((cinema, index) => (
+          <label
+            key={index}
+            className={`cursor-pointer border rounded-lg flex-1 flex items-center justify-center h-40 text-center my-auto w-32 transition-all
+            ${
+              selectedCinema === cinema.name
+                ? "bg-primary/90 text-white"
+                : "bg-white text-black border-gray-300"
+            }`}
+          >
+            <input
+              type="radio"
+              name="cinema"
+              value={cinema.name}
+              className="hidden"
+              onChange={() => setSelectedCinema(cinema.name)}
+            />
+            <span className={`text-lg`}>
+              <img src={cinema.image} alt="cinema" className="w-50"></img>
+            </span>
+          </label>
+        ))}
+      </div>
+    );
+  }
+
+  const Cinema = CinemaSelector();
+
+  function onSubmit(data) {
+    // if (currentLogin.email) {
+    //   setErrorLogin("");
+    //   // dispatch(addDataAction(data))
+    //   navigate(`/buy-ticket/${id}/seat`);
+    // } else {
+    //   setErrorLogin("*Silakan login terlebih dahulu sebelum memesan tiket!");
+    // }
+    navigate(`/buy-ticket/${id}/seat`);
+    console.log(data);
+  }
+
   return (
     <div className="w-full h-fit p-20">
       <div className="flex flex-col gap-10">
         <div className="flex justify-between">
           <span className="text-[36px] font-semibold">Book Tickets</span>
-          <Button variant="primary" onClick={() => navigate("/order")}>
-            BOOK NOW
-          </Button>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-row gap-5">
-            <div className="flex-1">
-              <Choose
-                name="date"
-                placeholder="Friday, 9 May, 2025"
-                title="Choose Date"
-              ></Choose>
-            </div>
-            <div className="flex-1">
-              <Choose
-                name="time"
-                placeholder="08.30 AM"
-                title="Choose Time"
-              ></Choose>
-            </div>
-            <div className="flex-1">
-              <Choose
-                name="location"
-                placeholder="Yogyakarta"
-                title="Choose Location"
-              ></Choose>
-            </div>
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
-            <div className="flex gap-5 items-center">
-              <span className="text-[28px] font-semibold">Choose Cinema</span>
-              <span>39 Results</span>
-            </div>
-            <div className="flex flex-row gap-4 w-full">
+            <div className="flex flex-row gap-5">
               <div className="flex-1">
+                <div className="flex flex-col gap-4">
+                  <div className="font-semibold text-[28px] px-">
+                    Choose Date
+                  </div>
+                  <div className="flex flex-row justify-between h-[54px] px-3 items-center border-1 border-black rounded-full">
+                    <IoSearch className="size-[24px]" />
+                    <select
+                      name="date"
+                      id="date"
+                      {...register("date")}
+                      className="outline-0 w-full p-2"
+                    >
+                      {date.map((item, index) => (
+                        <option key={`date-${index}`} className="p-10">
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col gap-4">
+                  <div className="font-semibold text-[28px] px-">
+                    Choose Time
+                  </div>
+                  <div className="flex flex-row justify-between h-[54px] px-3 items-center border-1 border-black rounded-full">
+                    <IoSearch className="size-[24px]" />
+                    <select
+                      name="time"
+                      id="time"
+                      {...register("time")}
+                      className="outline-0 w-full p-2"
+                    >
+                      {showtime.map((item, index) => (
+                        <option key={`time-${index}`} className="p-10">
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col gap-4">
+                  <div className="font-semibold text-[28px] px-">
+                    Choose Location
+                  </div>
+                  <div className="flex flex-row justify-between h-[54px] px-3 items-center border-1 border-black rounded-full">
+                    <IoSearch className="size-[24px]" />
+                    <select
+                      name="location"
+                      id="location"
+                      {...register("location")}
+                      className="outline-0 w-full p-2"
+                    >
+                      {location.map((item, index) => (
+                        <option key={`location-${index}`} className="p-10">
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-6">
+              <div className="flex gap-5 items-center">
+                <span className="text-[28px] font-semibold">Choose Cinema</span>
+                {/* <span>39 Results</span> */}
+              </div>
+              <div className="flex flex-row gap-4 w-full">
+                {/* <div className="flex-1">
                 <label
                   htmlFor="cinema1"
                   className="h-[153px] border rounded-2xl relative flex flex-col justify-center items-center cursor-pointer overflow-hidden"
@@ -144,9 +278,10 @@ function BookingTicket() {
                     />
                   </svg>
                 </label>
+              </div> */}
+                {Cinema}
               </div>
-            </div>
-            <div className="flex flex-row justify-center items-center gap-5">
+              {/* <div className="flex flex-row justify-center items-center gap-5">
               <Button
                 variant="primary"
                 className="text-[28px] p-2 size-[54px] flex justify-center items-center"
@@ -177,9 +312,11 @@ function BookingTicket() {
               >
                 <FaArrowRight />
               </Button>
+            </div> */}
+              <Button variant="primary">BOOK NOW</Button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

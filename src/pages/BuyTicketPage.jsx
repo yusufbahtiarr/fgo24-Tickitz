@@ -4,10 +4,10 @@ import BookingTicket from "../components/BookingTicket";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
 import { fetchData } from "../utils/apiClient";
-import { format } from "date-fns";
-import { id as localeID } from "date-fns/locale";
 import RenderGenres from "../components/renderGenres";
 import { formatDuration } from "../utils/formatTime";
+import { format } from "date-fns";
+import { id as localeID } from "date-fns/locale";
 
 function BuyTicketPage() {
   const { id } = useParams();

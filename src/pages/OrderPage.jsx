@@ -31,7 +31,7 @@ function OrderPage() {
         <section className="w-full h-full flex flex-row gap-8 mb-20">
           <div className="w-300 py-10 px-6 flex flex-col gap-10  bg-white">
             <div className="border flex flex-row border-gray1 gap-4 py-4 px-6 w-full">
-              <div class="h-[117px] w-[184px] overflow-y-hidden shrink-0">
+              <div className="h-[117px] w-[184px] overflow-y-hidden shrink-0">
                 <img src="../src/assets/images/order.png" alt="film" />
               </div>
               <div className=" flex gap-2 flex-col justify-between w-full">
