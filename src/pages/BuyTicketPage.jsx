@@ -14,7 +14,6 @@ function BuyTicketPage() {
 
   const [movies, setMovies] = useState({});
   const [genresList, setGenresList] = useState([]);
-  // const [director, setDirector] = useState("Unknown");
 
   useEffect(() => {
     const fetchDataAll = async () => {
@@ -127,7 +126,7 @@ function BuyTicketPage() {
             </div>
           </div>
         </div>
-        <BookingTicket />
+        <BookingTicket titleMovie={movies.title} />
       </main>
       <footer>
         <Footer />
