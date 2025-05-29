@@ -176,11 +176,11 @@ function ProfilePage() {
                         id="firstName"
                         placeholder="input your firstname"
                         className="outline-0 w-[85%]"
-                        defaultValue={users?.firstname}
+                        defaultValue={users?.firstName}
                       />
                     </div>
                     <span className="text-red">
-                      {errors.firstname?.message}
+                      {errors.firstName?.message}
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
@@ -195,10 +195,10 @@ function ProfilePage() {
                         id="lastName"
                         placeholder="input your lastname"
                         className="outline-0 w-[85%]"
-                        defaultValue={users?.lastname}
+                        defaultValue={users?.lastName}
                       />
                     </div>
-                    <span className="text-red">{errors.lastname?.message}</span>
+                    <span className="text-red">{errors.lastName?.message}</span>
                   </div>
                 </div>
                 <div className="flex flex-row gap-9 mb-4">

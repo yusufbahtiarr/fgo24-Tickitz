@@ -36,13 +36,13 @@ const users = createSlice({
 
       if (newPassword !== "") {
         state.data[userIndex].password = window.btoa(newPassword);
-        state.data[userIndex] = {
-          ...state.data[userIndex],
-          firstName: firstName || state.data[userIndex].firstName,
-          lastName: lastName || state.data[userIndex].lastName,
-          phone: phone || state.data[userIndex].phone,
-        };
       }
+      state.data[userIndex] = {
+        ...state.data[userIndex],
+        firstName: firstName || state.data[userIndex].firstName,
+        lastName: lastName || state.data[userIndex].lastName,
+        phone: phone || state.data[userIndex].phone,
+      };
 
       // if (state.currentUser?.email === email) {
       //   state.currentUser = { ...state.data[userIndex] };
