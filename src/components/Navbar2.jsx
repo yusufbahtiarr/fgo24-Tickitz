@@ -4,7 +4,7 @@ import { useState } from "react";
 import { logoutUser } from "../redux/reducers/auths";
 
 function Navbar2() {
-  const users = useSelector((state) => state.users.currentUser);
+  const users = useSelector((state) => state.auths.currentUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dropdown, setDropdown] = useState(false);
@@ -27,8 +27,8 @@ function Navbar2() {
       <div className="flex-1 flex justify-end items-center">
         <div className="flex flex-row gap-4 items-center relative">
           <span className="font-semibold">
-            {users?.firstname
-              ? `${users?.firstname} ${users?.lastname}`
+            {users?.firstName
+              ? `${users?.firstName} ${users?.lastName}`
               : users?.email.split("@")[0]}
           </span>
           <img

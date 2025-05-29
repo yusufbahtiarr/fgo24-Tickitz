@@ -19,7 +19,7 @@ const users = createSlice({
   reducers: {
     addUserAction: (state, action) => {
       const newData = action.payload;
-      newData.id = nanoid();
+      newData.id = "US-" + nanoid();
       newData.role = "User";
       newData.password = window.btoa(newData.password);
       state.data.push(newData);
@@ -28,43 +28,31 @@ const users = createSlice({
     editUserAction: (state, action) => {
       console.log(action.payload);
 
-      const { email, firstname, lastname, phone, newpassword } = action.payload;
+      const { email, firstName, lastName, phone, newPassword } = action.payload;
 
       const userIndex = state.data.findIndex((item) => item.email === email);
 
       if (userIndex === -1) return state;
 
-      if (newpassword !== "") {
-        state.data[userIndex].password = window.btoa(newpassword);
+      if (newPassword !== "") {
+        state.data[userIndex].password = window.btoa(newPassword);
+        state.data[userIndex] = {
+          ...state.data[userIndex],
+          firstName: firstName || state.data[userIndex].firstName,
+          lastName: lastName || state.data[userIndex].lastName,
+          phone: phone || state.data[userIndex].phone,
+        };
       }
 
-      state.data[userIndex] = {
-        ...state.data[userIndex],
-        firstname: firstname || state.data[userIndex].firstname,
-        lastname: lastname || state.data[userIndex].lastname,
-        phone: phone || state.data[userIndex].phone,
-      };
-
-      if (state.currentUser?.email === email) {
-        state.currentUser = { ...state.data[userIndex] };
-      }
+      // if (state.currentUser?.email === email) {
+      //   state.currentUser = { ...state.data[userIndex] };
+      // }
 
       // console.log(state.currentUser);
       // console.log(state.data[userIndex]);
 
       return state;
     },
-
-    // loginUser: (state, action) => {
-    //   const { email } = action.payload;
-
-    //   const user = state.data.find((item) => item.email === email);
-
-    //   state.currentUser = user || null;
-    // },
-    // logoutUser: (state) => {
-    //   state.currentUser = null;
-    // },
   },
 });
 

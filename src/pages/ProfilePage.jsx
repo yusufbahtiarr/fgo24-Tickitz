@@ -28,8 +28,8 @@ function ProfilePage() {
   }, []);
 
   const schema = yup.object({
-    firstname: yup.string().required("Nama depan wajib diisi"),
-    lastname: yup.string().required("Nama belakang wajib diisi"),
+    firstName: yup.string().required("Nama depan wajib diisi"),
+    lastName: yup.string().required("Nama belakang wajib diisi"),
     email: yup.string().required("Email wajib diisi"),
     phone: yup.string().required("Nomor telepon wajib diisi"),
   });
@@ -44,11 +44,13 @@ function ProfilePage() {
   });
 
   const onSubmit = (data) => {
+    console.log(data);
     if (data.newpassword !== data.confirmpassword) {
       console.log("password tidak sama");
       setIsValidError(true);
       return;
     }
+
     dispatch(editUserAndSyncAuth(data));
     resetField("newpassword");
     resetField("confirmpassword");
@@ -83,8 +85,8 @@ function ProfilePage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  {users?.firstname
-                    ? `${users?.firstname} ${users?.lastname}`
+                  {users?.firstName
+                    ? `${users?.firstName} ${users?.lastName}`
                     : users?.email.split("@")[0]}
                 </span>
               </div>
@@ -163,15 +165,15 @@ function ProfilePage() {
                 <hr className="border-1 border-gray2 mb-4" />
                 <div className="flex flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="firstname" className="text-fourth">
+                    <label htmlFor="firstName" className="text-fourth">
                       First Name
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
-                        {...register("firstname")}
+                        {...register("firstName")}
                         type="text"
-                        name="firstname"
-                        id="firstname"
+                        name="firstName"
+                        id="firstName"
                         placeholder="input your firstname"
                         className="outline-0 w-[85%]"
                         defaultValue={users?.firstname}
@@ -182,15 +184,15 @@ function ProfilePage() {
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="lastname" className="text-fourth">
+                    <label htmlFor="lastName" className="text-fourth">
                       Last Name
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
-                        {...register("lastname")}
+                        {...register("lastName")}
                         type="text"
-                        name="lastname"
-                        id="lastname"
+                        name="lastName"
+                        id="lastName"
                         placeholder="input your lastname"
                         className="outline-0 w-[85%]"
                         defaultValue={users?.lastname}
@@ -243,15 +245,15 @@ function ProfilePage() {
                 <hr className="border-1 border-gray2 mb-4" />
                 <div className="flex flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="newpassword" className="text-fourth">
+                    <label htmlFor="newPassword" className="text-fourth">
                       New Password
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center justify-between">
                       <input
-                        {...register("newpassword")}
+                        {...register("newPassword")}
                         type={showPassword ? "text" : "password"}
-                        name="newpassword"
-                        id="newpassword"
+                        name="newPassword"
+                        id="newPassword"
                         placeholder="Write your password"
                         className="outline-0 w-[85%] "
                       />
@@ -271,15 +273,15 @@ function ProfilePage() {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="confirmpassword" className="text-fourth">
+                    <label htmlFor="confirmPassword" className="text-fourth">
                       Confirm Password
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center justify-between">
                       <input
-                        {...register("confirmpassword")}
+                        {...register("confirmPassword")}
                         type={showPasswordConfirm ? "text" : "password"}
-                        name="confirmpassword"
-                        id="confirmpassword"
+                        name="confirmPassword"
+                        id="confirmPassword"
                         placeholder="Confirm your password"
                         className="outline-0 w-[85%]"
                       />
