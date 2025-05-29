@@ -192,7 +192,10 @@ function ShowMovie({
             FaArrowRight
             disabled={PAGE === 1}
             onClick={() =>
-              setSearchParams({ search: searchQuery, page: String(PAGE - 1) })
+              setSearchParams({
+                ...(searchQuery ? { search: searchQuery } : {}),
+                page: String(PAGE - 1),
+              })
             }
             variant="primary"
             className="text-[28px] p-2 size-[54px] flex justify-center items-center"
@@ -203,7 +206,7 @@ function ShowMovie({
             <Button
               onClick={() =>
                 setSearchParams({
-                  search: searchQuery,
+                  ...(searchQuery ? { search: searchQuery } : {}),
                   page: String(index + 1),
                 })
               }
@@ -218,7 +221,10 @@ function ShowMovie({
           <Button
             disabled={PAGE === TOTALPAGE}
             onClick={() =>
-              setSearchParams({ search: searchQuery, page: String(PAGE + 1) })
+              setSearchParams({
+                ...(searchQuery ? { search: searchQuery } : {}),
+                page: String(PAGE + 1),
+              })
             }
             variant="primary"
             className="text-[28px] size-[54px] flex justify-center items-center"

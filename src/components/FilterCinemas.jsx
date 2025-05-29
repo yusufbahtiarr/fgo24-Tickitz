@@ -38,7 +38,10 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
   }, [searchQuery, setValue]);
 
   const onSubmit = (data) => {
-    setSearchParams({ search: data.search, page: 1 });
+    setSearchParams({
+      ...(data.search ? { search: data.search } : {}),
+      page: 1,
+    });
   };
 
   return (
