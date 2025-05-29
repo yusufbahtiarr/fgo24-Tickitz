@@ -34,8 +34,8 @@ function OrderHistoryPage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  {users?.firstname
-                    ? `${users?.firstname} ${users?.lastname}`
+                  {users?.firstName
+                    ? `${users?.firstName} ${users?.lastName}`
                     : users?.email}
                 </span>
               </div>

@@ -1,28 +1,125 @@
-import React from "react";
 import Stepper from "../components/Stepper";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Badge from "./../components/Badge";
 import Button from "./../components/Button";
-import { useNavigate } from "react-router-dom";
-
-function ChairSelector() {
-  const chairElements = Array.from({ length: 49 }, (_, i) => (
-    <label key={i} htmlFor={`chair${i}`} className="p-2 size-[36px] ">
-      <input
-        type="checkbox"
-        name="chair"
-        id={`chair${i}`}
-        className="size-[36px] p-2 mt-2"
-      />
-    </label>
-  ));
-
-  return <div>{chairElements}</div>;
-}
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { fetchData } from "../utils/apiClient";
+import RenderGenres from "../components/renderGenres";
+import { useDispatch, useSelector } from "react-redux";
+import { id as LocaleID } from "date-fns/locale";
+import { format } from "date-fns";
+import { addTempTicketAction } from "../redux/reducers/tickets";
 
 function OrderPage() {
+  const [movies, setMovies] = useState([]);
+  const [genresList, setGenresList] = useState([]);
+  const tempTicket = useSelector((state) => state.tickets.tempTicket);
+  const dispatch = useDispatch();
+  // console.log(tempTicket);
+
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const fetchDataAll = async () => {
+    try {
+      const movieRes = await fetchData.getNowPlaying();
+      setMovies(movieRes.data.results || []);
+
+      const genreRes = await fetchData.getMovieGenres();
+      setGenresList(genreRes.data.genres || []);
+    } catch (error) {
+      console.error(
+        "Error fetching data:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchDataAll();
+  }, []);
+
+  const movieId = movies?.find((movie) => movie.id == id);
+
+  const rows = ["A", "B", "C", "D", "E", "F", "G"];
+  const cols = 14;
+
+  const initialSeats = Array(rows.length)
+    .fill(null)
+    .map(() => Array(cols).fill("available"));
+
+  const [seats, setSeats] = useState(initialSeats);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const soldSeats = [
+    // [0, 6],
+    // [1, 1],
+    // [1, 2],
+  ];
+  const loveNest = [
+    // [5, 9],
+    // [5, 10],
+  ];
+
+  soldSeats.forEach(([r, c]) => {
+    initialSeats[r][c] = "sold";
+  });
+  loveNest.forEach(([r, c]) => {
+    initialSeats[r][c] = "lovenest";
+  });
+
+  const handleCheckboxChange = (rowIndex, colIndex) => {
+    const updatedSeats = [...seats];
+    const seatId = `${rows[rowIndex]}${colIndex + 1}`;
+    const currentStatus = updatedSeats[rowIndex][colIndex];
+
+    if (currentStatus === "sold" || currentStatus === "lovenest") return;
+
+    if (currentStatus === "selected") {
+      updatedSeats[rowIndex][colIndex] = "available";
+      setSelectedSeats(selectedSeats.filter((seat) => seat !== seatId));
+    } else {
+      updatedSeats[rowIndex][colIndex] = "selected";
+      setSelectedSeats([...selectedSeats, seatId]);
+    }
+
+    setSeats(updatedSeats);
+  };
+
+  const cinemas = [
+    {
+      name: "ebv.id",
+      image: "../src/assets/images/ebv-gray.png",
+    },
+    {
+      name: "hiflix",
+      image: "../src/assets/images/hiflix-gray.png",
+    },
+    {
+      name: "cineone21",
+      image: "../src/assets/images/cineone-gray.png",
+    },
+    {
+      name: "xxi",
+      image: "../src/assets/images/xxi.svg",
+    },
+  ];
+
+  const ticketPrice = 60000;
+  const totalPayment = selectedSeats.length * ticketPrice;
+
+  function onSubmit() {
+    const data = {
+      seats: selectedSeats,
+      totalPayment: totalPayment,
+    };
+
+    dispatch(addTempTicketAction(data));
+    navigate(`/buy-ticket/${id}/seat`);
+    // console.log(data);
+  }
+
   return (
     <div className="w-screen h-screen bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
@@ -32,121 +129,194 @@ function OrderPage() {
           <div className="w-300 py-10 px-6 flex flex-col gap-10  bg-white">
             <div className="border flex flex-row border-gray1 gap-4 py-4 px-6 w-full">
               <div className="h-[117px] w-[184px] overflow-y-hidden shrink-0">
-                <img src="../src/assets/images/order.png" alt="film" />
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movieId?.poster_path}`}
+                  alt="film"
+                  className="object-cover position-center w-full h-full"
+                />
               </div>
               <div className=" flex gap-2 flex-col justify-between w-full">
-                <span className="text-2xl font-semibold">
-                  Spider-Man: Homecoming
-                </span>
+                <span className="text-2xl font-semibold">{movieId?.title}</span>
                 <div className="flex flex-row gap-3">
-                  <Badge variant="primary">Action</Badge>
-                  <Badge variant="primary">Adventure</Badge>
+                  <RenderGenres
+                    genreIds={movieId?.genre_ids}
+                    genresList={genresList}
+                  />
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>Regular - 13:00 PM</span>
+                  <span>Regular - {tempTicket.time}</span>
                   <Button
                     variant="third"
                     className="rounded py-2 px-5 h-fit text-white font-medium"
+                    onClick={() => navigate("/movies")}
                   >
                     Change
                   </Button>
                 </div>
               </div>
             </div>
-            <div className="font-bold text-2xl mb-10">Choose Your Seat</div>
-            <div className="font-light text-[14px] mx-auto mb-6">Screen</div>
-            <div className="flex flex-row gap-6 justify-center">
-              <div className="flex flex-col justify-start py-[12px] items-center w-10 gap-7 shrink-0 ">
-                <span>A</span>
-                <span>B</span>
-                <span>C</span>
-                <span>D</span>
-                <span>E</span>
-                <span>F</span>
-                <span>G</span>
-              </div>
-              <div className="grid grid-col-7 gap-4 w-100">
-                {ChairSelector()}
-                <div className="pl-4 pr-13 flex flex-row items-center justify-between w-full">
-                  <span>1</span>
-                  <span>2</span>
-                  <span>3</span>
-                  <span>4</span>
-                  <span>5</span>
-                  <span>6</span>
-                  <span>7</span>
+            <div className="w-full px-15">
+              <h2 className="text-2xl font-bold mb-4">Choose Your Seat</h2>
+              <div className="mb-4 text-center">Screen</div>
+
+              <div className="overflow-x-auto">
+                <div className="flex">
+                  <div className="flex flex-col mr-1 gap-2">
+                    {/* Row A-G */}
+                    {rows.map((row, i) => (
+                      <div
+                        key={i}
+                        className="w-11 h-11 flex items-center justify-center"
+                      >
+                        {row}
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    {/* Seat */}
+                    {rows.map((row, rowIndex) => (
+                      <div key={rowIndex} className="flex gap-2 mb-2">
+                        {Array(cols)
+                          .fill(null)
+                          .map((_, colIndex) => {
+                            const status = seats[rowIndex][colIndex];
+                            const isDisabled =
+                              status === "sold" || status === "lovenest";
+
+                            return (
+                              <label
+                                key={`${rowIndex}-${colIndex}`}
+                                className="w-11 h-11 rounded flex items-center justify-center cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  className="hidden"
+                                  checked={status === "selected"}
+                                  disabled={isDisabled}
+                                  onChange={() =>
+                                    handleCheckboxChange(rowIndex, colIndex)
+                                  }
+                                />
+                                <div
+                                  className={`w-full h-full ${
+                                    status === "selected"
+                                      ? "bg-orange-500"
+                                      : status === "sold"
+                                      ? "bg-gray-500"
+                                      : status === "lovenest"
+                                      ? "bg-pink-400"
+                                      : "bg-gray-200"
+                                  } rounded`}
+                                ></div>
+                              </label>
+                            );
+                          })}
+                      </div>
+                    ))}
+                    {/* Column 1-14 */}
+                    <div className="flex gap-2">
+                      {Array(cols)
+                        .fill(null)
+                        .map((_, colIndex) => (
+                          <div
+                            key={colIndex}
+                            className="w-11 h-11 flex items-center justify-center"
+                          >
+                            {colIndex + 1}
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="grid grid-col-7 gap-4 w-100">
-                {ChairSelector()}
-                <div className="pl-4 pr-14 flex flex-row items-center justify-between w-full">
-                  <span>8</span>
-                  <span>9</span>
-                  <span>10</span>
-                  <span>11</span>
-                  <span>12</span>
-                  <span>13</span>
-                  <span>14</span>
+
+              <div className="mt-6">
+                <h3 className="font-semibold mb-2">Seating key</h3>
+                <div className="flex gap-29">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 border border-gray-400 bg-white rounded"></div>
+                    <span>Available</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-orange-500 rounded"></div>
+                    <span>Selected</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-pink-400 rounded"></div>
+                    <span>Love nest</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-gray-500 rounded"></div>
+                    <span>Sold</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <span className="text-xl font-semibold">Seating Key</span>
-            </div>
-            <div className="flex flex-row gap-4 items-center justify-between px-6 pr-24">
-              <div className="size-[36px] rounded bg-gray1 shadow"></div>
-              <span className="text-xl font-semibold">Available</span>
-              <div className="size-[36px] rounded bg-blue shadow"></div>
-              <span className="text-xl font-semibold">Love Nest</span>
-              <div className="size-[36px] rounded bg-pink shadow"></div>
-              <span className="text-xl font-semibold">Sold</span>
-              <div className="size-[36px] rounded bg-violet shadow"></div>
             </div>
           </div>
           <div className="w-[35%] flex flex-col">
             <div className="p-6 flex flex-col justify-center items-center  bg-white h-fit rounded">
               <div className="p-2">
                 <img
-                  src="/src/assets/images/CineOne21 3.png"
+                  src={cinemas
+                    .find((item) => item.name === tempTicket.cinema)
+                    .image.slice(2)}
                   alt="bioskop"
-                  className="p-6"
+                  className="p-6 w-60"
                 />
               </div>
-              <div className="mx-auto text-2xl font-semibold mb-10">
-                CineOne21 Cinema
+              <div className="mx-auto text-2xl font-semibold mb-10 capitalize">
+                {tempTicket.cinema} Cinema
               </div>
               <div className="flex flex-col w-full gap-4 mb-8">
                 <div className="flex flex-row justify-between">
                   <span className="font-normal text-sm">Movie selected</span>
                   <span className="font-semibold text-sm">
-                    Spider-Man: Homecoming
+                    {tempTicket.titleMovie}
                   </span>
                 </div>
                 <div className="flex flex-row justify-between">
                   <span className="font-normal text-sm">
-                    Tuesday, 07 July 2020
+                    {format(tempTicket.date, "EEEE, dd MMMM yyyy", {
+                      locale: LocaleID,
+                    })}
                   </span>
-                  <span className="font-semibold text-sm">13:00pm</span>
+                  <span className="font-semibold text-sm">
+                    {tempTicket.time}
+                  </span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="font-normal text-sm">One ticket price</span>
-                  <span className="font-semibold text-sm">$10</span>
+                  <span className="font-normal text-sm text-gray-600">
+                    One ticket price
+                  </span>
+                  <span className="font-semibold text-sm">
+                    Rp. {ticketPrice.toLocaleString("id-ID")}
+                  </span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="font-normal text-sm">Seat choosed</span>
-                  <span className="font-semibold text-sm">C4, C5, C6</span>
+                  <span className="font-normal text-sm shrink-0 pr-15">
+                    Seat choosed
+                  </span>
+                  <span className="font-semibold text-sm">
+                    {selectedSeats.join(", ") || "-"}
+                  </span>
                 </div>
               </div>
               <hr className="border border-gray1 w-full mb-6" />
               <div className="flex flex-row justify-between items-center w-full">
                 <span className="text-[18px] font-semibold">Total Payment</span>
-                <span className="text-blue text-2xl font-bold">$30</span>
+                <span className="text-primary text-2xl font-bold">
+                  Rp. {totalPayment.toLocaleString("id-ID")}
+                </span>
               </div>
             </div>
             <Button
               variant="third"
               className="text-white mt-10"
-              onClick={() => navigate("/payment")}
+              onClick={() => {
+                onSubmit();
+                navigate("/payment");
+              }}
+              disabled={selectedSeats.length === 0}
             >
               Checkout now
             </Button>

@@ -5,12 +5,14 @@ import { addDays, format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { id as LocaleID } from "date-fns/locale";
 import { IoSearch } from "react-icons/io5";
-import { useDispatch } from "react-redux";
-import { addTicketAction } from "../redux/reducers/tickets";
+import { useDispatch, useSelector } from "react-redux";
+import { addTempTicketAction } from "../redux/reducers/tickets";
 
 function BookingTicket({ titleMovie }) {
+  const currentUser = useSelector((state) => state.auths.currentUser);
   const dispatch = useDispatch();
   const { id } = useParams();
+  // console.log(currentUser);
 
   function getDateOptions() {
     return [0, 1, 2].map((dayOffset) => {
@@ -79,9 +81,10 @@ function BookingTicket({ titleMovie }) {
 
   function onSubmit(data) {
     if (!data.date || !data.time || !data.location) return;
+    data.idMovie = id;
     data.titleMovie = titleMovie;
 
-    dispatch(addTicketAction(data));
+    dispatch(addTempTicketAction(data));
     navigate(`/buy-ticket/${id}/seat`);
     // console.log(data);
   }
@@ -174,7 +177,9 @@ function BookingTicket({ titleMovie }) {
               <div className="flex flex-row gap-4 w-full">
                 <Cinema register={register} />
               </div>
-              <Button variant="primary">BOOK NOW</Button>
+              <Button variant="primary" disabled={!currentUser}>
+                {currentUser ? "BOOK NOW" : "Please login to book"}
+              </Button>
             </div>
           </div>
         </form>

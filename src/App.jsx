@@ -16,7 +16,7 @@ import AdminNewMoviePage from "./pages/AdminNewMoviePage";
 import { Provider } from "react-redux";
 import { PersistGate } from "./../node_modules/redux-persist/es/integration/react";
 import { persistor, store } from "./redux/store";
-import Test from "./pages/test";
+import Test from "./pages/Test";
 
 const router = createBrowserRouter([
   {
