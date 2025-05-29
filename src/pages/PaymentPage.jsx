@@ -4,24 +4,16 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
-function ChairSelector() {
-  const chairElements = Array.from({ length: 49 }, (_, i) => (
-    <label key={i} htmlFor={`chair${i}`} className="p-2">
-      <input
-        type="checkbox"
-        name="chair"
-        id={`chair${i}`}
-        className="size-[36px] p-2 mt-2"
-      />
-    </label>
-  ));
-
-  return <div>{chairElements}</div>;
-}
+import { useSelector } from "react-redux";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 function PaymentPage() {
   const navigate = useNavigate();
+  const users = useSelector((state) => state.auths.currentUser);
+  const tempTicket = useSelector((state) => state.tickets.tempTicket);
+  console.log(tempTicket);
+
   return (
     <div className="w-screen h-fit bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
@@ -36,32 +28,41 @@ function PaymentPage() {
                   DATE & TIME
                 </span>
                 <span className="font-normal">
-                  Tuesday, 07 July 2020 at 02:00pm
+                  {format(tempTicket.date, "EEEE, dd MMMM yyyy", {
+                    locale: id,
+                  })}{" "}
+                  - {tempTicket.time}
                 </span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
                 <span className="font-light text-sm text-gray-600 ">
                   MOVIE TITLE
                 </span>
-                <span className="font-normal">Spider-Man: Homecoming</span>
+                <span className="font-normal">{tempTicket.titleMovie}</span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
                 <span className="font-light text-sm text-gray-600 ">
                   CINEMA NAME
                 </span>
-                <span className="font-normal">CineOne21 Cinema</span>
+                <span className="font-normal capitalize">
+                  {tempTicket.cinema} Cinema
+                </span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
                 <span className="font-light text-sm text-gray-600 ">
                   NUMBER OF TICKETS
                 </span>
-                <span className="font-normal">3 pieces</span>
+                <span className="font-normal">
+                  {tempTicket.seats.length} pieces
+                </span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
                 <span className="font-light text-sm text-gray-600 ">
                   TOTAL PAYMENT
                 </span>
-                <span className="font-bold text-blue">$30,00</span>
+                <span className="font-bold text-blue">
+                  Rp. {tempTicket.totalPayment.toLocaleString("id-ID")}
+                </span>
               </div>
             </div>
             <div className="flex flex-col gap-6">
@@ -75,7 +76,8 @@ function PaymentPage() {
                     name="fullname"
                     id="fullname"
                     className="w-full py-3 px-6 outline-none"
-                    placeholder="Jonas El Rodriguez"
+                    value={users.firstName.concat(" ", users.lastName)}
+                    disabled
                   />
                 </div>
               </div>
@@ -87,7 +89,8 @@ function PaymentPage() {
                     name="email"
                     id="email"
                     className="w-full py-3 px-6 outline-none"
-                    placeholder="jonasrodri123@gmail.com"
+                    value={users.email}
+                    disabled
                   />
                 </div>
               </div>
@@ -99,7 +102,8 @@ function PaymentPage() {
                     name="phone"
                     id="phone"
                     className="w-full py-3 px-6 outline-none"
-                    placeholder="+6281445687121"
+                    value={users.phone}
+                    disabled
                   />
                 </div>
               </div>
