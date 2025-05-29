@@ -7,8 +7,11 @@ import { addUserAction } from "../redux/reducers/users";
 import { isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useState } from "react";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 function RegisterPage() {
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.users.data);
@@ -107,7 +110,6 @@ function RegisterPage() {
                     id="email"
                     placeholder="Enter your email"
                     className="outline-none py-3 px-4"
-                    // required
                   />
                 </div>
                 <span className="text-red">{errors.email?.message}</span>
@@ -116,16 +118,28 @@ function RegisterPage() {
                 <label htmlFor="password" className="w-full">
                   Password
                 </label>
-                <div className="border rounded">
+                <div className="border rounded flex flex-row justify-between items-center px-5">
                   <input
                     {...register("password")}
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="Enter your password"
-                    className="outline-none py-3 px-4"
-                    // required
+                    className="outline-none py-3 w-[90%]"
                   />
+                  <button
+                    type="button"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    {showPassword ? (
+                      <LuEyeClosed className="text-xl" />
+                    ) : (
+                      <LuEye className="text-xl" />
+                    )}
+                  </button>
                 </div>
                 <span className="text-red">{errors.password?.message}</span>
               </div>

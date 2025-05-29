@@ -3,12 +3,13 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link, NavigationType, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // import { editUserAction } from "../redux/reducers/users";
 import { editUserAndSyncAuth } from "../redux/reducers/editUserAndSyncAuth";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 function ProfilePage() {
   // const users = useSelector((state) => state.users.data);
@@ -17,6 +18,8 @@ function ProfilePage() {
   // console.log(users);
   const [isValidError, setIsValidError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   useEffect(() => {
     if (users === null) {
@@ -46,7 +49,6 @@ function ProfilePage() {
       setIsValidError(true);
       return;
     }
-    // console.log(data);
     dispatch(editUserAndSyncAuth(data));
     resetField("newpassword");
     resetField("confirmpassword");
@@ -244,30 +246,56 @@ function ProfilePage() {
                     <label htmlFor="newpassword" className="text-fourth">
                       New Password
                     </label>
-                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center justify-between">
                       <input
                         {...register("newpassword")}
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="newpassword"
                         id="newpassword"
                         placeholder="Write your password"
                         className="outline-0 w-[85%] "
                       />
+                      <button
+                        type="button"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setShowPassword(!showPassword);
+                        }}
+                      >
+                        {showPassword ? (
+                          <LuEyeClosed className="text-xl" />
+                        ) : (
+                          <LuEye className="text-xl" />
+                        )}
+                      </button>
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="confirmpassword" className="text-fourth">
                       Confirm Password
                     </label>
-                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
+                    <div className="border border-gray2 rounded-2xl p-5 flex items-center justify-between">
                       <input
                         {...register("confirmpassword")}
-                        type="password"
+                        type={showPasswordConfirm ? "text" : "password"}
                         name="confirmpassword"
                         id="confirmpassword"
                         placeholder="Confirm your password"
                         className="outline-0 w-[85%]"
                       />
+                      <button
+                        type="button"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setShowPasswordConfirm(!showPasswordConfirm);
+                        }}
+                      >
+                        {showPasswordConfirm ? (
+                          <LuEyeClosed className="text-xl" />
+                        ) : (
+                          <LuEye className="text-xl" />
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>

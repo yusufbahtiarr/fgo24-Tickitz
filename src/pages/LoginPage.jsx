@@ -9,8 +9,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
 import { loginUser } from "../redux/reducers/auths";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.users.data);
@@ -96,15 +98,28 @@ function LoginPage() {
                 <label htmlFor="password" className="w-full">
                   Password
                 </label>
-                <div className="border rounded border-gray-400">
+                <div className="border rounded border-gray-400 flex flex-row justify-between items-center px-5">
                   <input
                     {...register("password")}
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="Enter your password"
-                    className="outline-none py-3 px-4"
+                    className="outline-none py-3"
                   />
+                  <button
+                    type="button"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    {showPassword ? (
+                      <LuEyeClosed className="text-xl" />
+                    ) : (
+                      <LuEye className="text-xl" />
+                    )}
+                  </button>
                 </div>
                 <span className="text-red">{errors.password?.message}</span>
               </div>
