@@ -1,8 +1,15 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import { LuPlus } from "react-icons/lu";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function AdminNewMoviePage() {
+  const currentUser = useSelector((state) => state.auths.currentUser);
+
+  if (!currentUser || currentUser.role !== "Admin") {
+    return <Navigate to="/" replace />;
+  }
   return (
     <div className="w-screen min-h-screen h-fit bg-gray2 ">
       <Navbar />

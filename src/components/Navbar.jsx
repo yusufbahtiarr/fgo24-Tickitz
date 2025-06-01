@@ -6,6 +6,8 @@ import { logoutUser } from "../redux/reducers/auths";
 
 function Navbar() {
   const users = useSelector((state) => state.auths.currentUser);
+  console.log(users);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dropdown, setDropdown] = useState(false);
@@ -27,6 +29,12 @@ function Navbar() {
         </Link>
         <Link to="/movies">MOVIE</Link>
         <Link to="/buy-ticket">BUY TICKET</Link>
+        {users?.role === "Admin" && (
+          <>
+            <Link to="/admin">CHART</Link>
+            <Link to="/admin-movie">LIST MOVIE</Link>
+          </>
+        )}
       </div>
       <div className="flex-1 flex gap-2 justify-end text-right">
         {!users ? (

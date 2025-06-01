@@ -1,8 +1,15 @@
 import React from "react";
 import Navbar from "./../components/Navbar";
 import Button from "./../components/Button";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function AdminPage() {
+  const currentUser = useSelector((state) => state.auths.currentUser);
+
+  if (!currentUser || currentUser.role !== "Admin") {
+    return <Navigate to="/" replace />;
+  }
   return (
     <div>
       <Navbar />
