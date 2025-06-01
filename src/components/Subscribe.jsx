@@ -23,10 +23,12 @@ function Subscribe() {
     }, 4000);
   }
   return (
-    <div className="w-full p-20">
-      <div className="py-20 px-[244px] bg-third rounded-[48px] flex flex-col gap-20 m-auto">
+    <div className="w-full p-6 sm:p-20">
+      <div className="py-15 px-9 sm:py-20 sm:px-[244px] bg-third rounded-[48px] flex flex-col gap-20 m-auto">
         <div className="w-full">
-          <span className="title-section">Subscribe to Our Newsletter</span>
+          <span className="text-3xl sm:title-section">
+            Subscribe to Our Newsletter
+          </span>
         </div>
         <div className="w-full">
           <form
@@ -34,7 +36,7 @@ function Subscribe() {
             className="w-full gap-6 flex flex-col"
             autoComplete="off"
           >
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 {...register("name")}
                 type="text"
