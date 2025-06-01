@@ -78,7 +78,7 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Movie</span>
                       <span className="text-sm text-secondary">
-                        Spider-Man: ..
+                        {dataTicket.titleMovie}
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
@@ -89,26 +89,36 @@ function TicketResultPage() {
                   <div className="flex flex-row ">
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Date</span>
-                      <span className="text-sm text-secondary">07 Jul</span>
+                      <span className="text-sm text-secondary">
+                        {dataTicket.date}
+                      </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Time</span>
-                      <span className="text-sm text-secondary">2:00pm</span>
+                      <span className="text-sm text-secondary">
+                        {dataTicket.time}
+                      </span>
                     </div>
                   </div>
                   <div className="flex flex-row">
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Count</span>
-                      <span className="text-sm text-secondary">3 pcs</span>
+                      <span className="text-sm text-secondary">
+                        {dataTicket.seats.length} pcs
+                      </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Seats</span>
-                      <span className="text-sm text-secondary">C4, C5, C6</span>
+                      <span className="text-sm text-secondary">
+                        {Array.from(dataTicket?.seats).join(", ")}
+                      </span>
                     </div>
                   </div>
                   <div className="flex flex-row border p-4 border-gray1 rounded justify-between items-center">
                     <span className="text-secondary">Total</span>
-                    <span className="text-secondary">$30.00</span>
+                    <span className="text-secondary">
+                      Rp. {dataTicket.totalPayment.toLocaleString("id-ID")}
+                    </span>
                   </div>
                 </div>
               </div>
