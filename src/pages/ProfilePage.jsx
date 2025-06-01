@@ -1,4 +1,4 @@
-import Navbar2 from "../components/Navbar2";
+import Navbar from "../components/Navbar";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,7 @@ function ProfilePage() {
 
   return (
     <div>
-      <Navbar2 />
+      <Navbar />
       <div className="mt-6 h-full w-full bg-gray2 p-18">
         <div className="p-10 flex flex-row gap-8">
           <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">

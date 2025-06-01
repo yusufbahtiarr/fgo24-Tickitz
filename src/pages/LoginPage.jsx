@@ -49,8 +49,11 @@ function LoginPage() {
     dispatch(loginUser(found));
     // console.log(data);
     // console.log(found);
-
-    navigate("/profile");
+    if (found.role === "Admin") {
+      navigate("/admin");
+    } else {
+      navigate("/profile");
+    }
   };
 
   setTimeout(() => {

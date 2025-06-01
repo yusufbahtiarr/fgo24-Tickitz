@@ -6,6 +6,8 @@ import Button from "../components/Button";
 import { HiOutlineDownload } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { id as localeID } from "date-fns/locale";
+import { format } from "date-fns";
 
 function TicketResultPage() {
   const navigate = useNavigate();
@@ -90,7 +92,13 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Date</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket.date}
+                        {format(
+                          new Date(dataTicket.date),
+                          "EEEE, dd MMMM yyyy",
+                          {
+                            locale: localeID,
+                          }
+                        )}
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">

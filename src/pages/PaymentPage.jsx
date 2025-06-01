@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from "../components/Stepper";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -9,9 +9,10 @@ import { id } from "date-fns/locale";
 import { useForm } from "react-hook-form";
 import ModalPayment from "../components/ModalPayment";
 import { addTempTicketAction } from "../redux/reducers/tickets";
+import { useNavigate } from "react-router-dom";
 
 function PaymentPage() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const users = useSelector((state) => state.auths.currentUser);
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
@@ -19,6 +20,14 @@ function PaymentPage() {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const { register, handleSubmit } = useForm();
   const [modal, setModal] = useState(false);
+  useEffect(() => {
+    if (users === null) {
+      navigate("/login");
+    }
+  }, [users]);
+  if (users === null) {
+    return null;
+  }
 
   function onSubmit(data) {
     const newData = {
@@ -43,10 +52,11 @@ function PaymentPage() {
                   DATE & TIME
                 </span>
                 <span className="font-normal">
-                  {format(tempTicket.date, "EEEE, dd MMMM yyyy", {
-                    locale: id,
-                  })}{" "}
-                  - {tempTicket.time}
+                  {tempTicket?.date &&
+                    format(tempTicket?.date, "EEEE, dd MMMM yyyy", {
+                      locale: id,
+                    })}{" "}
+                  - {tempTicket?.time}
                 </span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
@@ -94,7 +104,11 @@ function PaymentPage() {
                       name="fullname"
                       id="fullname"
                       className="w-full py-3 px-6 outline-none"
-                      value={users.firstName.concat(" ", users.lastName)}
+                      value={
+                        users?.firstName && users?.lastName
+                          ? `${users.firstName} ${users.lastName}`
+                          : ""
+                      }
                       disabled
                     />
                   </div>
@@ -120,7 +134,7 @@ function PaymentPage() {
                       name="phone"
                       id="phone"
                       className="w-full py-3 px-6 outline-none"
-                      value={users.phone}
+                      value={users?.phone ? users?.phone : ""}
                       disabled
                     />
                   </div>
