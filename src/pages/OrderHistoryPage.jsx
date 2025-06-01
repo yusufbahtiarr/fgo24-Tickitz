@@ -4,8 +4,17 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { id as LocaleID } from "date-fns/locale";
+import { format } from "date-fns";
+
 function OrderHistoryPage() {
   const users = useSelector((state) => state.auths.currentUser);
+  const dataTickets = useSelector((state) => state.tickets.data);
+  console.log("data ticket: ", dataTickets);
+  console.log("data user", users);
+
+  const dataMovie = dataTickets.filter((item) => item.idUser === users.id);
+  console.log("data movie", dataMovie);
   const navigate = useNavigate();
   useEffect(() => {
     if (users === null) {
@@ -13,10 +22,10 @@ function OrderHistoryPage() {
     }
   }, []);
   return (
-    <div>
+    <div className="min-w-screen min-h-screen">
       <Navbar />
-      <div className="mt-6 bg-gray2 p-18">
-        <div className="p-10 flex flex-row gap-8 mb-110">
+      <div className="mt-6 bg-gray2 min-h-full h-fit p-18">
+        <div className="p-10 flex flex-row gap-8 mb-10 h-full">
           <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
               <div className="flex flex-row justify-between items-center w-full">
@@ -93,7 +102,7 @@ function OrderHistoryPage() {
               </div>
             </div>
           </div>
-          <div className="w-[70%] h-300 rounded-4xl flex flex-col gap-14">
+          <div className="w-[70%] min-h-300 rounded-4xl flex flex-col gap-14">
             <div className="flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
               <span className="text-fourth ">
                 <Link to="/profile">Account Settings</Link>
@@ -102,41 +111,64 @@ function OrderHistoryPage() {
                 Order History
               </span>
             </div>
-            <div className="bg-white rounded-3xl flex flex-col gap-4">
-              <div className="flex flex-row justify-between px-12 py-10 ">
-                <div className="flex flex-col justify-between gap-2">
-                  <span className="font-normal text-sm text-fourth">
-                    Tuesday, 07 July 2020 - 04:30pm
-                  </span>
-                  <span className="text-2xl font-semibold">
-                    Spider-Man: Homecoming
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <img
-                    src="./src/assets/images/CineOne21 3.png"
-                    alt="CineOne21"
-                  />
-                </div>
-              </div>
-              <hr className="border-1 border-gray2 mb-4" />
-              <div className="flex flex-col">
-                <div className="flex flex-row justify-between items-center px-12 pb-10">
-                  <div className="flex flex-1 flex-row gap-10">
-                    <div className="ticket-active">Ticket in active</div>
-                    <div className="not-paid">Not Paid</div>
-                  </div>
-                  <div className="flex flex-1 flex-row justify-end gap-3">
-                    <select
-                      name="details"
-                      id="detail"
-                      className="text-fourth text-[18px] p-3"
+            {dataMovie
+              ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+              .map((item) => {
+                return (
+                  <div className="bg-white rounded-3xl flex flex-col gap-4">
+                    <div
+                      key={`list-movie-${item.idTicket}`}
+                      className="flex flex-row justify-between px-12 py-10 "
                     >
-                      <option value="">Show Details </option>
-                    </select>
+                      <div className="flex flex-col justify-between gap-2">
+                        {/* <span>{item.idTicket}</span> */}
+                        <span className="font-normal text-sm text-fourth">
+                          {format(new Date(item.date), "EEEE, dd MMMM yyyy", {
+                            locale: LocaleID,
+                          })}{" "}
+                          - {item.time}
+                        </span>
+                        <span className="text-2xl font-semibold">
+                          {item.titleMovie}
+                        </span>
+                        <span>
+                          Seats :{" "}
+                          <span className="font-semibold">
+                            {item.seats?.join(", ")}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-start  justify-between capitalize w-45">
+                        <div>
+                          Cinema :{" "}
+                          <span className="font-semibold">{item.cinema}</span>
+                        </div>
+                        <div>
+                          Location :{" "}
+                          <span className="font-semibold">{item.location}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                );
+              })}
+            {/* <hr className="border-1 border-gray2 mb-4" />
+              {/* <div className="flex flex-row justify-between items-center px-12 pb-10">
+                <div className="flex flex-1 flex-row gap-10">
+                  <div className="ticket-active">Ticket in active</div>
+                  <div className="not-paid">Not Paid</div>
                 </div>
-                <div className="px-12 pb-10 flex flex-col gap-4">
+                <div className="flex flex-1 flex-row justify-end gap-3">
+                  <select
+                    name="details"
+                    id="detail"
+                    className="text-fourth text-[18px] p-3"
+                  >
+                    <option value="">Show Details </option>
+                  </select>
+                </div>
+              </div> */}
+            {/* <div className="px-12 pb-10 flex flex-col gap-4">
                   <div>
                     <span className="ticket-info">Ticket Information</span>
                   </div>
@@ -195,10 +227,9 @@ function OrderHistoryPage() {
                       Cek Pembayaran
                     </Button>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-3xl flex flex-col gap-4">
+                </div> */}
+
+            {/* <div className="bg-white rounded-3xl flex flex-col gap-4">
               <div className="flex flex-row justify-between px-12 py-10 ">
                 <div className="flex flex-col justify-between gap-2">
                   <span className="font-normal text-sm text-fourth">
@@ -281,8 +312,8 @@ function OrderHistoryPage() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="bg-white rounded-3xl flex flex-col gap-4">
+            </div> */}
+            {/* <div className="bg-white rounded-3xl flex flex-col gap-4">
               <div className="flex flex-row justify-between px-12 py-10 ">
                 <div className="flex flex-col justify-between gap-2">
                   <span className="font-normal text-sm text-fourth">
@@ -316,7 +347,7 @@ function OrderHistoryPage() {
                   </select>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
