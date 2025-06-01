@@ -1,7 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import ModulPayment from "./../components/ModulPayment";
-
 function NotFound() {
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center gap-6">

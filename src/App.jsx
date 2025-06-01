@@ -40,7 +40,7 @@ const router = createBrowserRouter([
     element: <OrderPage />,
   },
   {
-    path: "/ticket-result",
+    path: "/ticket-result/:id",
     element: <TicketResultPage />,
   },
   {

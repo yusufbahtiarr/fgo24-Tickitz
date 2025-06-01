@@ -4,10 +4,17 @@ import Footer from "../components/Footer";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import Button from "../components/Button";
 import { HiOutlineDownload } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function TicketResultPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const dataTicket = useSelector((state) => state.tickets.data).find(
+    (item) => item.idTicket === id
+  );
+  console.log(dataTicket);
+
   return (
     <div>
       <Navbar />
@@ -15,7 +22,7 @@ function TicketResultPage() {
         <div className="w-[60%] h-[100] bg-amber-200 flex justify-center items-center relative">
           <div className="h-[100%]">
             <img
-              src="./src/assets/images/background.png"
+              src="../src/assets/images/background.png"
               alt="movie"
               className="h-full absolute top-0 left-0 object-cover"
             />
@@ -24,7 +31,7 @@ function TicketResultPage() {
           <div className="mx-auto text-white z-1 mb-10 flex flex-col gap-3">
             <div>
               <img
-                src="./src/assets/images/tickitz2.png"
+                src="../src/assets/images/tickitz2.png"
                 alt="logo"
                 className="w-64"
               />
@@ -54,11 +61,11 @@ function TicketResultPage() {
           <div className="flex flex-col rounded-xl h-full items-center gap-4">
             <div className="h-[85%] w-full px-6 py-2">
               <div className="bg-white h-full rounded-xl">
-                <div className="px-16">
+                <div className="px-16 mx-auto w-full flex justify-center items-center">
                   <img
-                    src="./src/assets/images/qr.png"
-                    alt=""
-                    className="p-6 pb-0"
+                    src="../src/assets/images/qr.png"
+                    alt="image"
+                    className="p-6 w-80 h-80"
                   />
                 </div>
                 <div className="flex flex-row justify-between items-center">

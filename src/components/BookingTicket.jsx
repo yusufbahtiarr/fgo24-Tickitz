@@ -83,9 +83,10 @@ function BookingTicket({ titleMovie }) {
     if (!data.date || !data.time || !data.location) return;
     data.idMovie = id;
     data.titleMovie = titleMovie;
+    data.idUser = currentUser.id;
 
     dispatch(addTempTicketAction(data));
-    navigate(`/buy-ticket/${id}/seat`);
+    navigate(`/buy-ticket/${id}/seat`, { replace: true });
     // console.log(data);
   }
 

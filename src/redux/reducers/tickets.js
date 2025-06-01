@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
 import { logoutUser } from "./auths";
 
 const initialState = {
@@ -14,11 +13,9 @@ const tickets = createSlice({
     addTicketAction: function (state, action) {
       const newData = {
         ...action.payload,
-        id: "TK-" + nanoid(),
-        createdAt: new Date().toISOString(),
       };
       state.data.push(newData);
-      initialState.tempTicket;
+      state.tempTicket = {};
       return state;
     },
     addTempTicketAction: function (state, action) {

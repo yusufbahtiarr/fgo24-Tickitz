@@ -116,7 +116,7 @@ function OrderPage() {
     };
 
     dispatch(addTempTicketAction(data));
-    navigate(`/buy-ticket/${id}/seat`);
+    navigate(`/payment`, { replace: true });
     // console.log(data);
   }
 
@@ -314,7 +314,6 @@ function OrderPage() {
               className="text-white mt-10"
               onClick={() => {
                 onSubmit();
-                navigate("/payment");
               }}
               disabled={selectedSeats.length === 0}
             >
