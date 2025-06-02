@@ -6,7 +6,7 @@ import Button from "./../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchData } from "../utils/apiClient";
-import RenderGenres from "../components/renderGenres";
+import RenderGenres from "../components/RenderGenres";
 import { useDispatch, useSelector } from "react-redux";
 import { id as LocaleID } from "date-fns/locale";
 import { format } from "date-fns";

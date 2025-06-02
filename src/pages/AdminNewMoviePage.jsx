@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../components/Navbar";
 import { LuPlus } from "react-icons/lu";
 import { useSelector } from "react-redux";

@@ -1,7 +1,5 @@
-import React from "react";
 import Navbar from "./../components/Navbar";
 import Button from "./../components/Button";
-import { CiCalendar } from "react-icons/ci";
 import { IoMdEye } from "react-icons/io";
 import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
