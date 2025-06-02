@@ -32,53 +32,40 @@ function BookingTicket({ titleMovie }) {
   const { register, handleSubmit } = useForm();
 
   const navigate = useNavigate();
+  const [selectedCinema, setSelectedCinema] = useState(null);
 
-  const cinemas = [
-    {
-      name: "ebv.id",
-      image: { ebv },
-    },
-    {
-      name: "hiflix",
-      image: { hiflix },
-    },
-    {
-      name: "cineone21",
-      image: { cineone },
-    },
-    {
-      name: "xxi",
-      image: { xxi },
-    },
-  ];
-
-  function Cinema({ register }) {
-    const [selectedCinema, setSelectedCinema] = useState(null);
+  function Cinema({
+    register,
+    cinemaName,
+    cinemaImage,
+    selectedCinema,
+    setSelectedCinema,
+  }) {
     return (
-      <div className="flex gap-8 justify-center items-center w-full">
-        {cinemas.map((cinema, index) => (
-          <label
-            key={index}
-            className={`cursor-pointer border rounded-lg flex-1 flex items-center justify-center h-40 text-center my-auto w-32 transition-all
+      <div className="flex flex-col sm:flex-row gap-8 justify-center items-center w-full">
+        <label
+          className={`cursor-pointer border rounded-2xl
+               w-full sm:flex-1 flex items-center justify-center min-h-40  sm:min-h-40 text-center my-auto sm:w-32 transition-all
             ${
-              selectedCinema === cinema.name
+              selectedCinema === cinemaName
                 ? "bg-primary/40 text-white"
                 : "bg-white text-black border-gray-300"
             }`}
-          >
-            <input
-              {...register("cinema", { required: true })}
-              type="radio"
-              name="cinema"
-              value={cinema.name}
-              className="sr-only"
-              onChange={() => setSelectedCinema(cinema.name)}
-            />
-            <span className={`text-lg`}>
-              <img src={cinema.image} alt="cinema" className="w-50"></img>
-            </span>
-          </label>
-        ))}
+          id={cinemaName}
+        >
+          <input
+            {...register("cinema", { required: true })}
+            type="radio"
+            name="cinema"
+            value={cinemaName}
+            className="sr-only"
+            onChange={() => setSelectedCinema(cinemaName)}
+            id={cinemaName}
+          />
+          <span className={`text-lg`}>
+            <img src={cinemaImage} alt="cinema" className="w-50"></img>
+          </span>
+        </label>
       </div>
     );
   }
@@ -95,17 +82,19 @@ function BookingTicket({ titleMovie }) {
   }
 
   return (
-    <div className="w-full h-fit p-20">
+    <div className="w-full h-fit p-6 sm:p-20">
       <div className="flex flex-col gap-10">
         <div className="flex justify-between">
-          <span className="text-[36px] font-semibold">Book Tickets</span>
+          <span className="text-2xl sm:text-[36px] font-semibold">
+            Book Tickets
+          </span>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-row gap-5">
+            <div className="flex flex-col sm:flex-row gap-5">
               <div className="flex-1">
                 <div className="flex flex-col gap-4">
-                  <div className="font-semibold text-[28px] px-">
+                  <div className="font-semibold text-xl sm:text-[28px] px-">
                     Choose Date
                   </div>
                   <div className="flex flex-row justify-between h-[54px] px-3 items-center border-1 border-black rounded-full">
@@ -129,7 +118,7 @@ function BookingTicket({ titleMovie }) {
               </div>
               <div className="flex-1">
                 <div className="flex flex-col gap-4">
-                  <div className="font-semibold text-[28px] px-">
+                  <div className="font-semibold text-xl sm:text-[28px] px-">
                     Choose Time
                   </div>
                   <div className="flex flex-row justify-between h-[54px] px-3 items-center border-1 border-black rounded-full">
@@ -152,7 +141,7 @@ function BookingTicket({ titleMovie }) {
               </div>
               <div className="flex-1">
                 <div className="flex flex-col gap-4">
-                  <div className="font-semibold text-[28px] px-">
+                  <div className="font-semibold text-xl sm:text-[28px] px-">
                     Choose Location
                   </div>
                   <div className="flex flex-row justify-between h-[54px] px-3 items-center border-1 border-black rounded-full">
@@ -177,10 +166,39 @@ function BookingTicket({ titleMovie }) {
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex gap-5 items-center">
-                <span className="text-[28px] font-semibold">Choose Cinema</span>
+                <span className="text-xl sm:text-[28px] font-semibold">
+                  Choose Cinema
+                </span>
               </div>
-              <div className="flex flex-row gap-4 w-full">
-                <Cinema register={register} />
+              <div className="flex flex-col sm:flex-row gap-4 w-full">
+                <Cinema
+                  register={register}
+                  cinemaName="ebv.id"
+                  cinemaImage={ebv}
+                  selectedCinema={selectedCinema}
+                  setSelectedCinema={setSelectedCinema}
+                />
+                <Cinema
+                  register={register}
+                  cinemaName="hiflix"
+                  cinemaImage={hiflix}
+                  selectedCinema={selectedCinema}
+                  setSelectedCinema={setSelectedCinema}
+                />
+                <Cinema
+                  register={register}
+                  cinemaName="cineone21"
+                  cinemaImage={cineone}
+                  selectedCinema={selectedCinema}
+                  setSelectedCinema={setSelectedCinema}
+                />
+                <Cinema
+                  register={register}
+                  cinemaName="xxi"
+                  cinemaImage={xxi}
+                  selectedCinema={selectedCinema}
+                  setSelectedCinema={setSelectedCinema}
+                />
               </div>
               <Button variant="primary" disabled={!currentUser}>
                 {currentUser ? "BOOK NOW" : "Please login to book"}
