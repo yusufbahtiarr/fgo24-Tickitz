@@ -33,19 +33,19 @@ function NowShowing() {
 
   const sliderRef = useRef(null);
   const scrollLeft = () => {
-    sliderRef.current.scrollBy({ left: -600, behavior: "smooth" });
+    sliderRef.current.scrollBy({ left: -400, behavior: "smooth" });
   };
   const scrollRight = () => {
-    sliderRef.current.scrollBy({ left: 600, behavior: "smooth" });
+    sliderRef.current.scrollBy({ left: 400, behavior: "smooth" });
   };
 
   return (
-    <div className="w-full px-20 mb-10">
+    <div className="w-full px-6 sm:px-20 mb-10">
       <div className="flex justify-between items-center overflow-hidden">
         <button onClick={scrollLeft} className="button-icon md:text-lg text-sm">
           <FaArrowLeft />
         </button>
-        <p className="md:font-semibold font-bold md:text-4xl sm:text-2xl text-xl">
+        <p className="font-semibold md:text-4xl sm:text-2xl text-xl">
           Now Showing in Cinemas
         </p>
         <button

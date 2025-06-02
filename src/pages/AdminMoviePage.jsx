@@ -6,8 +6,15 @@ import { IoMdEye } from "react-icons/io";
 import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function AdminMoviePage() {
+  const currentUser = useSelector((state) => state.auths.currentUser);
+
+  if (!currentUser || currentUser.role !== "Admin") {
+    return <Navigate to="/" replace />;
+  }
   return (
     <div className="w-screen h-screen bg-gray2 ">
       <Navbar />

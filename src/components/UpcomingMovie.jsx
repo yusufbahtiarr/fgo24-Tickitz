@@ -29,19 +29,19 @@ function UpcomingMovie() {
 
   const sliderRef = useRef(null);
   const scrollLeft = () => {
-    sliderRef.current.scrollBy({ left: -600, behavior: "smooth" });
+    sliderRef.current.scrollBy({ left: -400, behavior: "smooth" });
   };
   const scrollRight = () => {
-    sliderRef.current.scrollBy({ left: 600, behavior: "smooth" });
+    sliderRef.current.scrollBy({ left: 400, behavior: "smooth" });
   };
 
   return (
     <>
       <section className="w-full">
-        <div className="flex flex-row p-20 w-full gap-8">
+        <div className="flex flex-col-reverse p-6 sm:flex-row sm:p-20 w-full gap-8">
           <div
             ref={sliderRef}
-            className="flex flex-row justify-start w-[73%] scroll-x overflow-hidden gap-10 justify-items-center scrollbar-hide"
+            className="flex flex-row justify-start sm:w-[73%] scroll-x overflow-hidden gap-10 justify-items-center scrollbar-hide"
           >
             {upcomingMovies.slice(0, 10).map((item) => (
               <div key={item.id} className="">
@@ -68,14 +68,16 @@ function UpcomingMovie() {
               </div>
             ))}
           </div>
-          <div className="flex flex-col justify-between w-[27%]">
+          <div className="flex flex-col gap-6 justify-between sm:w-[27%]">
             <div className="flex flex-col items-start gap-6">
               <Badge
                 variant="secondary"
-                className="font-bold text-xl h-[54px] w-fit flex justify-center items-center"
+                className="font-bold text-xl h-[54px] w-full sm:w-fit flex justify-center items-center"
                 children="UPCOMING MOVIES"
               />
-              <span className="title-section">Exciting Movie Coming Soon</span>
+              <span className="text-5xl sm:title-section">
+                Exciting Movie Coming Soon
+              </span>
             </div>
             <div className="flex flex-row justify-between items-center w-full">
               <div className="flex gap-4">
