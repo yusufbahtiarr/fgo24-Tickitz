@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BookingTicket from "../components/BookingTicket";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { fetchData } from "../utils/apiClient";
 import RenderGenres from "../components/RenderGenres";
 import { formatDuration } from "../utils/formatTime";

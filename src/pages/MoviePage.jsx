@@ -190,7 +190,6 @@ function ShowMovie({
       ) : (
         <div className="flex flex-row justify-center items-center gap-5">
           <Button
-            FaArrowRight
             disabled={PAGE === 1}
             onClick={() =>
               setSearchParams({
@@ -200,9 +199,8 @@ function ShowMovie({
             }
             variant="primary"
             className="text-[28px] p-2 size-[54px] flex justify-center items-center"
-          >
-            <FaArrowLeft />
-          </Button>
+            children={<FaArrowLeft />}
+          ></Button>
           {Array.from({ length: TOTALPAGE }).map((_, index) => (
             <Button
               onClick={() =>
@@ -229,9 +227,8 @@ function ShowMovie({
             }
             variant="primary"
             className="text-[28px] size-[54px] flex justify-center items-center"
-          >
-            <FaArrowRight />
-          </Button>
+            children={<FaArrowRight />}
+          ></Button>
         </div>
       )}
     </div>

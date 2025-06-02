@@ -120,6 +120,9 @@ function OrderPage() {
     // console.log(data);
   }
 
+  const imageCinema =
+    cinemas?.find((item) => item.name === tempTicket.cinema)?.image || "";
+
   return (
     <div className="w-screen h-screen bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
@@ -256,13 +259,7 @@ function OrderPage() {
           <div className="w-[35%] flex flex-col">
             <div className="p-6 flex flex-col justify-center items-center  bg-white h-fit rounded">
               <div className="p-2">
-                <img
-                  src={cinemas
-                    .find((item) => item.name === tempTicket.cinema)
-                    .image.slice(2)}
-                  alt="bioskop"
-                  className="p-6 w-60"
-                />
+                <img src={imageCinema} alt="bioskop" className="p-6 w-60" />
               </div>
               <div className="mx-auto text-2xl font-semibold mb-10 capitalize">
                 {tempTicket.cinema} Cinema

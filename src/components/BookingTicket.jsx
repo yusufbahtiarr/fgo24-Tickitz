@@ -14,9 +14,9 @@ import xxi from "../assets/images/xxi.svg";
 
 function BookingTicket({ titleMovie }) {
   const currentUser = useSelector((state) => state.auths.currentUser);
+  // const [btnBook, setBtnBook] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
-  // console.log(currentUser);
 
   function getDateOptions() {
     return [0, 1, 2].map((dayOffset) => {
@@ -29,38 +29,46 @@ function BookingTicket({ titleMovie }) {
 
   const showtime = ["13:15", "15:45", "17:30", "18:40", "20:00", "22:15"];
   const location = ["Jakarta", "Depok", "Tangerang", "Bogor", "Bekasi"];
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const navigate = useNavigate();
   const [selectedCinema, setSelectedCinema] = useState(null);
 
   function Cinema({
     register,
-    cinemaName,
+    value,
     cinemaImage,
     selectedCinema,
     setSelectedCinema,
+    idCinema,
   }) {
     return (
       <div className="flex flex-col sm:flex-row gap-8 justify-center items-center w-full">
         <label
           className={`cursor-pointer border rounded-2xl
-               w-full sm:flex-1 flex items-center justify-center min-h-40  sm:min-h-40 text-center my-auto sm:w-32 transition-all
+               w-full sm:flex-1 flex items-center justify-center min-h-40  sm:min-h-40 text-center my-auto sm:w-32 transition-all checked:bg-amber-200
             ${
-              selectedCinema === cinemaName
+              selectedCinema === value
                 ? "bg-primary/40 text-white"
                 : "bg-white text-black border-gray-300"
-            }`}
-          id={cinemaName}
+            }
+            `}
+          htmlFor={idCinema}
         >
           <input
-            {...register("cinema", { required: true })}
+            {...register("cinema")}
             type="radio"
             name="cinema"
-            value={cinemaName}
+            value={value}
             className="sr-only"
-            onChange={() => setSelectedCinema(cinemaName)}
-            id={cinemaName}
+            onChange={() => {
+              setSelectedCinema(value);
+            }}
+            id={idCinema}
           />
           <span className={`text-lg`}>
             <img src={cinemaImage} alt="cinema" className="w-50"></img>
@@ -75,10 +83,10 @@ function BookingTicket({ titleMovie }) {
     data.idMovie = id;
     data.titleMovie = titleMovie;
     data.idUser = currentUser.id;
+    data.cinema = selectedCinema;
 
     dispatch(addTempTicketAction(data));
     navigate(`/buy-ticket/${id}/seat`, { replace: true });
-    // console.log(data);
   }
 
   return (
@@ -173,34 +181,41 @@ function BookingTicket({ titleMovie }) {
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <Cinema
                   register={register}
-                  cinemaName="ebv.id"
+                  value="ebv.id"
                   cinemaImage={ebv}
                   selectedCinema={selectedCinema}
                   setSelectedCinema={setSelectedCinema}
+                  idCinema="cinema-1"
                 />
                 <Cinema
                   register={register}
-                  cinemaName="hiflix"
+                  value="hiflix"
                   cinemaImage={hiflix}
                   selectedCinema={selectedCinema}
                   setSelectedCinema={setSelectedCinema}
+                  idCinema="cinema-2"
                 />
                 <Cinema
                   register={register}
-                  cinemaName="cineone21"
+                  value="cineone21"
                   cinemaImage={cineone}
                   selectedCinema={selectedCinema}
                   setSelectedCinema={setSelectedCinema}
+                  idCinema="cinema-3"
                 />
                 <Cinema
                   register={register}
-                  cinemaName="xxi"
+                  value="xxi"
                   cinemaImage={xxi}
                   selectedCinema={selectedCinema}
                   setSelectedCinema={setSelectedCinema}
+                  idCinema="cinema-4"
                 />
+                {errors.cinema && (
+                  <span className="text-red-500 text-sm mt-2">{"error"}</span>
+                )}
               </div>
-              <Button variant="primary" disabled={!currentUser}>
+              <Button variant="primary" disabled={!currentUser} type="submit">
                 {currentUser ? "BOOK NOW" : "Please login to book"}
               </Button>
             </div>

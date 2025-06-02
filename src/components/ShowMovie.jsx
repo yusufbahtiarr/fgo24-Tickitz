@@ -85,7 +85,7 @@ function ShowMovie() {
           variant="primary"
           className="text-[28px] size-[54px] flex justify-center items-center"
         >
-          <FaArrowRight />
+          {/* <FaArrowRight /> */}
         </Button>
       </div>
     </div>

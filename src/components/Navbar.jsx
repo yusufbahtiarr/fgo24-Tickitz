@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { logoutUser } from "../redux/reducers/auths";
 import logo from "../assets/images/Tickitz.png";
+import profile from "../assets/images/profile.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 
@@ -89,7 +90,7 @@ function Navbar() {
                 : users?.email.split("@")[0]}
             </span>
             <img
-              src="../src/assets/images/profile.png"
+              src={profile}
               alt="profile"
               className="size-14 rounded-full object-cover"
               onClick={() => setDropdown(!dropdown)}
