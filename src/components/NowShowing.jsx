@@ -2,7 +2,7 @@ import { fetchData } from "../utils/apiClient";
 import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import RenderGenres from "../RenderGenres";
+import RenderGenres from "../components/RenderGenres";
 import { useNavigate } from "react-router-dom";
 
 function NowShowing() {
