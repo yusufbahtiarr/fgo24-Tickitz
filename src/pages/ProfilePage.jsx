@@ -78,7 +78,7 @@ function ProfilePage() {
               </div>
               <div className="flex justify-center items-center mb-6">
                 <img
-                  src="./src/assets/images/profile.png"
+                  src="../src/assets/images/profile.png"
                   alt="profile"
                   className="size-[136px] object-cover rounded-full"
                 />

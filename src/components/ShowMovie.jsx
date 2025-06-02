@@ -3,7 +3,7 @@ import { fetchData } from "../utils/apiClient";
 import Button from "./Button";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import RenderGenres from "./renderGenres";
+import RenderGenres from "../components/RenderGenres";
 
 function ShowMovie() {
   const [movies, setMovies] = useState([]);

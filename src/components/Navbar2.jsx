@@ -15,7 +15,11 @@ function Navbar2() {
   return (
     <nav className="fixed top-0 right-0 left-0 flex flex-between flex-row  bg-white px-20 py-4 z-100 items-center justify-center ">
       <div className="flex-1">
-        <img className="w-30" src="/src/assets/images/Tickitz.png" alt="logo" />
+        <img
+          className="w-30"
+          src="../src/assets/images/Tickitz.png"
+          alt="logo"
+        />
       </div>
       <div className="flex-1 flex font-light justify-center items-center text-l h-10 gap-15">
         <Link to="/">

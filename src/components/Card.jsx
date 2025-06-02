@@ -6,7 +6,7 @@ function Card() {
     <>
       <div className="flex flex-col gap-2 relative items-center w-[266px]">
         <img
-          src="./src/assets/images/movies.png"
+          src="../src/assets/images/movies.png"
           className="h-[400px] w-[266px] rounded-2xl object-cover"
           alt="movies"
         />

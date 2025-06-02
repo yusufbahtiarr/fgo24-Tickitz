@@ -149,7 +149,7 @@ function PaymentPage() {
                     }`}
                   >
                     <img
-                      src="/src/assets/images/gpay.png"
+                      src="../src/assets/images/gpay.png"
                       alt="gpay"
                       className="w-15"
                     />
@@ -171,7 +171,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/visa.png"
+                      src="../src/assets/images/visa.png"
                       alt="visa"
                       className="w-15"
                     />
@@ -195,7 +195,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/gopay.png"
+                      src="../src/assets/images/gopay.png"
                       alt="gopay"
                       className="w-15"
                     />
@@ -219,7 +219,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/paypal.png"
+                      src="..../src/assets/images/paypal.png"
                       alt="paypal"
                       className="h-8"
                     />
@@ -241,7 +241,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/dana.png"
+                      src="../src/assets/images/dana.png"
                       alt="dana"
                       className="w-18"
                     />
@@ -263,7 +263,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/bca.png"
+                      src="../src/assets/images/bca.png"
                       alt="bca"
                       className="w-15"
                     />
@@ -285,7 +285,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/bri.png"
+                      src="../src/assets/images/bri.png"
                       alt="bri"
                       className="h-8"
                     />
@@ -307,7 +307,7 @@ function PaymentPage() {
                      }`}
                   >
                     <img
-                      src="/src/assets/images/ovo.png"
+                      src="../src/assets/images/ovo.png"
                       alt="ovo"
                       className="w-15"
                     />

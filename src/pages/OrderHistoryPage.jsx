@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { HiDotsHorizontal } from "react-icons/hi";
-import Button from "./../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { id as LocaleID } from "date-fns/locale";
@@ -36,7 +35,7 @@ function OrderHistoryPage() {
               </div>
               <div className="flex justify-center items-center mb-6">
                 <img
-                  src="./src/assets/images/profile.png"
+                  src="../src/assets/images/profile.png"
                   alt="profile"
                   className="size-[136px] object-cover rounded-full"
                 />

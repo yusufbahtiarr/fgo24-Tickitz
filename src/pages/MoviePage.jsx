@@ -53,7 +53,7 @@ function MoviePage() {
       <main className="flex flex-col mt-25 items-center text-center">
         <div className="w-full">
           <div className="py-10 px-20 ">
-            <div className="flex flex-row items-end justify-start text-left bg-[url(/src/assets/images/heading.png)] h-[404px] p-10 rounded-[48px] bg-no-repeat bg-cover bg-center relative">
+            <div className="flex flex-row items-end justify-start text-left bg-[url(../src/assets/images/heading.png)] h-[404px] p-10 rounded-[48px] bg-no-repeat bg-cover bg-center relative">
               <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-[linear-gradient(180deg,rgba(15,16,13,0)_0%,rgba(15,16,13,0.8)_65.1%)] z-10 rounded-[48px]"></div>
               <div className="flex flex-col z-10">
                 <div>

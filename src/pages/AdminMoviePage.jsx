@@ -54,7 +54,7 @@ function AdminMoviePage() {
                   <td className="p-4">1</td>
                   <td className="p-4 items-center">
                     <img
-                      src="./src/assets/images/list1.png"
+                      src="../src/assets/images/list1.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
@@ -79,7 +79,7 @@ function AdminMoviePage() {
                   <td className="p-4">1</td>
                   <td className="p-4 items-center">
                     <img
-                      src="./src/assets/images/list2.png"
+                      src="../src/assets/images/list2.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
@@ -104,7 +104,7 @@ function AdminMoviePage() {
                   <td className="p-4">1</td>
                   <td className="p-4 items-center">
                     <img
-                      src="./src/assets/images/list1.png"
+                      src="../src/assets/images/list1.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
@@ -129,7 +129,7 @@ function AdminMoviePage() {
                   <td className="p-4">1</td>
                   <td className="p-4 items-center">
                     <img
-                      src="./src/assets/images/list2.png"
+                      src="../src/assets/images/list2.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
@@ -154,7 +154,7 @@ function AdminMoviePage() {
                   <td className="p-4">1</td>
                   <td className="p-4 items-center">
                     <img
-                      src="./src/assets/images/list1.png"
+                      src="../src/assets/images/list1.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />

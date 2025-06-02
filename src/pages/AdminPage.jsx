@@ -46,7 +46,7 @@ function AdminPage() {
               <span>$0</span>
             </div>
             <div className="flex flex-col gap-6 grow">
-              <img src="./src/assets/images/graph.png" alt="graph" />
+              <img src="../src/assets/images/graph.png" alt="graph" />
               <div className="flex flex-row justify-between px-6">
                 <span>Jan</span>
                 <span>Feb</span>
@@ -95,7 +95,7 @@ function AdminPage() {
               <span>$0</span>
             </div>
             <div className="flex flex-col gap-6 grow">
-              <img src="./src/assets/images/graph.png" alt="graph" />
+              <img src="../src/assets/images/graph.png" alt="graph" />
               <div className="flex flex-row justify-between px-6">
                 <span>Jan</span>
                 <span>Feb</span>
