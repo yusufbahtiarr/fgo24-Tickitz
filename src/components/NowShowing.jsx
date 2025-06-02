@@ -41,16 +41,19 @@ function NowShowing() {
 
   return (
     <div className="w-full px-6 sm:px-20 mb-10">
-      <div className="flex justify-between items-center overflow-hidden">
-        <button onClick={scrollLeft} className="button-icon md:text-lg text-sm">
+      <div className="flex justify-between items-center overflow-hidden gap-2">
+        <button
+          onClick={scrollLeft}
+          className="order-2 sm:order-1 font-bold button-icon md:text-lg text-sm size-[56px] px-5 py-3 flex justify-center items-center"
+        >
           <FaArrowLeft />
         </button>
-        <p className="font-semibold md:text-4xl sm:text-2xl text-xl">
+        <p className="order-1 flex-1 sm:order-2 text-[20px] font-semibold md:text-4xl sm:text-2xl text-left sm:text-center">
           Now Showing in Cinemas
         </p>
         <button
           onClick={scrollRight}
-          className="button-icon md:text-lg text-sm"
+          className="order-3 button-icon font-bold md:text-lg text-sm size-[56px] px-5 py-3 flex justify-center items-center"
         >
           <FaArrowRight />
         </button>

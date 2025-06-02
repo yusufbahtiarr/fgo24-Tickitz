@@ -75,7 +75,7 @@ function UpcomingMovie() {
                 className="font-bold text-xl h-[54px] w-full sm:w-fit flex justify-center items-center"
                 children="UPCOMING MOVIES"
               />
-              <span className="text-5xl sm:title-section">
+              <span className="text-4xl sm:title-section">
                 Exciting Movie Coming Soon
               </span>
             </div>

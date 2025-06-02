@@ -41,7 +41,7 @@ function HomePage() {
               className="font-bold text-xl h-[54px] w-full sm:w-fit px-8 flex items-center justify-center"
               children="WHY CHOOSE ME"
             />
-            <div className="text-5xl sm:title-section text-sixth">
+            <div className="text-4xl sm:title-section text-sixth">
               Unleashing the Ultimate Movie Experience
             </div>
           </div>
