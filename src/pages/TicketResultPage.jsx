@@ -8,8 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { id as localeID } from "date-fns/locale";
 import { format } from "date-fns";
-import tickitz from "../../src/assets/images/tickitz2.png";
-import qr from "../../src/assets/images/qr.png";
+import tickitz from "../assets/images/tickitz2.png";
+import qr from "../assets/images/qr.png";
 
 function TicketResultPage() {
   const navigate = useNavigate();

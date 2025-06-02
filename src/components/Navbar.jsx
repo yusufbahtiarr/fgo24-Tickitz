@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { logoutUser } from "../redux/reducers/auths";
-import logo from "../../src/assets/images/Tickitz.png";
+import logo from "../assets/images/Tickitz.png";
 
 function Navbar() {
   const users = useSelector((state) => state.auths.currentUser);
@@ -17,11 +17,11 @@ function Navbar() {
     navigate("/login");
   }
   return (
-    <nav className="fixed top-0 right-0 left-0 flex flex-between flex-row bg-white px-20 py-4 z-100 items-center justify-center ">
+    <nav className="fixed top-0 right-0 left-0 flex flex-between flex-row bg-white px-6 sm:px-20 py-4 z-100 items-center justify-center ">
       <div className="flex-1">
         <img className="w-30" src={logo} alt="logo" />
       </div>
-      <div className="flex-1 flex font-light justify-center items-center text-l h-10 gap-15">
+      <div className="sm:flex-1  sm:flex hidden font-light justify-center items-center text-l h-10 gap-15">
         <Link to="/">
           <div className="flex justify-center flex-col items-center font-dmsans">
             <span className="font-semibold">HOME</span>
@@ -48,7 +48,7 @@ function Navbar() {
             </Button>
           </div>
         ) : (
-          <div className="flex flex-row gap-4 items-center relative">
+          <div className="hidden sm:flex flex-row gap-4 items-center relative">
             <span className="font-semibold">
               {users?.firstName
                 ? `${users?.firstName} ${users?.lastName}`

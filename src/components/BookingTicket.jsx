@@ -7,10 +7,10 @@ import { id as LocaleID } from "date-fns/locale";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addTempTicketAction } from "../redux/reducers/tickets";
-import ebv from "../../src/assets/images/ebv-gray.png";
-import hiflix from "../../src/assets/images/hiflix-gray.png";
-import cineone from "../../src/assets/images/cineone-gray.png";
-import xxi from "../../src/assets/images/xxi.svg";
+import ebv from "../assets/images/ebv-gray.png";
+import hiflix from "../assets/images/hiflix-gray.png";
+import cineone from "../assets/images/cineone-gray.png";
+import xxi from "../assets/images/xxi.svg";
 
 function BookingTicket({ titleMovie }) {
   const currentUser = useSelector((state) => state.auths.currentUser);

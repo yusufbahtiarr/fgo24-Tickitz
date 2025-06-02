@@ -2,10 +2,10 @@ import { RiInstagramFill } from "react-icons/ri";
 import { FaFacebookF } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { SiYoutube } from "react-icons/si";
-import logoWhite from "../../src/assets/images/Tickitz-white.png";
-import ebv from "../../src/assets/images/ebv.id 2.png";
-import cineone from "../../src/assets/images/CineOne21 2.png";
-import hiflic from "../../src/assets/images/hiflic.png";
+import logoWhite from "../assets/images/Tickitz-white.png";
+import ebv from "../assets/images/ebv.id 2.png";
+import cineone from "../assets/images/CineOne21 2.png";
+import hiflic from "../assets/images/hiflic.png";
 
 function Footer() {
   return (

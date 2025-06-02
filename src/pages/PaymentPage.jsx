@@ -10,14 +10,14 @@ import { useForm } from "react-hook-form";
 import ModalPayment from "../components/ModalPayment";
 import { addTempTicketAction } from "../redux/reducers/tickets";
 import { useNavigate } from "react-router-dom";
-import gpay from "../../src/assets/images/gpay.png";
-import visa from "../../src/assets/images/visa.png";
-import gopay from "../../src/assets/images/gopay.png";
-import paypal from "../../src/assets/images/paypal.png";
-import dana from "../../src/assets/images/dana.png";
-import bca from "../../src/assets/images/bca.png";
-import bri from "../../src/assets/images/bri.png";
-import ovo from "../../src/assets/images/ovo.png";
+import gpay from "../assets/images/gpay.png";
+import visa from "../assets/images/visa.png";
+import gopay from "../assets/images/gopay.png";
+import paypal from "../assets/images/paypal.png";
+import dana from "../assets/images/dana.png";
+import bca from "../assets/images/bca.png";
+import bri from "../assets/images/bri.png";
+import ovo from "../assets/images/ovo.png";
 
 function PaymentPage() {
   const navigate = useNavigate();
