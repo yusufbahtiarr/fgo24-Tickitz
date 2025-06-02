@@ -10,6 +10,7 @@ import * as yup from "yup";
 // import { editUserAction } from "../redux/reducers/users";
 import { editUserAndSyncAuth } from "../redux/reducers/editUserAndSyncAuth";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import profile from "../../src/assets/images/profile.png";
 
 function ProfilePage() {
   // const users = useSelector((state) => state.users.data);
@@ -78,7 +79,7 @@ function ProfilePage() {
               </div>
               <div className="flex justify-center items-center mb-6">
                 <img
-                  src="../src/assets/images/profile.png"
+                  src={profile}
                   alt="profile"
                   className="size-[136px] object-cover rounded-full"
                 />

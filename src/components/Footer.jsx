@@ -2,6 +2,10 @@ import { RiInstagramFill } from "react-icons/ri";
 import { FaFacebookF } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { SiYoutube } from "react-icons/si";
+import logoWhite from "../../src/assets/images/Tickitz-white.png";
+import ebv from "../../src/assets/images/ebv.id 2.png";
+import cineone from "../../src/assets/images/CineOne21 2.png";
+import hiflic from "../../src/assets/images/hiflic.png";
 
 function Footer() {
   return (
@@ -10,7 +14,7 @@ function Footer() {
         <div className="flex flex-col justify-between gap-20 w-full sm:flex-row">
           <div className="flex flex-col w-full">
             <div className="w-[50%] sm:w-full">
-              <img src="../src/assets/images/Tickitz-white.png" alt="" />
+              <img src={logoWhite} alt="" />
             </div>
             <div className="text-third text-[18px] font-light">
               Stop waiting in line. Buy tickets conveniently, watch movies
@@ -31,16 +35,13 @@ function Footer() {
               <div className="font-bold text-[20px] text-left">OUR SPONSOR</div>
               <div className="flex flex-row items-center justify-between sm:flex-col gap-6 sm:justify-start sm:items-start">
                 <div>
-                  <img src="../src/assets/images/ebv.id 2.png" alt="ebv" />
+                  <img src={ebv} alt="ebv" />
                 </div>
                 <div>
-                  <img
-                    src="../src/assets/images/CineOne21 2.png"
-                    alt="cineone"
-                  />
+                  <img src={cineone} alt="cineone" />
                 </div>
                 <div>
-                  <img src="../src/assets/images/hiflic.png" alt="hiflic" />
+                  <img src={hiflic} alt="hiflic" />
                 </div>
               </div>
             </div>

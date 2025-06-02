@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { logoutUser } from "../redux/reducers/auths";
+import logo from "../../src/assets/images/Tickitz.png";
 
 function Navbar() {
   const users = useSelector((state) => state.auths.currentUser);
@@ -18,11 +19,7 @@ function Navbar() {
   return (
     <nav className="fixed top-0 right-0 left-0 flex flex-between flex-row bg-white px-20 py-4 z-100 items-center justify-center ">
       <div className="flex-1">
-        <img
-          className="w-30"
-          src="../src/assets/images/Tickitz.png"
-          alt="logo"
-        />
+        <img className="w-30" src={logo} alt="logo" />
       </div>
       <div className="flex-1 flex font-light justify-center items-center text-l h-10 gap-15">
         <Link to="/">

@@ -8,6 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { id as localeID } from "date-fns/locale";
 import { format } from "date-fns";
+import tickitz from "../../src/assets/images/tickitz2.png";
+import qr from "../../src/assets/images/qr.png";
 
 function TicketResultPage() {
   const navigate = useNavigate();
@@ -32,11 +34,7 @@ function TicketResultPage() {
           </div>
           <div className="mx-auto text-white z-1 mb-10 flex flex-col gap-3">
             <div>
-              <img
-                src="../src/assets/images/tickitz2.png"
-                alt="logo"
-                className="w-64"
-              />
+              <img src={tickitz} alt="logo" className="w-64" />
             </div>
             <div>
               <span className="text-[48px] font-bold">
@@ -64,11 +62,7 @@ function TicketResultPage() {
             <div className="h-[85%] w-full px-6 py-2">
               <div className="bg-white h-full rounded-xl">
                 <div className="px-16 mx-auto w-full flex justify-center items-center">
-                  <img
-                    src="../src/assets/images/qr.png"
-                    alt="image"
-                    className="p-6 w-80 h-80"
-                  />
+                  <img src={qr} alt="image" className="p-6 w-80 h-80" />
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="w-6 h-12 bg-gray2 rounded-r-full"></div>

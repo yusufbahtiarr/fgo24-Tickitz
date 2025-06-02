@@ -7,6 +7,10 @@ import { id as LocaleID } from "date-fns/locale";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addTempTicketAction } from "../redux/reducers/tickets";
+import ebv from "../../src/assets/images/ebv-gray.png";
+import hiflix from "../../src/assets/images/hiflix-gray.png";
+import cineone from "../../src/assets/images/cineone-gray.png";
+import xxi from "../../src/assets/images/xxi.svg";
 
 function BookingTicket({ titleMovie }) {
   const currentUser = useSelector((state) => state.auths.currentUser);
@@ -32,19 +36,19 @@ function BookingTicket({ titleMovie }) {
   const cinemas = [
     {
       name: "ebv.id",
-      image: "../src/assets/images/ebv-gray.png",
+      image: { ebv },
     },
     {
       name: "hiflix",
-      image: "../src/assets/images/hiflix-gray.png",
+      image: { hiflix },
     },
     {
       name: "cineone21",
-      image: "../src/assets/images/cineone-gray.png",
+      image: { cineone },
     },
     {
       name: "xxi",
-      image: "../src/assets/images/xxi.svg",
+      image: { xxi },
     },
   ];
 

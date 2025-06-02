@@ -10,6 +10,14 @@ import { useForm } from "react-hook-form";
 import ModalPayment from "../components/ModalPayment";
 import { addTempTicketAction } from "../redux/reducers/tickets";
 import { useNavigate } from "react-router-dom";
+import gpay from "../../src/assets/images/gpay.png";
+import visa from "../../src/assets/images/visa.png";
+import gopay from "../../src/assets/images/gopay.png";
+import paypal from "../../src/assets/images/paypal.png";
+import dana from "../../src/assets/images/dana.png";
+import bca from "../../src/assets/images/bca.png";
+import bri from "../../src/assets/images/bri.png";
+import ovo from "../../src/assets/images/ovo.png";
 
 function PaymentPage() {
   const navigate = useNavigate();
@@ -148,11 +156,7 @@ function PaymentPage() {
                       selectedPayment === "gpay" ? "bg-primary/40" : "bg-white"
                     }`}
                   >
-                    <img
-                      src="../src/assets/images/gpay.png"
-                      alt="gpay"
-                      className="w-15"
-                    />
+                    <img src={gpay} alt="gpay" className="w-15" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -170,11 +174,7 @@ function PaymentPage() {
                        selectedPayment === "visa" ? "bg-primary/40" : "bg-white"
                      }`}
                   >
-                    <img
-                      src="../src/assets/images/visa.png"
-                      alt="visa"
-                      className="w-15"
-                    />
+                    <img src={visa} alt="visa" className="w-15" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -194,11 +194,7 @@ function PaymentPage() {
                          : "bg-white"
                      }`}
                   >
-                    <img
-                      src="../src/assets/images/gopay.png"
-                      alt="gopay"
-                      className="w-15"
-                    />
+                    <img src={gopay} alt="gopay" className="w-15" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -218,11 +214,7 @@ function PaymentPage() {
                          : "bg-white"
                      }`}
                   >
-                    <img
-                      src="..../src/assets/images/paypal.png"
-                      alt="paypal"
-                      className="h-8"
-                    />
+                    <img src={paypal} alt="paypal" className="h-8" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -240,11 +232,7 @@ function PaymentPage() {
                        selectedPayment === "dana" ? "bg-primary/40" : "bg-white"
                      }`}
                   >
-                    <img
-                      src="../src/assets/images/dana.png"
-                      alt="dana"
-                      className="w-18"
-                    />
+                    <img src={dana} alt="dana" className="w-18" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -262,11 +250,7 @@ function PaymentPage() {
                        selectedPayment === "bca" ? "bg-primary/40" : "bg-white"
                      }`}
                   >
-                    <img
-                      src="../src/assets/images/bca.png"
-                      alt="bca"
-                      className="w-15"
-                    />
+                    <img src={bca} alt="bca" className="w-15" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -284,11 +268,7 @@ function PaymentPage() {
                        selectedPayment === "bri" ? "bg-primary/40" : "bg-white"
                      }`}
                   >
-                    <img
-                      src="../src/assets/images/bri.png"
-                      alt="bri"
-                      className="h-8"
-                    />
+                    <img src={bri} alt="bri" className="h-8" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
@@ -306,11 +286,7 @@ function PaymentPage() {
                        selectedPayment === "ovo" ? "bg-primary/40" : "bg-white"
                      }`}
                   >
-                    <img
-                      src="../src/assets/images/ovo.png"
-                      alt="ovo"
-                      className="w-15"
-                    />
+                    <img src={ovo} alt="ovo" className="w-15" />
                     <input
                       {...register("payment", { required: true })}
                       type="radio"
