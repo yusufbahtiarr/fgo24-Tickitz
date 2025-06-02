@@ -16,7 +16,7 @@ import { fetchData } from "../utils/apiClient";
 import Button from "../components/Button";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import RenderGenres from "../components/renderGenres";
+import RenderGenres from "../components/RenderGenres";
 
 function MoviePage() {
   const [movies, setMovies] = useState([]);
