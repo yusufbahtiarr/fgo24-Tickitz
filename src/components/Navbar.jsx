@@ -9,7 +9,6 @@ import { IoMdClose } from "react-icons/io";
 
 function Navbar() {
   const users = useSelector((state) => state.auths.currentUser);
-  console.log(users);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ function Navbar() {
             {/* <div className="h-[8px] flex justify-center w-[8px] bg-orange-500 rounded-full items-center"></div> */}
           </div>
         </Link>
-        <Link to="/movies " className="hover:text-primary">
+        <Link to="/movies" className="hover:text-primary">
           MOVIE
         </Link>
         <Link to="/buy-ticket" className="hover:text-primary">

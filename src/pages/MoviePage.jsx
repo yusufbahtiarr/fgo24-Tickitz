@@ -52,11 +52,11 @@ function MoviePage() {
       </header>
       <main className="flex flex-col mt-25 items-center text-center">
         <div className="w-full">
-          <div className="py-10 px-20 ">
+          <div className="p-6 sm:py-10 sm:px-20">
             <div className="flex flex-row items-end justify-start text-left bg-[url(../src/assets/images/heading.png)] h-[404px] p-10 rounded-[48px] bg-no-repeat bg-cover bg-center relative">
               <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-[linear-gradient(180deg,rgba(15,16,13,0)_0%,rgba(15,16,13,0.8)_65.1%)] z-10 rounded-[48px]"></div>
-              <div className="flex flex-col z-10">
-                <div>
+              <div className="flex flex-col z-10 gap-4">
+                <div className="flex justify-center sm:justify-start">
                   <Badge
                     variant="secondary"
                     className="font-black h-[54px] w-[350px] flex items-center justify-center text-[20px]"
@@ -65,12 +65,13 @@ function MoviePage() {
                   </Badge>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col text-center sm:text-left gap-4 ">
                   <div>
-                    <span className="text-[36px] text-white font-normal">
-                      Experience the Magic of Cinema:
+                    <span className="text-3xl sm:text-[36px] text-white font-normal">
+                      Experience the Magic of Cinema:{" "}
                     </span>
-                    <span className="text-[36px] font-black text-primary">
+                    <br className="block sm:hidden" />
+                    <span className="text-3xl sm:text-[36px] font-black text-primary">
                       Book Your Tickets Today
                     </span>
                   </div>
@@ -80,7 +81,7 @@ function MoviePage() {
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-col absolute bottom-10 right-10 gap-4 z-99 text-amber-50">
+                <div className="hidden sm:flex flex-col absolute bottom-10 right-10 gap-4 z-99 text-amber-50">
                   <div>
                     <FaAngleUp />
                   </div>
@@ -158,8 +159,8 @@ function ShowMovie({
   };
 
   return (
-    <div className="flex flex-col px-20 w-full">
-      <div className="grid grid-cols-5 gap-10 py-10">
+    <div className="flex flex-col p-6 sm:px-20 w-full">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-10 sm:py-10 mb-4 sm:mb-0">
         {filteredSearch.slice(OFFSET, LIMIT * PAGE).map((item) => (
           <div key={`list-movie-${item.id}`} className="mb-2 mx-auto">
             <div className="relative lg:w-70 w-50 mb-4 mx-auto">

@@ -45,9 +45,11 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
   };
 
   return (
-    <div className="px-20 flex flex-col w-full gap-10">
+    <div className="p-6 sm:px-20 flex flex-col w-full gap-10">
       <div className="flex flex-row w-full justify-between items-center gap-10">
-        <div className="title-section">Now Showing in Cinemas</div>
+        <div className="text-3xl text-left sm:title-section">
+          Now Showing in Cinemas
+        </div>
         <div>
           <Button
             variant="primary"
@@ -57,7 +59,7 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
           </Button>
         </div>
       </div>
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-col sm:flex-row gap-10">
         <div className="flex flex-col gap-4">
           <div className="text-[28px] text-left font-semibold w-95">
             Find movie
@@ -77,8 +79,8 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
         </div>
         <div className="flex flex-col gap-4">
           <div className="text-[28px] font-semibold text-left">Filters</div>
-          <div className="flex space-x-4">
-            {displayGenres.map((genre) => (
+          <div className="flex space-x-2 flex-wrap gap-2">
+            {displayGenres.slice(0, 4).map((genre) => (
               <button
                 key={genre.id}
                 className={`px-4 py-2 rounded-full border ${

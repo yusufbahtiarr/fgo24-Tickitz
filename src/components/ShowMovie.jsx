@@ -32,8 +32,8 @@ function ShowMovie() {
   }, []);
 
   return (
-    <div className="flex flex-col px-20 w-full">
-      <div className="grid grid-cols-5 gap-10 py-10">
+    <div className="flex flex-col p-6 sm:px-20 w-full">
+      <div className="grid grid-cols-5 gap-10 sm:py-10">
         {movies.map((item) => (
           <div key={item.id} className="mb-2 mx-auto">
             <div className="relative lg:w-70 w-50 mb-4 mx-auto">
