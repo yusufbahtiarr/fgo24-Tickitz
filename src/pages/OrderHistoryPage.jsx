@@ -22,11 +22,19 @@ function OrderHistoryPage() {
     }
   }, []);
   return (
-    <div className="min-w-screen min-h-screen">
+    <div>
       <Navbar />
-      <div className="mt-6 bg-gray2 min-h-full h-fit p-18">
-        <div className="p-10 flex flex-row gap-8 mb-10 h-full">
-          <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">
+      <div className="flex sm:hidden flex-row bg-white items-center justify-evenly text-[18px] mt-21">
+        <span className="text-fourth ">
+          <Link to="/profile">Account Settings</Link>
+        </span>
+        <span className="font-normal border-b-2 border-primary py-6">
+          Order History
+        </span>
+      </div>
+      <div className="sm:mt-4 bg-gray2 min-h-full h-fit sm:p-18">
+        <div className="p-6 sm:p-10 flex flex-row gap-8 sm:mb-10 h-full">
+          <div className="w-[30%] h-200 rounded-4xl bg-white hidden sm:flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
               <div className="flex flex-row justify-between items-center w-full">
                 <span className="font-light text-gray-700">INFO</span>
@@ -102,8 +110,8 @@ function OrderHistoryPage() {
               </div>
             </div>
           </div>
-          <div className="w-[70%] min-h-300 rounded-4xl flex flex-col gap-14">
-            <div className="flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
+          <div className="sm:w-[70%] sm:min-h-250 mb-10 sm:mb-0 rounded-4xl flex flex-col gap-8 sm:gap-10 w-full">
+            <div className="hidden sm:flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
               <span className="text-fourth ">
                 <Link to="/profile">Account Settings</Link>
               </span>
@@ -118,7 +126,7 @@ function OrderHistoryPage() {
                   <div className="bg-white rounded-3xl flex flex-col gap-4">
                     <div
                       key={`list-movie-${item.idTicket}`}
-                      className="flex flex-row justify-between px-12 py-10 "
+                      className="flex flex-col  sm:flex-row justify-between p-6 sm:px-12 sm:py-10 "
                     >
                       <div className="flex flex-col justify-between gap-2">
                         {/* <span>{item.idTicket}</span> */}
@@ -128,7 +136,7 @@ function OrderHistoryPage() {
                           })}{" "}
                           - {item.time}
                         </span>
-                        <span className="text-2xl font-semibold">
+                        <span className="text-xl sm:text-2xl font-semibold">
                           {item.titleMovie}
                         </span>
                         <span>
