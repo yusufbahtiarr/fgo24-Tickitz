@@ -14,30 +14,41 @@ function AdminMoviePage() {
     return <Navigate to="/" replace />;
   }
   return (
-    <div className="w-screen h-screen bg-gray2 ">
+    <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
-      <div className="flex flex-col mt-22 px-33 py-11 gap-10 w-full h-full">
-        <div className="px-15 py-10 flex flex-col gap-10 bg-white rounded-xl">
-          <div className="flex flex-row justify-between">
-            <div className="flex-1">
-              <span className="text-2xl font-bold">List Movie</span>
+      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full">
+        <div className="p-6 sm:px-15 sm:py-10 flex flex-col gap-10 bg-white rounded-xl">
+          <div className="flex flex-col gap-8 sm:gap-0 sm:flex-row justify-between">
+            <div className="sm:flex-1 flex flex-row justify-between items-center">
+              <span className="text-[18px] sm:text-2xl font-bold">
+                List Movie
+              </span>
+              <Button
+                variant="third"
+                className="text-white rounded-xl px-4 block sm:hidden"
+              >
+                <Link to="/admin-new-movie">Add Movies</Link>
+              </Button>
             </div>
-            <div className="flex-1 flex flex-row justify-end gap-4">
+            <div className="flex-1 flex flex-col sm:flex-row justify-end gap-4">
               {/* <CiCalendar /> */}
               <select
                 name="date"
                 id="date"
-                className="px-9 rounded-xl bg-gray1"
+                className="px-9 py-4 rounded-xl bg-gray1"
               >
                 <option value="november">November 2023</option>
               </select>
-              <Button variant="third" className="text-white rounded-xl px-4">
+              <Button
+                variant="third"
+                className="text-white rounded-xl px-4 hidden sm:flex"
+              >
                 <Link to="/admin-new-movie">Add Movies</Link>
               </Button>
             </div>
           </div>
-          <div>
-            <table className="w-full text-center">
+          <div className="overflow-hidden scroll-x scrollbar-hide scroll-x w-full">
+            <table className="w-200 sm:w-full text-center">
               <thead>
                 <tr>
                   <th className="text-[12px] font-bold p-4">No</th>
@@ -50,20 +61,20 @@ function AdminMoviePage() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray1">
-                  <td className="p-4">1</td>
-                  <td className="p-4 items-center">
+                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
+                  <td className="py-4 px-2 sm:p-4">1</td>
+                  <td className="py-4 px-2 sm:p-4 items-center">
                     <img
                       src="../src/assets/images/list1.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
                   </td>
-                  <td className="p-4">Spiderman HomeComing</td>
-                  <td className="p-4">Action, Adventure</td>
-                  <td className="p-4">07/05/2023</td>
-                  <td className="p-4">2 Hours 15 Minute</td>
-                  <td className="p-4 flex flexx-row gap-2 justify-center items-center">
+                  <td className="py-4 px-2 sm:p-4">Spiderman HomeComing</td>
+                  <td className="py-4 px-2 sm:p-4">Action, Adventure</td>
+                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
+                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
+                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
                     <button className="size-[31px] flex justify-center items-center bg-blue rounded">
                       <IoMdEye className="text-white" />
                     </button>
@@ -75,8 +86,8 @@ function AdminMoviePage() {
                     </button>
                   </td>
                 </tr>
-                <tr className="border-t border-gray1">
-                  <td className="p-4">1</td>
+                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
+                  <td className="p-4">2</td>
                   <td className="p-4 items-center">
                     <img
                       src="../src/assets/images/list2.png"
@@ -84,11 +95,11 @@ function AdminMoviePage() {
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
                   </td>
-                  <td className="p-4">Avengers End Game</td>
-                  <td className="p-4">Sci-fi, Adventure</td>
-                  <td className="p-4">07/05/2023</td>
-                  <td className="p-4">2 Hours 15 Minute</td>
-                  <td className="p-4 flex flexx-row gap-2 justify-center items-center">
+                  <td className="py-4 px-2 sm:p-4">Avengers End Game</td>
+                  <td className="py-4 px-2 sm:p-4">Sci-fi, Adventure</td>
+                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
+                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
+                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
                     <button className="size-[31px] flex justify-center items-center bg-blue rounded">
                       <IoMdEye className="text-white" />
                     </button>
@@ -100,20 +111,20 @@ function AdminMoviePage() {
                     </button>
                   </td>
                 </tr>
-                <tr className="border-t border-gray1">
-                  <td className="p-4">1</td>
-                  <td className="p-4 items-center">
+                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
+                  <td className="py-4 px-2 sm:p-4">3</td>
+                  <td className="py-4 px-2 sm:p-4 items-center">
                     <img
                       src="../src/assets/images/list1.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
                   </td>
-                  <td className="p-4">Spiderman HomeComing</td>
-                  <td className="p-4">Action, Adventure</td>
-                  <td className="p-4">07/05/2023</td>
-                  <td className="p-4">2 Hours 15 Minute</td>
-                  <td className="p-4 flex flexx-row gap-2 justify-center items-center">
+                  <td className="py-4 px-2 sm:p-4">Spiderman HomeComing</td>
+                  <td className="py-4 px-2 sm:p-4">Action, Adventure</td>
+                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
+                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
+                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
                     <button className="size-[31px] flex justify-center items-center bg-blue rounded">
                       <IoMdEye className="text-white" />
                     </button>
@@ -125,20 +136,20 @@ function AdminMoviePage() {
                     </button>
                   </td>
                 </tr>
-                <tr className="border-t border-gray1">
-                  <td className="p-4">1</td>
-                  <td className="p-4 items-center">
+                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
+                  <td className="py-4 px-2 sm:p-4">4</td>
+                  <td className="py-4 px-2 sm:p-4 items-center">
                     <img
                       src="../src/assets/images/list2.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
                   </td>
-                  <td className="p-4">Avengers End Game</td>
-                  <td className="p-4">Sci-fi, Adventure</td>
-                  <td className="p-4">07/05/2023</td>
-                  <td className="p-4">2 Hours 15 Minute</td>
-                  <td className="p-4 flex flexx-row gap-2 justify-center items-center">
+                  <td className="py-4 px-2 sm:p-4">Avengers End Game</td>
+                  <td className="py-4 px-2 sm:p-4">Sci-fi, Adventure</td>
+                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
+                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
+                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
                     <button className="size-[31px] flex justify-center items-center bg-blue rounded">
                       <IoMdEye className="text-white" />
                     </button>
@@ -150,20 +161,20 @@ function AdminMoviePage() {
                     </button>
                   </td>
                 </tr>
-                <tr className="border-t border-gray1">
-                  <td className="p-4">1</td>
-                  <td className="p-4 items-center">
+                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
+                  <td className="py-4 px-2 sm:p-4">5</td>
+                  <td className="py-4 px-2 sm:p-4 items-center">
                     <img
                       src="../src/assets/images/list1.png"
                       alt="images"
                       className="inline-block w-[46px] h-[38px] rounded object-cover"
                     />
                   </td>
-                  <td className="p-4">Spiderman HomeComing</td>
-                  <td className="p-4">Action, Adventure</td>
-                  <td className="p-4">07/05/2023</td>
-                  <td className="p-4">2 Hours 15 Minute</td>
-                  <td className="p-4 flex flexx-row gap-2 justify-center items-center">
+                  <td className="py-4 px-2 sm:p-4">Spiderman HomeComing</td>
+                  <td className="py-4 px-2 sm:p-4">Action, Adventure</td>
+                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
+                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
+                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
                     <button className="size-[31px] flex justify-center items-center bg-blue rounded">
                       <IoMdEye className="text-white" />
                     </button>
