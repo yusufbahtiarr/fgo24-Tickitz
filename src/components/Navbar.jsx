@@ -98,7 +98,7 @@ function Navbar() {
           </div>
         )}
         {dropdown && (
-          <div className="absolute flex flex-col sm:right-16 items-center justify-between h-fit p-5 gap-4 top-19 right-0 z-99 bg-white shadow rounded w-full sm:w-50">
+          <div className="absolute flex flex-col sm:right-16 items-center justify-between h-fit p-5 gap-4 top-19 sm:top-23 right-0 z-99 bg-white shadow rounded w-full sm:w-50">
             <div className="flex sm:hidden flex-col gap-6 justify-between items-center mb-2">
               <Link to="/">
                 <div className="flex justify-center flex-col items-center font-dmsans">
