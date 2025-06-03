@@ -13,7 +13,7 @@ function AdminPage() {
   return (
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
-      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full">
+      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full sm:justify-center sm:w-full sm:items-center sm:w-330">
         <div className="p-6 sm:px-15 sm:py-10 flex flex-col gap-8 sm:gap-10 bg-white rounded-xl">
           <div>
             <span className="text-[18px] sm:text-2xl font-bold">
@@ -53,7 +53,11 @@ function AdminPage() {
               <span>$0</span>
             </div>
             <div className="flex flex-col gap-4 sm:gap-6 min-w-max">
-              <img src={graph} alt="graph" className="w-[450px] h-auto" />
+              <img
+                src={graph}
+                alt="graph"
+                className="w-[450px] sm:w-full h-auto"
+              />
               <div className="flex flex-row justify-between px-6 text-[12px] sm:text-[16px] mb-6 sm:mb-0">
                 <span>Jan</span>
                 <span>Feb</span>
@@ -104,7 +108,11 @@ function AdminPage() {
               <span>$0</span>
             </div>
             <div className="flex flex-col gap-4 sm:gap-6 min-w-max">
-              <img src={graph} alt="graph" className="w-[450px] h-auto" />
+              <img
+                src={graph}
+                alt="graph"
+                className="w-[450px] sm:w-full h-auto"
+              />
               <div className="flex flex-row justify-between px-6 text-[12px] sm:text-[16px] mb-6 sm:mb-0">
                 <span>Jan</span>
                 <span>Feb</span>

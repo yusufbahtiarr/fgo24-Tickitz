@@ -41,7 +41,7 @@ function AdminMoviePage() {
               </select>
               <Button
                 variant="third"
-                className="text-white rounded-xl px-4 hidden sm:flex"
+                className="text-white rounded-xl px-4 hidden sm:block"
               >
                 <Link to="/admin-new-movie">Add Movies</Link>
               </Button>

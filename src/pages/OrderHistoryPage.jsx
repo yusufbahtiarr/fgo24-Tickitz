@@ -24,7 +24,7 @@ function OrderHistoryPage() {
   return (
     <div>
       <Navbar />
-      <div className="flex sm:hidden flex-row bg-white items-center justify-evenly text-[18px] mt-21">
+      <div className="flex sm:hidden flex-row bg-white items-center justify-evenly text-[18px] mt-21 overflow-y-hidden">
         <span className="text-fourth ">
           <Link to="/profile">Account Settings</Link>
         </span>
@@ -32,8 +32,8 @@ function OrderHistoryPage() {
           Order History
         </span>
       </div>
-      <div className="sm:mt-4 bg-gray2 min-h-full h-fit sm:p-18">
-        <div className="p-6 sm:p-10 flex flex-row gap-8 sm:mb-10 h-full">
+      <div className="sm:mt-4 bg-gray2 min-h-[98vh] h-fit sm:p-18 sm:pb-10">
+        <div className="p-6 sm:p-10 flex flex-row gap-8 sm:mb-8 h-full">
           <div className="w-[30%] h-200 rounded-4xl bg-white hidden sm:flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
               <div className="flex flex-row justify-between items-center w-full">
@@ -53,7 +53,7 @@ function OrderHistoryPage() {
                 <span className="text-secondary text-[20px] ffont-semibold">
                   {users?.firstName
                     ? `${users?.firstName} ${users?.lastName}`
-                    : users?.email}
+                    : users?.email.split("@")[0]}
                 </span>
               </div>
               <div>
@@ -110,7 +110,7 @@ function OrderHistoryPage() {
               </div>
             </div>
           </div>
-          <div className="sm:w-[70%] sm:min-h-250 mb-10 sm:mb-0 rounded-4xl flex flex-col gap-8 sm:gap-10 w-full">
+          <div className="sm:w-[70%] sm:min-h-180 mb-10 sm:mb-0 rounded-4xl flex flex-col gap-8 sm:gap-10 w-full">
             <div className="hidden sm:flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
               <span className="text-fourth ">
                 <Link to="/profile">Account Settings</Link>

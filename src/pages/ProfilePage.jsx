@@ -75,7 +75,7 @@ function ProfilePage() {
           <Link to="/order-history">Order History</Link>
         </span>
       </div>
-      <div className="sm:mt-4 h-full w-full bg-gray2 sm:p-18 p-6">
+      <div className="sm:mt-4 h-full w-full bg-gray2 sm:p-18 sm:pb-10 p-6">
         <div className="sm:p-10 flex flex-col sm:flex-row gap-8 ">
           <div className="w-full sm:w-[30%] h-200 rounded-4xl bg-white flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
@@ -153,7 +153,7 @@ function ProfilePage() {
               </div>
             </div>
           </div>
-          <div className="sm:w-[70%] h-300 rounded-4xl flex flex-col gap-8 mb-8 sm:mb-0">
+          <div className="sm:w-[70%] h-fit rounded-4xl flex flex-col gap-8 mb-8 sm:mb-0">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className=" flex flex-col gap-8 sm:gap-10"
