@@ -47,12 +47,12 @@ function PaymentPage() {
   }
 
   return (
-    <div className="w-screen h-fit bg-gray2 *:box-border *:*:box-border overflow-x-hidden relative">
+    <div className="h-fit bg-gray2 *:box-border *:*:box-border sm:overflow-x-hidden relative">
       <Navbar />
-      <div className="h-fit w-full mt-21 px-43 ">
+      <div className="h-fit w-full mt-21 sm:p-0 sm:px-43 ">
         <Stepper step2="bg-green2" step3="bg-primary" />
-        <section className="w-full h-full flex flex-row gap-8 mb-20">
-          <div className="min-w-[900px] py-10 px-10 flex flex-col gap-10 mx-auto bg-white">
+        <section className="sm:w-full h-full flex p-6  flex-col sm:flex-row gap-8 mb-12 sm:mb-20">
+          <div className="w-full sm:min-w-[900px] py-10 px-10 rounded-2xl sm:rounded flex flex-col gap-10 mx-auto bg-white">
             <div className="flex flex-col gap-6">
               <div className="font-bold text-2xl mb-4">Payment Info</div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
@@ -148,7 +148,7 @@ function PaymentPage() {
                   </div>
                 </div>
                 <div className="font-bold text-2xl mt-6">Payment Method</div>
-                <div className="grid grid-cols-4 w-full gap-6 mb-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 w-full gap-6 mb-6">
                   <label
                     htmlFor="gpay"
                     className={`shadow h-[60px]  border-gray-200 flex justify-center items-center cursor-pointer border rounded-lg flex-1  text-center my-auto transition-all"

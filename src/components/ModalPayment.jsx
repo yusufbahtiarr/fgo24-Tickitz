@@ -32,12 +32,12 @@ function ModalPayment({ totalPayment, modal, setModal }) {
   };
   return (
     <div
-      className={`w-full h-full flex-col justify-center items-center absolute top-0 left-0 right-0 bg-black/60 ${
+      className={`sm:w-full h-full flex-col sm:justify-center justify-start sm:items-center absolute py-10 px-6  top-0  sm:top-0 sm:left-0 right-0 bg-black/60 ${
         modal ? "flex" : "hidden"
       }`}
     >
       <div
-        className={`h-[520px] w-[600px] rounded-xl shadow border-e-amber-5 mx-auto bg-white ${
+        className={`h-fit sm:h-[520px] sm:w-[600px] w-full rounded-xl shadow border-e-amber-5 mx-auto bg-white ${
           modal ? "flex" : "hidden"
         }`}
       >
@@ -45,8 +45,8 @@ function ModalPayment({ totalPayment, modal, setModal }) {
           <div className="flex justify-center items-center w-full">
             <span className="text-2xl font-bold">Payment Info</span>
           </div>
-          <div className="flex flex-row w-full">
-            <div className="flex-1 flex flx-row justify-between items-center">
+          <div className="flex flex-col sm:flex-row w-full">
+            <div className="flex-1 flex flex-row justify-between items-center">
               <div className="w-[70%] flex justify-between items-center text-gray3">
                 <div>No. Rekening Virtual</div>
                 <div>:</div>
@@ -61,7 +61,7 @@ function ModalPayment({ totalPayment, modal, setModal }) {
               <div>
                 <Button
                   variant="outline"
-                  className="font-normal text-sm"
+                  className="font-normal text-sm h-10"
                   onClick={handleCopy}
                 >
                   Copy
@@ -69,14 +69,14 @@ function ModalPayment({ totalPayment, modal, setModal }) {
               </div>
             </div>
           </div>
-          <div className="flex flex-row w-full">
+          <div className="flex flex-col gap-4 sm:gap-0 sm:flex-row w-full">
             <div className="flex-1 flex flx-row justify-between items-center">
-              <div className="w-[70%] flex justify-between items-center  text-gray3">
+              <div className="w-full sm:w-[70%] flex justify-between items-center text-gray3">
                 <div>Total Payment</div>
                 <div>:</div>
               </div>
             </div>
-            <div className="flex-1 flex flex-row justify-end items-center">
+            <div className="flex-1 flex flex-row justify-start sm:justify-end items-center">
               <div>
                 <span className="text-[18px] font-bold text-blue">
                   Rp. {totalPayment}
