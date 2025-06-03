@@ -67,9 +67,17 @@ function ProfilePage() {
   return (
     <div>
       <Navbar />
-      <div className="mt-6 h-full w-full bg-gray2 p-18">
-        <div className="p-10 flex flex-row gap-8">
-          <div className="w-[30%] h-200 rounded-4xl bg-white flex flex-col">
+      <div className="flex sm:hidden flex-row bg-white items-center justify-evenly text-[18px] mt-21">
+        <span className="font-normal border-b-2 border-primary py-6">
+          Account Settings
+        </span>
+        <span className="text-fourth">
+          <Link to="/order-history">Order History</Link>
+        </span>
+      </div>
+      <div className="sm:mt-6 h-full w-full bg-gray2 sm:p-18 p-6">
+        <div className="sm:p-10 flex flex-col sm:flex-row gap-8 ">
+          <div className="w-full sm:w-[30%] h-200 rounded-4xl bg-white flex flex-col">
             <div className="flex-1 flex flex-col p-10 gap-4 justify-between items-center">
               <div className="flex flex-row justify-between items-center w-full">
                 <span className="font-light text-gray-700">INFO</span>
@@ -145,13 +153,13 @@ function ProfilePage() {
               </div>
             </div>
           </div>
-          <div className="w-[70%] h-300 rounded-4xl flex flex-col gap-14">
+          <div className="sm:w-[70%] h-300 rounded-4xl flex flex-col gap-14 mb-8 sm:mb-0">
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className=" flex flex-col gap-12"
+              className=" flex flex-col gap-8 sm:gap-12"
               autoComplete="off"
             >
-              <div className="flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
+              <div className="hidden sm:flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
                 <span className="font-normal border-b-2 border-primary py-6">
                   Account Settings
                 </span>
@@ -164,7 +172,7 @@ function ProfilePage() {
                   <span className="font-normal">Details Information</span>
                 </div>
                 <hr className="border-1 border-gray2 mb-4" />
-                <div className="flex flex-row gap-9">
+                <div className="flex flex-col sm:flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="firstName" className="text-fourth">
                       First Name
@@ -202,7 +210,7 @@ function ProfilePage() {
                     <span className="text-red">{errors.lastName?.message}</span>
                   </div>
                 </div>
-                <div className="flex flex-row gap-9 mb-4">
+                <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="email" className="text-fourth">
                       E-mail
@@ -244,7 +252,7 @@ function ProfilePage() {
                   <span className="font-normal">Account and Privacy</span>
                 </div>
                 <hr className="border-1 border-gray2 mb-4" />
-                <div className="flex flex-row gap-9">
+                <div className="flex flex-col sm:flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="newPassword" className="text-fourth">
                       New Password
@@ -312,7 +320,7 @@ function ProfilePage() {
               <div className="w-full">
                 <Button
                   variant="third"
-                  className="text-white w-[30%] capitalize rounded-2xl"
+                  className="text-white w-full sm:w-[30%] capitalize rounded-2xl"
                 >
                   Update changes
                 </Button>
