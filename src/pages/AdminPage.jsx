@@ -44,17 +44,17 @@ function AdminPage() {
           <div>
             <span className="font-semibold">Avengers: End Game</span>
           </div>
-          <div className="flex flex-row gap-4 sm:gap-6 overflow-x-hidden scroll-auto">
-            <div className="flex flex-col justify-between pb-10 text-[12px] sm:text-[16px]">
+          <div className="flex flex-row gap-4 sm:gap-6 overflow-x-auto scroll-smooth">
+            <div className="flex flex-col justify-between pb-10 text-[12px] sm:text-[16px] shrink-0">
               <span>$800</span>
               <span>$600</span>
               <span>$400</span>
               <span>$200</span>
               <span>$0</span>
             </div>
-            <div className="flex flex-col gap-4 sm:gap-6 overflow-x-hidden">
-              <img src={graph} alt="graph" className="w-200" />
-              <div className="flex flex-row justify-between px-6 text-[12px] sm:text-[16px]">
+            <div className="flex flex-col gap-4 sm:gap-6 min-w-max">
+              <img src={graph} alt="graph" className="w-[450px] h-auto" />
+              <div className="flex flex-row justify-between px-6 text-[12px] sm:text-[16px] mb-6 sm:mb-0">
                 <span>Jan</span>
                 <span>Feb</span>
                 <span>Mar</span>
@@ -95,17 +95,17 @@ function AdminPage() {
           <div>
             <span className="font-semibold">Adventure, Purwokerto</span>
           </div>
-          <div className="flex flex-row gap-4 sm:gap-6">
-            <div className="flex flex-col justify-between pb-10 text-[12px] sm:text-[16px]">
+          <div className="flex flex-row gap-4 sm:gap-6 overflow-x-auto scroll-smooth">
+            <div className="flex flex-col justify-between pb-10 text-[12px] sm:text-[16px] shrink-0">
               <span>$800</span>
               <span>$600</span>
               <span>$400</span>
               <span>$200</span>
               <span>$0</span>
             </div>
-            <div className="flex flex-col gap-4 sm:gap-6 grow">
-              <img src={graph} alt="graph" />
-              <div className="flex flex-row justify-between px-6 text-[12px] sm:text-[16px]">
+            <div className="flex flex-col gap-4 sm:gap-6 min-w-max">
+              <img src={graph} alt="graph" className="w-[450px] h-auto" />
+              <div className="flex flex-row justify-between px-6 text-[12px] sm:text-[16px] mb-6 sm:mb-0">
                 <span>Jan</span>
                 <span>Feb</span>
                 <span>Mar</span>
