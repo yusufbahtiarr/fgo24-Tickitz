@@ -10,14 +10,14 @@ function AdminNewMoviePage() {
     return <Navigate to="/" replace />;
   }
   return (
-    <div className="w-screen min-h-screen h-fit bg-gray2 ">
+    <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
-      <div className="flex flex-col items-center mt-22 py-11 gap-10 w-full h-full">
-        <div className="w-180 h-fit bg-white rounded max-wd-md mx-auto max-sm:max-w-100">
-          <div className="p-10">
-            <span className="text-2xl">Add New Movie</span>
+      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full">
+        <div className="sm:w-180 h-fit bg-white rounded-2xl mx-auto sm:max-w-180">
+          <div className="p-6 pb-0 sm:p-10">
+            <span className="text-[18px] sm:text-2xl">Add New Movie</span>
           </div>
-          <form className="text-gray3 px-15 pb-15 font-normal flex flex-col gap-5">
+          <form className="text-gray3 p-6 sm:p-0 sm:px-15 sm:pb-15 font-normal flex flex-col gap-5">
             <div className="flex flex-col w-26 text-[16px] gap-2">
               <span>Upload Image</span>
               <button className="p-1 bg-primary text-white rounded">
@@ -115,7 +115,7 @@ lives with his Aunt May, | "
                 className="border border-gray1 w-full px-4 py-3"
               />
             </div>
-            <div className="flex flex-col gap-2 w-50">
+            <div className="flex flex-col gap-2 w-full sm:w-50">
               <label htmlFor="location">Set Date & Time</label>
               <input
                 type="date"
@@ -125,13 +125,14 @@ lives with his Aunt May, | "
                 className="border border-gray1 w-full px-4 py-3"
               />
             </div>
-            <div className="flex flex-row  items-center gap-8 w-50">
+            <div className="flex flex-row justify-start items-center gap-8 w-full sm:w-50">
               <button className="border px-6 py-0 rounded border-primary">
                 <LuPlus className="text-primary size-[30px]" />
               </button>
               <span className="text-sm">08:30am</span>
               <span className="text-sm">10:30pm</span>
             </div>
+            <hr className="border border-gray1" />
             <button className="bg-primary text-white font-bold py-3 rounded">
               Save Movie
             </button>
