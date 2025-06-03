@@ -6,6 +6,8 @@ This repository contains implementaion Slicing web app Tickitz with React.
 
 ![Preview](Screenshot.png)
 
+![Preview](Screenshot_1.png)
+
 ## How to Run this project
 
 1. Clone this project
