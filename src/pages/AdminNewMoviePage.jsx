@@ -63,14 +63,14 @@ function AdminNewMoviePage() {
                     name="hour"
                     id="hour"
                     placeholder="2"
-                    className="border border-gray1 w-full px-4 py-3 text-center"
+                    className="border border-gray1 w-full px-4 py-3 text-left sm:text-center"
                   />
                   <input
                     type="text"
                     name="minute"
                     id="minute"
                     placeholder="13"
-                    className="border border-gray1 w-full px-4 py-3 text-center"
+                    className="border border-gray1 w-full px-4 py-3 text-left sm:text-center"
                   />
                 </div>
               </div>
