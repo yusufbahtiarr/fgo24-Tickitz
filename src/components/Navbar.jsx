@@ -74,7 +74,7 @@ function Navbar() {
           )}
         </div>
         {!users ? (
-          <div className="flex-1 flex gap-2 justify-end text-right">
+          <div className="flex-1 hidden sm:flex gap-2 justify-end text-right">
             <Button variant="secondary">
               <Link to="/login">login</Link>
             </Button>
@@ -123,18 +123,31 @@ function Navbar() {
                 </>
               )}
             </div>
-            <button
-              onClick={() => navigate("/profile")}
-              className="p-2 rounded text-white bg-primary  hover:bg-primary/80 w-full"
-            >
-              Profile
-            </button>
-            <button
-              onClick={logout}
-              className="p-2 rounded text-white bg-primary hover:bg-primary/80 w-full"
-            >
-              Log Out
-            </button>
+            {!users ? (
+              <div className="flex-1 flex sm:hidden gap-2 justify-end text-right">
+                <Button variant="secondary">
+                  <Link to="/login">login</Link>
+                </Button>
+                <Button variant="primary">
+                  <Link to="/register">sign up</Link>
+                </Button>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="p-2 rounded text-white bg-primary  hover:bg-primary/80 w-full"
+                >
+                  Profile
+                </button>
+                <button
+                  onClick={logout}
+                  className="p-2 rounded text-white bg-primary hover:bg-primary/80 w-full"
+                >
+                  Log Out
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
