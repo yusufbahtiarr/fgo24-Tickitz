@@ -1,6 +1,6 @@
 function Stepper({ step2, step3 }) {
   return (
-    <div className="w-full h-fit flex justify center">
+    <div className="w-full h-fit hidden md:flex justify center">
       <div className="flex mx-auto w-[50%] h-fit items-center justify-center py-10 gap-10">
         <div className="flex items-center justify-center flex-col gap-4">
           <div className="w-12 h-12 bg-green2 text-white rounded-full flex items-center justify-center">
