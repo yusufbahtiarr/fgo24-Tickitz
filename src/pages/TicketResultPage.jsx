@@ -1,7 +1,10 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+import {
+  HiOutlineArrowNarrowDown,
+  HiOutlineArrowNarrowRight,
+} from "react-icons/hi";
 import Button from "../components/Button";
 import { HiOutlineDownload } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,9 +25,9 @@ function TicketResultPage() {
   return (
     <div>
       <Navbar />
-      <div className="h-[92vh] box-border max-w-[100%] mt-[86px] flex flex-row">
-        <div className="w-[60%] h-[100] bg-amber-200 flex justify-center items-center relative">
-          <div className="h-[100%]">
+      <div className="h-fit sm:h-[92vh] box-border max-w-[100%] mt-[86px] flex flex-col sm:flex-row">
+        <div className="w-full sm:w-[60%] h-[92vh] sm:h-[100] bg-amber-200 p-6 sm:p-0 flex justify-center items-center relative">
+          <div className="h-full sm:h-[100%]">
             <img
               src="../src/assets/images/background.png"
               alt="movie"
@@ -32,37 +35,42 @@ function TicketResultPage() {
             />
             <div className="absolute top-0 left-0 right-0 h-full w-full bg-black opacity-60"></div>
           </div>
-          <div className="mx-auto text-white z-1 mb-10 flex flex-col gap-3">
+          <div className="mx-auto text-white z-1 mb-10 flex flex-col sm:justify-start justify-center items-center gap-3 p-6 sm:p-0">
             <div>
-              <img src={tickitz} alt="logo" className="w-64" />
+              <img src={tickitz} alt="logo" className="w-44 sm:w-64" />
             </div>
-            <div>
-              <span className="text-[48px] font-bold">
+            <div className="w-full text-center sm:text-left">
+              <span className="text-[32px] sm:text-[48px] font-bold ">
                 Thankyou For Purchasing
               </span>
             </div>
-            <div>
-              <span className="text-2xl font-light">
+            <div className="w-full text-center sm:text-left">
+              <span className="text-[18px] sm:text-2xl font-light">
                 Save or print your ticket before going to the cinema. Enjoy your
                 movie!
               </span>
             </div>
-            <div className="flex flex-row justify-between items-center w-[41%]">
+            <div className="flex flex-col sm:flex-row justify-between items-center w-full sm:w-[41%] gap-4 sm:gap-0">
               <span className="text-[18px] font-bold">
                 Please Download Your Ticket
               </span>
               <span>
-                <HiOutlineArrowNarrowRight className="size-6" />
+                <HiOutlineArrowNarrowRight className="size-6 hidden sm:flex" />
+                <HiOutlineArrowNarrowDown className="size-6 flex sm:hidden" />
               </span>
             </div>
           </div>
         </div>
-        <div className="w-[40%] h-full px-26 py-10 bg-gray2">
+        <div className="w-full sm:w-[40%] h-full px-6 sm:px-26 py-10 bg-gray2">
           <div className="flex flex-col rounded-xl h-full items-center gap-4">
-            <div className="h-[85%] w-full px-6 py-2">
-              <div className="bg-white h-full rounded-xl">
-                <div className="px-16 mx-auto w-full flex justify-center items-center">
-                  <img src={qr} alt="image" className="p-6 w-80 h-80" />
+            <div className="h-[85%] w-full sm:px-6 py-2">
+              <div className="bg-white h-full rounded-xl pb-8 sm:pb-0">
+                <div className="mx-auto w-full flex justify-center items-center">
+                  <img
+                    src={qr}
+                    alt="image"
+                    className="p-6 w-100 sm:w-80 h-80"
+                  />
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="w-6 h-12 bg-gray2 rounded-r-full"></div>
