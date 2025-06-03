@@ -13,7 +13,7 @@ function AdminNewMoviePage() {
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
       <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full">
-        <div className="sm:w-180 h-fit bg-white rounded-2xl mx-auto sm:max-w-180">
+        <div className="w-full sm:w-180 h-fit bg-white rounded-2xl mx-auto sm:max-w-180">
           <div className="p-6 pb-0 sm:p-10">
             <span className="text-[18px] sm:text-2xl">Add New Movie</span>
           </div>
@@ -44,7 +44,7 @@ function AdminNewMoviePage() {
                 className="border border-gray1 w-full px-4 py-3"
               />
             </div>
-            <div className="flex flex-row gap-8">
+            <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
               <div className="flex-1 flex flex-col gap-2">
                 <label htmlFor="movie">Release date</label>
                 <input
@@ -57,7 +57,7 @@ function AdminNewMoviePage() {
               </div>
               <div className="flex-1 flex flex-col justify-between">
                 <label htmlFor="hour">Duration (hour / minute)</label>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     name="hour"
