@@ -17,6 +17,9 @@ import { Provider } from "react-redux";
 import { PersistGate } from "./../node_modules/redux-persist/es/integration/react";
 import { persistor, store } from "./redux/store";
 import Test from "./pages/Test";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
   },
   {
     path: "/order",
@@ -89,6 +96,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <RouterProvider router={router} />
+        <ToastContainer />
       </PersistGate>
     </Provider>
   );

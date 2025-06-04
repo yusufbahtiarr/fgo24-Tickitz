@@ -77,6 +77,7 @@ To develop this app, we are using some dependencies:
 - Axios
 - React Icons
 - React Hook Form
+- React Toastify
 
 And frontend tooling, the one and only:
 
