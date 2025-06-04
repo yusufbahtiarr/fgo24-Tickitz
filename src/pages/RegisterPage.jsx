@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import logo2 from "../assets/images/tickitz2.png";
 
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,44 +54,32 @@ function RegisterPage() {
   return (
     <div className="w-screen h-screen bg-[url(../src/assets/images/background.png)] object-cover bg-no-repeat bg-center relative">
       <div className="absolute w-full h-full top-0 left-0 right-0 bg-black/60 z-0"></div>
-      <div className="relative w-full h-full flex justify-center items-center z-99">
-        <div className="pt-2 w-[546px] h-fit bg-primary pb-4 flex flex-col bg-opacity-10 justify-center items-center rounded-2xl">
-          <div className="w-[300px]">
-            <img
-              className="w-206px h-104px"
-              src="./src/assets/images/tickitz2.png"
-              alt="image 1"
-            />
+      <div className="relative px-4 sm:px-0 w-full h-full flex justify-center items-center z-99">
+        <div className="pt-2 w-full sm:w-[546px] h-fit bg-primary pb-4 flex flex-col bg-opacity-10 justify-center items-center rounded-2xl">
+          <div className="w-[160px] py-2 sm:py-0 sm:w-[300px]">
+            <img className="w-206px h-104px" src={logo2} alt="image 1" />
           </div>
-          <div className="bg-white w-full rounded h-fit border border-orange-200 p-10 flex flex-col gap-4 justify-center items-center pb-8">
-            <div className="flex flex-row items-center gap-4 mb-10 w-full justify-between">
+          <div className="bg-white w-full rounded h-fit border border-orange-200 p-6 sm:p-10 flex flex-col gap-4 justify-center items-center pb-8">
+            <div className="hidden sm:flex flex-row items-center gap-4 mb-10 w-full justify-between">
               <div className=" flex flex-col justify-between items-center gap-4">
                 <div className="rounded-full size-12 bg-primary flex items-center justify-center font-medium text-white">
                   <span className="text-third">1</span>
                 </div>
                 <span>Fill Form</span>
               </div>
-              <img
-                src="../src/assets/images/line-through.png"
-                className="h-[2px] w-20"
-                alt="line"
-              />
+              <div className="border-dashed border-2 border-gray1 w-18"></div>
               <div className=" flex flex-col justify-between items-center gap-4">
                 <div className="rounded-full size-12 bg-third flex items-center justify-center font-medium text-secondary">
                   <span className="text-secondary">2</span>
                 </div>
-                <span className="text-third">Active</span>
+                <span className="text-primary/50">Active</span>
               </div>
-              <img
-                src="../src/assets/images/line-through.png"
-                className="h-[2px] w-20"
-                alt="line"
-              />
+              <div className="border-dashed border-2 border-gray1 w-18"></div>
               <div className=" flex flex-col justify-center items-center gap-4">
                 <div className="rounded-full size-12 bg-third flex items-center justify-center font-medium text-secondary">
                   <span className="text-secondary">3</span>
                 </div>
-                <span className="text-third">Done</span>
+                <span className="text-primary/50">Done</span>
               </div>
             </div>
             <form
