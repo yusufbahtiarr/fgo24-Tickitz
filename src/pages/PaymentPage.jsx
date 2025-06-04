@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import gpay from "../assets/images/gpay.png";
 import visa from "../assets/images/visa.png";
 import gopay from "../assets/images/gopay.png";
-import paypal from "../assets/images/paypal.png";
+import paypal from "../assets/images/paypal2.png";
 import dana from "../assets/images/dana.png";
 import bca from "../assets/images/bca.png";
 import bri from "../assets/images/bri.png";
