@@ -16,7 +16,6 @@ function ProfilePage() {
   // const users = useSelector((state) => state.users.data);
   const users = useSelector((state) => state.auths.currentUser);
   const navigate = useNavigate();
-  // console.log(users);
   const [isValidError, setIsValidError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +44,7 @@ function ProfilePage() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     if (data.newpassword !== data.confirmpassword) {
       console.log("password tidak sama");
       setIsValidError(true);

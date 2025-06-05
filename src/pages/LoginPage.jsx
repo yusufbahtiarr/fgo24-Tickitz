@@ -18,7 +18,6 @@ function LoginPage() {
   const navigate = useNavigate();
   const users = useSelector((state) => state.users.data);
   const usersAuth = useSelector((state) => state.auths.currentUser);
-  const [loginError, setLoginError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -47,7 +46,6 @@ function LoginPage() {
     if (!isExists) {
       setIsSubmitting(true);
       showNotif("error", "Email tidak terdaftar.");
-      setLoginError(true);
       setTimeout(() => {
         setIsSubmitting(false);
       }, 4000);
@@ -57,7 +55,6 @@ function LoginPage() {
     if (!comparePassword(found.password, data.password)) {
       setIsSubmitting(true);
       showNotif("error", "Password yang anda masukkan salah.");
-      setLoginError(true);
       setTimeout(() => {
         setIsSubmitting(false);
       }, 4000);
@@ -77,7 +74,6 @@ function LoginPage() {
   };
 
   setTimeout(() => {
-    setLoginError(false);
     setIsSubmitting(false);
   }, 4000);
 
@@ -156,11 +152,6 @@ function LoginPage() {
               >
                 Login
               </button>
-              <span className="text-red">
-                {loginError && (
-                  <span className="text-red">Email atau Password salah!</span>
-                )}
-              </span>
               <span>
                 Don't have an account?{" "}
                 <Link to="/register">
