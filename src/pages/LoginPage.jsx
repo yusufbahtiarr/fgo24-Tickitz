@@ -42,41 +42,34 @@ function LoginPage() {
   });
 
   const onSubmit = (data) => {
+    setIsSubmitting(true);
     const isExists = isEmailExists(users, data.email);
     if (!isExists) {
-      setIsSubmitting(true);
       showNotif("error", "Email tidak terdaftar.");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 4000);
+      activeBtn();
       return;
     }
     const found = users.filter((user) => user.email === data.email)[0];
     if (!comparePassword(found.password, data.password)) {
-      setIsSubmitting(true);
       showNotif("error", "Password yang anda masukkan salah.");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 4000);
+      activeBtn();
       return;
     }
-
     dispatch(loginUser(found));
     if (found.role === "Admin") {
-      console.log(found.role);
       showNotif("success", "Anda berhasil Login sebagai Admin.");
-      setIsSubmitting(true);
       navigate("/admin");
+      activeBtn();
     } else if (found.role === "User") {
       showNotif("success", "Anda berhasil Login.");
-      setIsSubmitting(true);
       navigate("/profile");
+      activeBtn();
     }
   };
-
-  setTimeout(() => {
-    setIsSubmitting(false);
-  }, 4000);
+  const activeBtn = () =>
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 4000);
 
   return (
     <div className="w-screen h-screen bg-[url(../src/assets/images/background.png)]  object-cover bg-no-repeat bg-center">
