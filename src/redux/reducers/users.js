@@ -26,8 +26,6 @@ const users = createSlice({
       return state;
     },
     editUserAction: (state, action) => {
-      console.log(action.payload);
-
       const { email, firstName, lastName, phone, newPassword } = action.payload;
 
       const userIndex = state.data.findIndex((item) => item.email === email);

@@ -32,8 +32,6 @@ function ProfilePage() {
     lastName: yup.string().required("Nama belakang wajib diisi"),
     email: yup.string().required("Email wajib diisi"),
     phone: yup.string().required("Nomor telepon wajib diisi"),
-    newPassword: yup.string().min(8, "Password minimal 8 karakter"),
-    confirmPassword: yup.string().min(8, "Password minimal 8 karakter"),
   });
   const dispatch = useDispatch();
   const {
@@ -46,26 +44,38 @@ function ProfilePage() {
   });
 
   const onSubmit = (data) => {
-    if (data.newpassword !== data.confirmpassword) {
-      console.log("Password baru tidak sama dengan password konfirmasi.");
-
-      setIsSubmitting(true);
+    setIsSubmitting(true);
+    if (data.newPassword !== data.confirmPassword) {
       showNotif(
         "error",
         "Password baru tidak sama dengan password konfirmasi."
       );
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 4000);
       return;
     }
-    setIsSubmitting(true);
+    if (
+      data.firstName === users.firstName &&
+      data.lastName === users.lastName &&
+      data.phone === users.phone &&
+      data.newPassword === "" &&
+      data.confirmPassword === ""
+    ) {
+      showNotif("info", "Data tidak ada yang diperbaharui.");
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 4000);
+      return;
+    }
     showNotif("success", "Data berhasil diperbaharui.");
     dispatch(editUserAndSyncAuth(data));
-    resetField("newpassword");
-    resetField("confirmpassword");
-    console.log("Data berhasil diperbaharui.");
+    resetField("newPassword");
+    resetField("confirmPassword");
 
     setTimeout(() => {
       setIsSubmitting(false);
-    }, 4000);
+    }, 5000);
   };
 
   return (
