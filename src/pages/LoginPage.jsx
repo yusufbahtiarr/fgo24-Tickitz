@@ -7,16 +7,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { comparePassword, isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUser } from "../redux/reducers/auths";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { showNotif } from "../utils/notif";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.users.data);
+  const usersAuth = useSelector((state) => state.auths.currentUser);
   const [loginError, setLoginError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (usersAuth === "Admin") navigate("/admin");
+    else if (usersAuth) navigate("/profile");
+  }, [usersAuth]);
 
   const schema = yup.object({
     email: yup
@@ -37,27 +45,40 @@ function LoginPage() {
   const onSubmit = (data) => {
     const isExists = isEmailExists(users, data.email);
     if (!isExists) {
+      setIsSubmitting(true);
+      showNotif("error", "Email tidak terdaftar.");
       setLoginError(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 4000);
       return;
     }
     const found = users.filter((user) => user.email === data.email)[0];
     if (!comparePassword(found.password, data.password)) {
+      setIsSubmitting(true);
+      showNotif("error", "Password yang anda masukkan salah.");
       setLoginError(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 4000);
       return;
     }
 
     dispatch(loginUser(found));
-    // console.log(data);
-    // console.log(found);
     if (found.role === "Admin") {
+      showNotif("success", "Anda berhasil Login sebagai Admin.");
+      setIsSubmitting(true);
       navigate("/admin");
     } else {
+      showNotif("success", "Anda berhasil Login.");
+      setIsSubmitting(true);
       navigate("/profile");
     }
   };
 
   setTimeout(() => {
     setLoginError(false);
+    setIsSubmitting(false);
   }, 4000);
 
   return (
