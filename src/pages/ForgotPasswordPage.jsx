@@ -5,8 +5,8 @@ import { isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import logo2 from "../assets/images/tickitz2.png";
-import { toast } from "react-toastify";
 import { useState } from "react";
+import { showNotif } from "../utils/notif";
 
 function ForgotPasswordPage() {
   const users = useSelector((state) => state.users.data);
@@ -22,40 +22,22 @@ function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const showSuccessNotif = () => {
-    toast.success("Silahkan cek inbox di email anda", {
-      position: "top-center",
-      autoClose: 3000,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "light",
-    });
-  };
-
-  const showErrorNotif = () => {
-    toast.error("Email tidak terdaftar", {
-      position: "top-center",
-      autoClose: 3000,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "light",
-    });
-  };
 
   const onSubmit = (data) => {
     setIsSubmitting(true);
     const isExists = isEmailExists(users, data.email);
 
     if (isExists) {
-      showSuccessNotif();
+      showNotif("success", "Silahkan cek di inbox email anda.");
     } else {
-      showErrorNotif();
+      showNotif("error", "Email tidak terdaftar.");
     }
-
+    reset();
     setTimeout(() => {
       setIsSubmitting(false);
     }, 4000);
