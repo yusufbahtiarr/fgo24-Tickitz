@@ -10,26 +10,24 @@ import * as yup from "yup";
 import { useState } from "react";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import logo2 from "../assets/images/tickitz2.png";
+import { showNotif } from "../utils/notif";
 
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.users.data);
-  // console.log(users);
-  // const [alert, setAlert] = useState("");
 
   const schema = yup.object({
     email: yup
       .string()
       .email("Format Tidak Valid")
-      .required("Email wajib diisi")
-      .test("isEmailExists", "Email sudah terdaftar", function (value) {
-        if (!value) return true;
-        const isExist = isEmailExists(users, value);
-        return !isExist;
-      }),
-    password: yup.string().required("Password wajib diisi"),
+      .required("Email wajib diisi"),
+    password: yup
+      .string()
+      .min(8, "Password minimal 8 karakter")
+      .required("Password wajib diisi"),
   });
   const {
     register,
@@ -39,16 +37,21 @@ function RegisterPage() {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
-    // const isExists = isEmailExists(users, data.email);
-    // console.log(isExists);
-
-    // if (isExists) {
-    //   setAlert("User already exists");
-    //   console.log("User already exists");
-    //   return;
-    // }
+    setIsSubmitting(true);
+    const isExists = isEmailExists(users, data.email);
+    if (isExists) {
+      showNotif("error", "Email sudah terdaftar.");
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 4000);
+      return;
+    }
     dispatch(addUserAction(data));
-    navigate("/login");
+    showNotif("success", "Registrasi Berhasil!.");
+    setTimeout(() => {
+      setIsSubmitting(false);
+      navigate("/login");
+    }, 3000);
   };
 
   return (
@@ -118,7 +121,8 @@ function RegisterPage() {
                   />
                   <button
                     type="button"
-                    className="cursor-pointer"
+                    className="cursor-pointer "
+                    tabIndex="-1"
                     onClick={() => {
                       setShowPassword(!showPassword);
                     }}
@@ -150,6 +154,7 @@ function RegisterPage() {
               <button
                 type="Submit"
                 className="flex flex-row justify-center items-center w-full gap-4 rounded bg-primary p-3 text-white"
+                disabled={isSubmitting}
               >
                 Join For Free Now
               </button>
