@@ -11,15 +11,15 @@ import * as yup from "yup";
 import { editUserAndSyncAuth } from "../redux/reducers/editUserAndSyncAuth";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import profile from "../assets/images/profile.png";
+import { showNotif } from "../utils/notif";
 
 function ProfilePage() {
   // const users = useSelector((state) => state.users.data);
   const users = useSelector((state) => state.auths.currentUser);
   const navigate = useNavigate();
-  const [isValidError, setIsValidError] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (users === null) {
@@ -32,6 +32,8 @@ function ProfilePage() {
     lastName: yup.string().required("Nama belakang wajib diisi"),
     email: yup.string().required("Email wajib diisi"),
     phone: yup.string().required("Nomor telepon wajib diisi"),
+    newPassword: yup.string().min(8, "Password minimal 8 karakter"),
+    confirmPassword: yup.string().min(8, "Password minimal 8 karakter"),
   });
   const dispatch = useDispatch();
   const {
@@ -44,23 +46,26 @@ function ProfilePage() {
   });
 
   const onSubmit = (data) => {
-    // console.log(data);
     if (data.newpassword !== data.confirmpassword) {
-      console.log("password tidak sama");
-      setIsValidError(true);
+      console.log("Password baru tidak sama dengan password konfirmasi.");
+
+      setIsSubmitting(true);
+      showNotif(
+        "error",
+        "Password baru tidak sama dengan password konfirmasi."
+      );
       return;
     }
-
+    setIsSubmitting(true);
+    showNotif("success", "Data berhasil diperbaharui.");
     dispatch(editUserAndSyncAuth(data));
     resetField("newpassword");
     resetField("confirmpassword");
-
-    setIsValidError(false);
-    setIsSuccess(true);
+    console.log("Data berhasil diperbaharui.");
 
     setTimeout(() => {
-      setIsSuccess(false);
-    }, 3000);
+      setIsSubmitting(false);
+    }, 4000);
   };
 
   return (
@@ -268,6 +273,7 @@ function ProfilePage() {
                       <button
                         type="button"
                         className="cursor-pointer"
+                        tabIndex={-1}
                         onClick={() => {
                           setShowPassword(!showPassword);
                         }}
@@ -296,6 +302,7 @@ function ProfilePage() {
                       <button
                         type="button"
                         className="cursor-pointer"
+                        tabIndex={-1}
                         onClick={() => {
                           setShowPasswordConfirm(!showPasswordConfirm);
                         }}
@@ -309,17 +316,12 @@ function ProfilePage() {
                     </div>
                   </div>
                 </div>
-                {isValidError && (
-                  <span className="text-red">Password tidak sama</span>
-                )}
-                {isSuccess && (
-                  <span className="text-green">Data berhasil diperbaharui</span>
-                )}
               </div>
               <div className="w-full">
                 <Button
                   variant="third"
                   className="text-white w-full sm:w-[30%] capitalize rounded-2xl"
+                  disabled={isSubmitting}
                 >
                   Update changes
                 </Button>

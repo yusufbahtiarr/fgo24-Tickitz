@@ -22,7 +22,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (usersAuth === "Admin") navigate("/admin");
-    else if (usersAuth) navigate("/profile");
+    else if (usersAuth === "User") navigate("/profile");
   }, [usersAuth]);
 
   const schema = yup.object({
@@ -63,10 +63,11 @@ function LoginPage() {
 
     dispatch(loginUser(found));
     if (found.role === "Admin") {
+      console.log(found.role);
       showNotif("success", "Anda berhasil Login sebagai Admin.");
       setIsSubmitting(true);
       navigate("/admin");
-    } else {
+    } else if (found.role === "User") {
       showNotif("success", "Anda berhasil Login.");
       setIsSubmitting(true);
       navigate("/profile");
@@ -149,6 +150,7 @@ function LoginPage() {
               <button
                 type="Submit"
                 className="flex flex-row justify-center items-center w-full gap-4 rounded bg-primary p-3 text-white"
+                disabled={isSubmitting}
               >
                 Login
               </button>
