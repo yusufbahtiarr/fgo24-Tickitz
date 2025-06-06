@@ -24,7 +24,9 @@ function Navbar() {
   return (
     <nav className="fixed top-0 right-0 left-0 flex flex-row justify-between w-full bg-white px-6 sm:px-20 py-4 z-100 items-center">
       <div className="">
-        <img className="w-30" src={logo} alt="logo" />
+        <Link to="/">
+          <img className="w-30" src={logo} alt="logo" />
+        </Link>
       </div>
       <div className="  sm:flex hidden font-light justify-center items-center text-l h-10 gap-15">
         <Link to="/">

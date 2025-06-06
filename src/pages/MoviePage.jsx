@@ -191,24 +191,26 @@ function ShowMovie({
         <div className="flex flex-row justify-center items-center gap-5">
           <Button
             disabled={PAGE === 1}
-            onClick={() =>
+            onClick={() => {
               setSearchParams({
                 ...(searchQuery ? { search: searchQuery } : {}),
                 page: String(PAGE - 1),
-              })
-            }
+              });
+              ScrolltoTop();
+            }}
             variant="primary"
             className="text-[28px] p-2 size-[54px] flex justify-center items-center"
             children={<FaArrowLeft />}
           ></Button>
           {Array.from({ length: TOTALPAGE }).map((_, index) => (
             <Button
-              onClick={() =>
+              onClick={() => {
                 setSearchParams({
                   ...(searchQuery ? { search: searchQuery } : {}),
                   page: String(index + 1),
-                })
-              }
+                });
+                ScrolltoTop();
+              }}
               key={`list-button-${index}`}
               variant={PAGE === index + 1 ? "primary" : "secondary"}
               disabled={PAGE === index + 1}
@@ -219,12 +221,13 @@ function ShowMovie({
           ))}
           <Button
             disabled={PAGE === TOTALPAGE}
-            onClick={() =>
+            onClick={() => {
               setSearchParams({
                 ...(searchQuery ? { search: searchQuery } : {}),
                 page: String(PAGE + 1),
-              })
-            }
+              });
+              ScrolltoTop();
+            }}
             variant="primary"
             className="text-[28px] size-[54px] flex justify-center items-center"
             children={<FaArrowRight />}
@@ -233,6 +236,10 @@ function ShowMovie({
       )}
     </div>
   );
+}
+
+function ScrolltoTop() {
+  window.scrollTo(0, 0);
 }
 
 export default MoviePage;

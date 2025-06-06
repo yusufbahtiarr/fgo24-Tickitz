@@ -11,7 +11,7 @@ function AdminMoviePage() {
   const currentUser = useSelector((state) => state.auths.currentUser);
 
   if (!currentUser || currentUser.role !== "Admin") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
   return (
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
