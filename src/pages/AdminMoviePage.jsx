@@ -255,7 +255,7 @@ function AdminMoviePage() {
 }
 
 const GenreDisplay = ({ item, genresList }) => {
-  const genreIds = item.split(",").map((item) => item.trim());
+  const genreIds = item?.split(",")?.map((item) => item.trim());
   // console.log(item);
   // console.log(genreIds);
 
