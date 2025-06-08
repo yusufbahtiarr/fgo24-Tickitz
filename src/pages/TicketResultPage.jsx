@@ -13,6 +13,7 @@ import { id as localeID } from "date-fns/locale";
 import { format } from "date-fns";
 import tickitz from "../assets/images/tickitz2.png";
 import qr from "../assets/images/qr.png";
+import background from "../assets/images/background.png";
 
 function TicketResultPage() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function TicketResultPage() {
         <div className="w-full sm:w-[60%] h-[92vh] sm:h-[100] bg-amber-200 p-6 sm:p-0 flex justify-center items-center relative">
           <div className="h-full sm:h-[100%]">
             <img
-              src="../src/assets/images/background.png"
+              src={background}
               alt="movie"
               className="h-full absolute top-0 left-0 object-cover"
             />

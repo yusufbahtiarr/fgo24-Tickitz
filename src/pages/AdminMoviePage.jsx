@@ -103,20 +103,17 @@ function AdminMoviePage() {
     setSearchParams(params);
   };
 
-  const paginate = (pageNumber) => {
-    updatePageParam(pageNumber);
-    window.scrollTo(0, 0); // Optional: Scroll ke atas
-  };
-
   const goToPrevPage = () => {
     if (currentPage > 1) {
       updatePageParam(currentPage - 1);
+      window.scrollTo(0, 0);
     }
   };
 
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       updatePageParam(currentPage + 1);
+      window.scrollTo(0, 0);
     }
   };
 
