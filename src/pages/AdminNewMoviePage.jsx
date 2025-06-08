@@ -75,16 +75,15 @@ function AdminNewMoviePage() {
 
   function onSubmit(data) {
     setIsSubmitting(true);
-    const nextId = 200000 + films?.length();
+    const nextId = 2000000 + films.length;
+    console.log(nextId);
 
-    if (nextId > 999999) {
-      alert("Maksimal ID tercapai (999999)");
-      return;
-    }
     data.id = nextId;
     data.runtime = data.hour * 60 + data.minute;
     data.overview = data.synopsis;
+    data.genre_ids = data.category;
     data.release_date = format(data.release_date, "yyyy-MM-dd");
+    delete data.category;
     delete data.hour;
     delete data.minute;
     dispatch(addFilmAction(data));
@@ -294,7 +293,7 @@ function AdminNewMoviePage() {
             <hr className="border border-gray1" />
             <button
               type="Submit"
-              className="bg-primary text-white font-bold py-3 rounded"
+              className="bg-primary text-white font-bold py-3 rounded disabled:bg-gray2"
               disabled={isSubmitting}
             >
               Save Movie

@@ -6,16 +6,23 @@ import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { formatDuration } from "../utils/formatTime";
+import { fetchData } from "../utils/apiClient";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 function AdminMoviePage() {
   const currentUser = useSelector((state) => state.auths.currentUser);
+  const films = useSelector((state) => state.films.data);
+  const [genresList, setGenresList] = useState([]);
   const [selected, setSelected] = useState(
     `${(new Date().getMonth() + 1)
       .toString()
       .padStart(2, "0")}/${new Date().getFullYear()}`
   );
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   if (!currentUser || currentUser.role !== "Admin") {
     return <Navigate to="/login" replace />;
   }
@@ -60,6 +67,59 @@ function AdminMoviePage() {
     );
   }
 
+  const fetchDataAll = async () => {
+    try {
+      const genreRes = await fetchData.getMovieGenres();
+      setGenresList(genreRes.data.genres || []);
+    } catch (error) {
+      console.error(
+        "Error fetching data:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchDataAll();
+  }, []);
+
+  const currentPage = parseInt(searchParams.get("page")) || 1;
+  const itemsPerPage = 5;
+
+  if (!currentUser || currentUser.role !== "Admin") {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Pagination logic
+  const totalPages = Math.ceil(films.length / itemsPerPage);
+  const currentItems = films.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const updatePageParam = (page) => {
+    const params = new URLSearchParams(location.search);
+    params.set("page", page);
+    setSearchParams(params);
+  };
+
+  const paginate = (pageNumber) => {
+    updatePageParam(pageNumber);
+    window.scrollTo(0, 0); // Optional: Scroll ke atas
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      updatePageParam(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      updatePageParam(currentPage + 1);
+    }
+  };
+
   return (
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
@@ -102,162 +162,125 @@ function AdminMoviePage() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
-                  <td className="py-4 px-2 sm:p-4">1</td>
-                  <td className="py-4 px-2 sm:p-4 items-center">
-                    <img
-                      src="../src/assets/images/list1.png"
-                      alt="images"
-                      className="inline-block w-[46px] h-[38px] rounded object-cover"
-                    />
-                  </td>
-                  <td className="py-4 px-2 sm:p-4 text-primary">
-                    Spiderman HomeComing
-                  </td>
-                  <td className="py-4 px-2 sm:p-4">Action, Adventure</td>
-                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
-                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
-                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
-                    <button className="size-[31px] flex justify-center items-center bg-blue rounded">
-                      <IoMdEye className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-violet-600 rounded">
-                      <FaPen className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-primary rounded">
-                      <FaTrash className="text-white" />
-                    </button>
-                  </td>
-                </tr>
-                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
-                  <td className="p-4">2</td>
-                  <td className="p-4 items-center">
-                    <img
-                      src="../src/assets/images/list2.png"
-                      alt="images"
-                      className="inline-block w-[46px] h-[38px] rounded object-cover"
-                    />
-                  </td>
-                  <td className="py-4 px-2 sm:p-4 text-primary">
-                    Avengers End Game
-                  </td>
-                  <td className="py-4 px-2 sm:p-4">Sci-fi, Adventure</td>
-                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
-                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
-                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
-                    <button className="size-[31px] flex justify-center items-center bg-blue rounded">
-                      <IoMdEye className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-violet-600 rounded">
-                      <FaPen className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-primary rounded">
-                      <FaTrash className="text-white" />
-                    </button>
-                  </td>
-                </tr>
-                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
-                  <td className="py-4 px-2 sm:p-4">3</td>
-                  <td className="py-4 px-2 sm:p-4 items-center">
-                    <img
-                      src="../src/assets/images/list1.png"
-                      alt="images"
-                      className="inline-block w-[46px] h-[38px] rounded object-cover"
-                    />
-                  </td>
-                  <td className="py-4 px-2 sm:p-4 text-primary">
-                    Spiderman HomeComing
-                  </td>
-                  <td className="py-4 px-2 sm:p-4">Action, Adventure</td>
-                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
-                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
-                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
-                    <button className="size-[31px] flex justify-center items-center bg-blue rounded">
-                      <IoMdEye className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-violet-600 rounded">
-                      <FaPen className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-primary rounded">
-                      <FaTrash className="text-white" />
-                    </button>
-                  </td>
-                </tr>
-                <tr className="border-t border-gray1 text-[12px] sm:text[16px]">
-                  <td className="py-4 px-2 sm:p-4">4</td>
-                  <td className="py-4 px-2 sm:p-4 items-center">
-                    <img
-                      src="../src/assets/images/list2.png"
-                      alt="images"
-                      className="inline-block w-[46px] h-[38px] rounded object-cover"
-                    />
-                  </td>
-                  <td className="py-4 px-2 sm:p-4 text-primary">
-                    Avengers End Game
-                  </td>
-                  <td className="py-4 px-2 sm:p-4">Sci-fi, Adventure</td>
-                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
-                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
-                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
-                    <button className="size-[31px] flex justify-center items-center bg-blue rounded">
-                      <IoMdEye className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-violet-600 rounded">
-                      <FaPen className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-primary rounded">
-                      <FaTrash className="text-white" />
-                    </button>
-                  </td>
-                </tr>
-                <tr className="border-t border-gray1 text-[12px] sm:text[16px] border-b sm:border-b-0">
-                  <td className="py-4 px-2 sm:p-4">5</td>
-                  <td className="py-4 px-2 sm:p-4 items-center">
-                    <img
-                      src="../src/assets/images/list1.png"
-                      alt="images"
-                      className="inline-block w-[46px] h-[38px] rounded object-cover"
-                    />
-                  </td>
-                  <td className="py-4 px-2 sm:p-4 text-primary">
-                    Spiderman HomeComing
-                  </td>
-                  <td className="py-4 px-2 sm:p-4">Action, Adventure</td>
-                  <td className="py-4 px-2 sm:p-4">07/05/2023</td>
-                  <td className="py-4 px-2 sm:p-4">2 Hours 15 Minute</td>
-                  <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
-                    <button className="size-[31px] flex justify-center items-center bg-blue rounded">
-                      <IoMdEye className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-violet-600 rounded">
-                      <FaPen className="text-white" />
-                    </button>
-                    <button className="size-[31px] flex justify-center items-center bg-primary rounded">
-                      <FaTrash className="text-white" />
-                    </button>
-                  </td>
-                </tr>
+                {currentItems.map((item, index) => {
+                  return (
+                    <tr
+                      key={`list-film-${index}`}
+                      className="border-t border-gray1 text-[12px] sm:text[16px]"
+                    >
+                      <td className="py-4 px-2 sm:p-4">{index + 1}</td>
+                      <td className="py-4 px-2 sm:p-4 items-center">
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                          alt="images"
+                          className="inline-block w-[46px] h-[38px] rounded object-cover"
+                        />
+                      </td>
+                      <td className="py-4 px-2 sm:p-4 text-primary">
+                        {item.title}
+                      </td>
+                      <td className="py-4 px-2 sm:p-4">
+                        <GenreDisplay
+                          item={item.category}
+                          genresList={genresList}
+                        />
+                      </td>
+                      <td className="py-4 px-2 sm:p-4">{item.release_date}</td>
+                      <td className="py-4 px-2 sm:p-4">
+                        {formatDuration(Number(item.runtime))}
+                      </td>
+                      <td className="py-4 px-2 sm:p-4 flex flexx-row gap-2 justify-center items-center">
+                        <button className="size-[31px] flex justify-center items-center bg-blue rounded">
+                          <IoMdEye className="text-white" />
+                        </button>
+                        <button className="size-[31px] flex justify-center items-center bg-violet-600 rounded">
+                          <FaPen className="text-white" />
+                        </button>
+                        <button className="size-[31px] flex justify-center items-center bg-primary rounded">
+                          <FaTrash className="text-white" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
           <div className="flex flex-row justify-center items-center gap-2">
-            <button className="size-8 sm:size-10 bg-primary rounded text-white text-[18px]">
-              1
-            </button>
-            <button className="size-8 sm:size-10 bg-white border border-gray1 rounded text-black text-[18px]">
-              2
-            </button>
-            <button className="size-8 sm:size-10 bg-white border border-gray1 rounded text-black text-[18px]">
-              3
-            </button>
-            <button className="size-8 sm:size-10 bg-white border border-gray1 rounded text-black text-[18px]">
-              4
-            </button>
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-4">
+                <button
+                  onClick={goToPrevPage}
+                  disabled={currentPage === 1}
+                  className={`size-8 sm:size-10 rounded-md flex items-center justify-center ${
+                    currentPage === 1
+                      ? "bg-gray-200 cursor-not-allowed"
+                      : "bg-primary text-white hover:bg-primary/90"
+                  }`}
+                >
+                  &lt;
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (number) => (
+                    <Link
+                      key={number}
+                      to={`?page=${number}`}
+                      className={`size-8 sm:size-10 rounded-md flex items-center justify-center ${
+                        currentPage === number
+                          ? "bg-primary text-white"
+                          : "bg-white border border-gray1 hover:bg-gray-100"
+                      }`}
+                    >
+                      {number}
+                    </Link>
+                  )
+                )}
+
+                <button
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
+                  className={`size-8 sm:size-10 rounded-md flex items-center justify-center ${
+                    currentPage === totalPages
+                      ? "bg-gray-200 cursor-not-allowed"
+                      : "bg-primary text-white hover:bg-primary/90"
+                  }`}
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+const GenreDisplay = ({ item, genresList }) => {
+  const genreIds = item.split(",").map((item) => item.trim());
+  // console.log(item);
+  // console.log(genreIds);
+
+  const displayedGenres = genreIds.slice(0, 2);
+
+  return (
+    <>
+      {displayedGenres.length ? (
+        displayedGenres.map((id, index) => {
+          const genre = genresList.find((g) => g.id == id);
+          return genre ? (
+            <span key={index} className="genre-tag">
+              {genre.name}
+              {index < displayedGenres.length - 1 && ", "}
+            </span>
+          ) : null;
+        })
+      ) : (
+        <span className="text-gray-500">Tidak ada genre</span>
+      )}
+    </>
+  );
+};
 
 export default AdminMoviePage;
