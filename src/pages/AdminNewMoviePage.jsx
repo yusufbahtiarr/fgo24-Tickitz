@@ -1,29 +1,36 @@
 import { useForm } from "react-hook-form";
 import Navbar from "../components/Navbar";
-import { LuPlus } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { format } from "date-fns";
+import { showNotif } from "./../utils/notif";
+import { useState } from "react";
+import { addFilmAction } from "../redux/reducers/films";
 
 function AdminNewMoviePage() {
   const currentUser = useSelector((state) => state.auths.currentUser);
   if (!currentUser || currentUser.role !== "Admin") {
     return <Navigate to="/login" replace />;
   }
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useDispatch();
+  const films = useSelector((state) => state.films.data);
 
   const schema = yup.object({
-    titleMovie: yup.string().required("Judul Movie wajib diisi!"),
+    poster_path: yup.string().required("Poster URL wajib diisi!"),
+    backdrop_path: yup.string().required("Backdrop URL wajib diisi!"),
+    title: yup.string().required("Judul Movie wajib diisi!"),
     category: yup.string().required("Kategori wajib diisi!"),
-    // releaseDate: yup
-    //   .date()
-    //   .typeError("Tanggal rilis harus berupa tanggal yang valid")
-    //   .required("Tanggal rilis wajib diisi!")
-    //   .min(
-    //     new Date(1900, 0, 1),
-    //     "Tanggal rilis tidak boleh sebelum 1 Januari 1900"
-    //   )
-    //   .max(new Date(), "Tanggal rilis boleh melebihi hari ini"),
+    release_date: yup
+      .date()
+      .typeError("Tanggal rilis harus berupa tanggal yang valid")
+      .required("Tanggal rilis wajib diisi!")
+      .min(
+        new Date(1950, 0, 1),
+        "Tanggal rilis tidak boleh sebelum 1 Januari 1900"
+      ),
     hour: yup
       .number()
       .typeError("Durasi (jam) harus berupa angka")
@@ -40,40 +47,53 @@ function AdminNewMoviePage() {
       .required("Durasi (menit) wajib diisi!"),
     director: yup.string().required("Director wajib diisi!"),
     cast: yup.string().required("Cast wajib diisi!"),
-    // synopsis: yup
-    //   .string()
-    //   .required("Synopsis wajib diisi!")
-    //   .min(10, "Synopsis minimal 10 karakter")
-    //   .max(500, "Synopsis maksimal 500 karakter"),
-    // location: yup
-    //   .array()
-    //   .of(
-    //     yup
-    //       .string()
-    //       .oneOf(
-    //         ["Jakarta", "Bogor", "Depok", "Bekasi", "Tangerang"],
-    //         "Lokasi harus salah satu dari: Jakarta, Bogor, Depok, Bekasi, Tangerang"
-    //       )
-    //   )
-    //   .min(1, "Pilih minimal satu lokasi!")
-    //   .required("Lokasi wajib diisi!"),
-    // date: yup
-    //   .date()
-    //   .typeError("Tanggal harus berupa tanggal yang valid")
-    //   .required("Tanggal wajib diisi!")
-    //   .min(new Date(1900, 0, 1), "Tanggal tidak boleh sebelum 1 Januari 1900")
-    //   .max(new Date(), "Tanggal tidak boleh melebihi hari ini"),
+    synopsis: yup
+      .string()
+      .required("Synopsis wajib diisi!")
+      .min(10, "Synopsis minimal 10 karakter")
+      .max(500, "Synopsis maksimal 500 karakter"),
+    location: yup
+      .array()
+      .of(
+        yup
+          .string()
+          .oneOf(
+            ["Jakarta", "Bogor", "Depok", "Bekasi", "Tangerang"],
+            "Lokasi harus salah satu dari: Jakarta, Bogor, Depok, Bekasi, Tangerang"
+          )
+      )
+      .min(1, "Pilih minimal satu lokasi!")
+      .required("Lokasi wajib diisi!"),
   });
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
   function onSubmit(data) {
+    setIsSubmitting(true);
+    const nextId = 200000 + films?.length();
+
+    if (nextId > 999999) {
+      alert("Maksimal ID tercapai (999999)");
+      return;
+    }
+    data.id = nextId;
+    data.runtime = data.hour * 60 + data.minute;
+    data.overview = data.synopsis;
+    data.release_date = format(data.release_date, "yyyy-MM-dd");
+    delete data.hour;
+    delete data.minute;
+    dispatch(addFilmAction(data));
     console.log(data);
-    // reset();
+    showNotif("success", "Data film baru berhasil di tambahkan!");
+    reset();
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 4000);
   }
 
   return (
@@ -89,53 +109,86 @@ function AdminNewMoviePage() {
             className="text-gray3 p-6 sm:p-0 sm:px-15 sm:pb-15 font-normal flex flex-col gap-5"
             autoComplete="off"
           >
-            <div className="flex flex-col w-26 text-[16px] gap-2">
+            {/* <div className="flex flex-col w-26 text-[16px] gap-2">
               <span>Upload Image</span>
-              <button className="p-1 bg-primary text-white rounded">
+              <button
+                type="button"
+                className="p-1 bg-primary text-white rounded"
+              >
                 Upload
               </button>
+            </div> */}
+            <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
+              <div className="flex-1 flex flex-col gap-2">
+                <label htmlFor="poster_path">Poster URL</label>
+                <input
+                  {...register("poster_path")}
+                  type="text"
+                  name="poster_path"
+                  id="poster_path"
+                  placeholder="Input Poster URL"
+                  className="border border-gray1 w-full px-4 py-3 outline-0"
+                />
+                <span className="text-red text-sm">
+                  {errors.poster_path?.message}
+                </span>
+              </div>
+              <div className="flex-1 flex flex-col justify-between gap-2">
+                <label htmlFor="backdrop_path">Backdrop URL</label>
+                <div className="flex-1 flex-col sm:flex-row gap-2">
+                  <input
+                    {...register("backdrop_path")}
+                    type="text"
+                    name="backdrop_path"
+                    id="backdrop_path"
+                    placeholder="Input Backdrop Image URL"
+                    className="border border-gray1 w-full px-4 py-3 outline-0 text-left"
+                  />
+                </div>
+                <span className="text-red text-sm">
+                  {errors.backdrop_path?.message}
+                </span>
+              </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="titleMovie">Movie Name</label>
+              <label htmlFor="title">Movie Name</label>
               <input
-                {...register("titleMovie")}
+                {...register("title")}
                 type="text"
-                name="titleMovie"
-                id="titleMovie"
-                placeholder="Spider-Man: Homecoming"
+                name="title"
+                id="title"
+                placeholder="Input Movie Name"
                 className="border border-gray1 w-full px-4 py-3 outline-0"
               />
             </div>
-            <span className="text-red text-sm">
-              {errors.titleMovie?.message}
-            </span>
+            <span className="text-red text-sm">{errors.title?.message}</span>
             <div className="flex flex-col gap-2">
-              <label htmlFor="category">Category</label>
+              <label htmlFor="category">Category/Genre</label>
               <input
                 {...register("category")}
                 type="text"
                 name="category"
                 id="category"
-                placeholder="Action, Adventure, Sci-Fi"
+                placeholder="Input Category / Genre"
                 className="border border-gray1 w-full px-4 py-3 outline-0"
               />
             </div>
             <span className="text-red text-sm">{errors.category?.message}</span>
             <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
               <div className="flex-1 flex flex-col gap-2">
-                <label htmlFor="releaseDate">Release date</label>
+                <label htmlFor="release_date">Release date</label>
                 <input
-                  {...register("releaseDate")}
+                  {...register("release_date")}
                   type="date"
-                  name="releaseDate"
-                  id="releaseDate"
-                  placeholder="07/05/2020"
+                  name="release_date"
+                  id="release_date"
+                  placeholder="Input Release Date"
                   className="border border-gray1 w-full px-4 py-3 outline-0"
                 />
+                <span className="text-red text-sm">
+                  {errors.release_date?.message}
+                </span>
               </div>
-              <span className="text-red text-sm">
-                {errors.releaseDate?.message}
-              </span>
               <div className="flex-1 flex flex-col justify-between">
                 <label htmlFor="hour">Duration (hour / minute)</label>
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -144,7 +197,7 @@ function AdminNewMoviePage() {
                     type="text"
                     name="hour"
                     id="hour"
-                    placeholder="2"
+                    placeholder="Input Hour"
                     className="border border-gray1 w-full px-4 py-3 outline-0 text-left sm:text-center"
                   />
                   <input
@@ -152,14 +205,16 @@ function AdminNewMoviePage() {
                     type="text"
                     name="minute"
                     id="minute"
-                    placeholder="13"
+                    placeholder="Input Minute"
                     className="border border-gray1 w-full px-4 py-3 outline-0 text-left sm:text-center"
                   />
                 </div>
+                <span className="text-red text-sm">{errors.hour?.message}</span>
+                <span className="text-red text-sm">
+                  {errors.minute?.message}
+                </span>
               </div>
             </div>
-            <span className="text-red text-sm">{errors.hour?.message}</span>
-            <span className="text-red text-sm">{errors.minute?.message}</span>
             <div className="flex flex-col gap-2">
               <label htmlFor="director">Director Name</label>
               <input
@@ -167,7 +222,7 @@ function AdminNewMoviePage() {
                 type="text"
                 name="director"
                 id="director"
-                placeholder="Jon Watts"
+                placeholder="Input Director"
                 className="border border-gray1 w-full px-4 py-3 outline-0"
               />
             </div>
@@ -179,23 +234,22 @@ function AdminNewMoviePage() {
                 type="text"
                 name="cast"
                 id="cast"
-                placeholder="Tom Holland, Michael Keaton, Robert Dow.."
+                placeholder="Input Cast Name"
                 className="border border-gray1 w-full px-4 py-3 outline-0"
               />
             </div>
             <span className="text-red text-sm">{errors.cast?.message}</span>
             <div className="flex flex-col gap-2">
-              <label htmlFor="sinopsys">Synopsis</label>
+              <label htmlFor="synopsis">Synopsis</label>
               <textarea
-                {...register("sinopsys")}
-                name="sinopsys"
-                id="sinopsys"
-                placeholder="Thrilled by his experience with the Avengers, Peter returns home, where he
-lives with his Aunt May, | "
+                {...register("synopsis")}
+                name="synopsis"
+                id="synopsis"
+                placeholder="Input Synopsis / Overview"
                 className="border border-gray1 w-full px-4 py-3 outline-0 h-40"
               ></textarea>
             </div>
-            <span className="text-red text-sm">{errors.sinopsys?.message}</span>
+            <span className="text-red text-sm">{errors.synopsis?.message}</span>
             <div className="flex flex-col gap-2">
               <label htmlFor="location">Location</label>
               <select
@@ -241,6 +295,7 @@ lives with his Aunt May, | "
             <button
               type="Submit"
               className="bg-primary text-white font-bold py-3 rounded"
+              disabled={isSubmitting}
             >
               Save Movie
             </button>

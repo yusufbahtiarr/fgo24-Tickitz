@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from "../utils/apiClient";
 import Button from "../components/Button";
 import { FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, ScrollRestoration } from "react-router-dom";
 import RenderGenres from "../components/RenderGenres";
 
 function MoviePage() {
@@ -50,6 +50,7 @@ function MoviePage() {
       <header>
         <Navbar></Navbar>
       </header>
+      <ScrollRestoration />
       <main className="flex flex-col mt-25 items-center text-center">
         <div className="w-full">
           <div className="p-6 sm:py-10 sm:px-20">
@@ -196,7 +197,6 @@ function ShowMovie({
                 ...(searchQuery ? { search: searchQuery } : {}),
                 page: String(PAGE - 1),
               });
-              ScrolltoTop();
             }}
             variant="primary"
             className="text-[28px] p-2 size-[54px] flex justify-center items-center"
@@ -209,7 +209,6 @@ function ShowMovie({
                   ...(searchQuery ? { search: searchQuery } : {}),
                   page: String(index + 1),
                 });
-                ScrolltoTop();
               }}
               key={`list-button-${index}`}
               variant={PAGE === index + 1 ? "primary" : "secondary"}
@@ -226,7 +225,6 @@ function ShowMovie({
                 ...(searchQuery ? { search: searchQuery } : {}),
                 page: String(PAGE + 1),
               });
-              ScrolltoTop();
             }}
             variant="primary"
             className="text-[28px] size-[54px] flex justify-center items-center"
@@ -236,10 +234,6 @@ function ShowMovie({
       )}
     </div>
   );
-}
-
-function ScrolltoTop() {
-  window.scrollTo(0, 0);
 }
 
 export default MoviePage;

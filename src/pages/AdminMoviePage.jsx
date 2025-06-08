@@ -6,13 +6,60 @@ import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
 function AdminMoviePage() {
   const currentUser = useSelector((state) => state.auths.currentUser);
+  const [selected, setSelected] = useState(
+    `${(new Date().getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${new Date().getFullYear()}`
+  );
 
   if (!currentUser || currentUser.role !== "Admin") {
     return <Navigate to="/login" replace />;
   }
+
+  function SelectMonth() {
+    const monthNames = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+
+    const year = new Date().getFullYear();
+
+    return (
+      <select
+        name="selectMonth"
+        className="px-6 py-3 rounded-[12px] bg-gray1"
+        value={selected}
+        onChange={(e) => {
+          setSelected(e.target.value);
+          console.log(e.target.value);
+        }}
+      >
+        {monthNames.map((month, index) => {
+          const monthNumber = (index + 1).toString().padStart(2, "0");
+          return (
+            <option key={index} value={`${monthNumber}/${year}`}>
+              {month} {year}
+            </option>
+          );
+        })}
+      </select>
+    );
+  }
+
   return (
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
@@ -32,13 +79,7 @@ function AdminMoviePage() {
             </div>
             <div className="flex-1 flex flex-col sm:flex-row justify-end gap-4">
               {/* <CiCalendar /> */}
-              <select
-                name="date"
-                id="date"
-                className="px-9 py-4 rounded-xl bg-gray1"
-              >
-                <option value="november">November 2023</option>
-              </select>
+              <SelectMonth />
               <Button
                 variant="third"
                 className="text-white rounded-xl px-4 hidden sm:block"

@@ -78,6 +78,7 @@ To develop this app, we are using some dependencies:
 - React Icons
 - React Hook Form
 - React Toastify
+- ApexCharts
 
 And frontend tooling, the one and only:
 
