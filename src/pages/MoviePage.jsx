@@ -17,9 +17,12 @@ import Button from "../components/Button";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate, ScrollRestoration } from "react-router-dom";
 import RenderGenres from "../components/RenderGenres";
+// import { useSelector } from "react-redux";
 
 function MoviePage() {
   const [movies, setMovies] = useState([]);
+  // const movieCustom = useSelector((state) => state.films.data);
+
   const [genresList, setGenresList] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const navigate = useNavigate();
@@ -34,6 +37,9 @@ function MoviePage() {
 
       const genreRes = await fetchData.getMovieGenres();
       setGenresList(genreRes.data.genres || []);
+      // const fetchMovies = movieRes.data.results || [];
+      // const combinedMovies = [...fetchMovies, ...movieCustom];
+      // setMovies(combinedMovies);
     } catch (error) {
       console.error(
         "Error fetching data:",
