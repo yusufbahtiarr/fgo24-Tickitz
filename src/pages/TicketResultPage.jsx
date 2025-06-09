@@ -21,8 +21,6 @@ function TicketResultPage() {
   const dataTicket = useSelector((state) => state.tickets.data).find(
     (item) => item.idTicket === id
   );
-  console.log(dataTicket);
-
   return (
     <div>
       <Navbar />
@@ -83,7 +81,7 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Movie</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket.titleMovie}
+                        {dataTicket?.titleMovie}
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
@@ -96,7 +94,7 @@ function TicketResultPage() {
                       <span className="text-xs text-gray1">Date</span>
                       <span className="text-sm text-secondary">
                         {format(
-                          new Date(dataTicket.date),
+                          new Date(dataTicket?.date),
                           "EEEE, dd MMMM yyyy",
                           {
                             locale: localeID,
@@ -107,7 +105,7 @@ function TicketResultPage() {
                     <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Time</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket.time}
+                        {dataTicket?.time}
                       </span>
                     </div>
                   </div>
@@ -115,7 +113,7 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Count</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket.seats.length} pcs
+                        {dataTicket?.seats.length} pcs
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
@@ -128,7 +126,7 @@ function TicketResultPage() {
                   <div className="flex flex-row border p-4 border-gray1 rounded justify-between items-center">
                     <span className="text-secondary">Total</span>
                     <span className="text-secondary">
-                      Rp. {dataTicket.totalPayment.toLocaleString("id-ID")}
+                      Rp. {dataTicket?.totalPayment.toLocaleString("id-ID")}
                     </span>
                   </div>
                 </div>
