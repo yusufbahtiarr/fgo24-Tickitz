@@ -2,7 +2,7 @@ import { RiInstagramFill } from "react-icons/ri";
 import { FaFacebookF } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { SiYoutube } from "react-icons/si";
-import logoWhite from "../assets/images/Tickitz-white.png";
+import logo from "../assets/images/logobluegreen.png";
 import ebv from "../assets/images/ebv.id 2.png";
 import cineone from "../assets/images/CineOne21 2.png";
 import hiflic from "../assets/images/hiflic.png";
@@ -14,7 +14,7 @@ function Footer() {
         <div className="flex flex-col justify-between gap-20 w-full sm:flex-row">
           <div className="flex flex-col w-full">
             <div className="w-[50%] sm:w-full">
-              <img src={logoWhite} alt="" />
+              <img src={logo} alt="" />
             </div>
             <div className="text-third text-[18px] font-light">
               Stop waiting in line. Buy tickets conveniently, watch movies

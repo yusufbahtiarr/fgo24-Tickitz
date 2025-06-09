@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { logoutUser } from "../redux/reducers/auths";
-import logo from "../assets/images/Tickitz.png";
+import logo from "../assets/images/logobluegreensmall.png";
 import profile from "../assets/images/profile.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
@@ -25,7 +25,7 @@ function Navbar() {
     <nav className="fixed top-0 right-0 left-0 flex flex-row justify-between w-full bg-white px-6 sm:px-20 py-4 z-100 items-center">
       <div className="">
         <Link to="/">
-          <img className="w-30" src={logo} alt="logo" />
+          <img className="w-35 sm:w-40" src={logo} alt="logo" />
         </Link>
       </div>
       <div className="  sm:flex hidden font-light justify-center items-center text-l h-10 gap-15">

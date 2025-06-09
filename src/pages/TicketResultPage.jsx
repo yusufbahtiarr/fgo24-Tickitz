@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { id as localeID } from "date-fns/locale";
 import { format } from "date-fns";
-import tickitz from "../assets/images/tickitz2.png";
+import logo from "../assets/images/logobluegreensmall.png";
 import qr from "../assets/images/qr.png";
 import background from "../assets/images/background.png";
 
@@ -36,7 +36,7 @@ function TicketResultPage() {
           </div>
           <div className="mx-auto text-white z-1 mb-10 flex flex-col sm:justify-start justify-center items-center gap-3 p-6 sm:p-0">
             <div>
-              <img src={tickitz} alt="logo" className="w-44 sm:w-64" />
+              <img src={logo} alt="logo" className="w-50 sm:w-80" />
             </div>
             <div className="w-full text-center sm:text-left">
               <span className="text-[32px] sm:text-[48px] font-bold ">
@@ -49,7 +49,7 @@ function TicketResultPage() {
                 movie!
               </span>
             </div>
-            <div className="flex flex-col sm:flex-row justify-between items-center w-full sm:w-[41%] gap-4 sm:gap-0">
+            <div className="flex flex-col sm:flex-row justify-between sm:justify-start items-center w-full gap-4 sm:gap-4">
               <span className="text-[18px] font-bold">
                 Please Download Your Ticket
               </span>
