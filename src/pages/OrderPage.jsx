@@ -4,14 +4,13 @@ import Footer from "../components/Footer";
 import Badge from "./../components/Badge";
 import Button from "./../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchData } from "../utils/apiClient";
 import RenderGenres from "../components/RenderGenres";
 import { useDispatch, useSelector } from "react-redux";
 import { id as LocaleID } from "date-fns/locale";
 import { format } from "date-fns";
 import { addTempTicketAction } from "../redux/reducers/tickets";
-import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowDown, FaArrowRight } from "react-icons/fa";
 
 function OrderPage() {
@@ -19,19 +18,32 @@ function OrderPage() {
   const [genresList, setGenresList] = useState([]);
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
   const dataTicket = useSelector((state) => state.tickets.data);
-
-  const filteredHistory = dataTicket.filter(
-    (item) =>
-      item.titleMovie === tempTicket.titleMovie &&
-      item.location === tempTicket.location &&
-      item.cinema === tempTicket.cinema &&
-      item.time === tempTicket.time &&
-      item.date === tempTicket.date
-  );
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const filteredHistory = useMemo(() => {
+    return dataTicket.filter(
+      (item) =>
+        item.titleMovie === tempTicket.titleMovie &&
+        item.location === tempTicket.location &&
+        item.cinema === tempTicket.cinema &&
+        item.time === tempTicket.time &&
+        item.date === tempTicket.date
+    );
+  }, [dataTicket, tempTicket]);
+
+  const rows = ["A", "B", "C", "D", "E", "F", "G"];
+  const cols = 14;
+
+  const [seats, setSeats] = useState(() =>
+    Array(rows.length)
+      .fill(null)
+      .map(() => Array(cols).fill("available"))
+  );
+  const [selectedSeats, setSelectedSeats] = useState([]);
+
+  // const seatsSold = filteredHistory.map((item) => item.seats);
 
   const fetchDataAll = async () => {
     try {
@@ -52,74 +64,57 @@ function OrderPage() {
     fetchDataAll();
   }, []);
 
-  const movieId = movies?.find((movie) => movie.id == id);
-
-  const rows = ["A", "B", "C", "D", "E", "F", "G"];
-  const cols = 14;
-
-  const initialSeats = Array(rows.length)
-    .fill(null)
-    .map(() => Array(cols).fill("available"));
-
-  const seatsSold = filteredHistory.map((item) => item.seats);
-
   const parseSeat = (seat) => {
-    const rowLetter = seat[0]; // e.g., "D"
-    console.log(rowLetter);
+    if (!seat || typeof seat !== "string") return null;
+    const rowLetter = seat[0];
+    const colNumber = parseInt(seat.slice(1), 10);
+    const rowIndex = rows.indexOf(rowLetter);
+    const colIndex = colNumber - 1;
 
-    const colNumber = parseInt(seat.slice(1), 10); // e.g., "3" → 3
-    console.log(colNumber);
-
-    const rowIndex = rows.indexOf(rowLetter); // e.g., "D" → 3
-    console.log(rowIndex);
-    const colIndex = colNumber - 1; // Convert to 0-based: "3" → 2
-    console.log(rowIndex);
-    return [rowIndex, colIndex];
+    if (
+      rowIndex >= 0 &&
+      rowIndex < rows.length &&
+      colIndex >= 0 &&
+      colIndex < cols
+    ) {
+      return [rowIndex, colIndex];
+    }
+    return null;
   };
 
-  const soldSeats = seatsSold.map(parseSeat); // e.g., [[3, 2], [2, 6]]
-  const loveNest = []; // Assuming loveNest is empty or similarly parsed
+  useEffect(() => {
+    console.log("useEffect running with filteredHistory:", filteredHistory);
+    // Initialize seats as available
+    const newSeats = Array(rows.length)
+      .fill(null)
+      .map(() => Array(cols).fill("available"));
 
-  soldSeats.forEach(([rowIndex, colIndex]) => {
-    if (
-      rowIndex >= 0 &&
-      rowIndex < rows.length &&
-      colIndex >= 0 &&
-      colIndex < cols
-    ) {
-      initialSeats[rowIndex][colIndex] = "sold";
-    }
-  });
+    // Mark sold seats from filteredHistory
+    const soldSeats = filteredHistory
+      .flatMap((item) => item.seats)
+      .map(parseSeat)
+      .filter((seat) => seat !== null);
 
-  loveNest.forEach(([rowIndex, colIndex]) => {
-    if (
-      rowIndex >= 0 &&
-      rowIndex < rows.length &&
-      colIndex >= 0 &&
-      colIndex < cols
-    ) {
-      initialSeats[rowIndex][colIndex] = "lovenest";
-    }
-  });
+    soldSeats.forEach(([rowIndex, colIndex]) => {
+      newSeats[rowIndex][colIndex] = "sold";
+    });
 
-  const [seats, setSeats] = useState(initialSeats);
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  // const soldSeats = [
-  //   // [0, 6],
-  //   // [1, 1],
-  //   // [1, 2],
-  // ];
-  // const loveNest = [
-  //   // [5, 9],
-  //   // [5, 10],
-  // ];
+    // Preserve selected seats
+    selectedSeats.forEach((seat) => {
+      const parsed = parseSeat(seat);
+      if (parsed) {
+        const [rowIndex, colIndex] = parsed;
+        if (newSeats[rowIndex][colIndex] !== "sold") {
+          newSeats[rowIndex][colIndex] = "selected";
+        } else {
+          // Hapus kursi yang sudah terjual dari selectedSeats
+          setSelectedSeats((prev) => prev.filter((s) => s !== seat));
+        }
+      }
+    });
 
-  // soldSeats.forEach(([r, c]) => {
-  //   initialSeats[r][c] = "sold";
-  // });
-  // loveNest.forEach(([r, c]) => {
-  //   initialSeats[r][c] = "lovenest";
-  // });
+    setSeats(newSeats);
+  }, [filteredHistory]);
 
   const handleCheckboxChange = (rowIndex, colIndex) => {
     const updatedSeats = [...seats];
@@ -169,9 +164,9 @@ function OrderPage() {
 
     dispatch(addTempTicketAction(data));
     navigate(`/payment`, { replace: true });
-    // console.log(data);
   }
 
+  const movieId = movies?.find((movie) => movie.id == id);
   const imageCinema =
     cinemas?.find((item) => item.name === tempTicket.cinema)?.image || "";
 
