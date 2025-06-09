@@ -83,13 +83,10 @@ function OrderPage() {
   };
 
   useEffect(() => {
-    console.log("useEffect running with filteredHistory:", filteredHistory);
-    // Initialize seats as available
     const newSeats = Array(rows.length)
       .fill(null)
       .map(() => Array(cols).fill("available"));
 
-    // Mark sold seats from filteredHistory
     const soldSeats = filteredHistory
       .flatMap((item) => item.seats)
       .map(parseSeat)
@@ -99,7 +96,6 @@ function OrderPage() {
       newSeats[rowIndex][colIndex] = "sold";
     });
 
-    // Preserve selected seats
     selectedSeats.forEach((seat) => {
       const parsed = parseSeat(seat);
       if (parsed) {
@@ -107,7 +103,6 @@ function OrderPage() {
         if (newSeats[rowIndex][colIndex] !== "sold") {
           newSeats[rowIndex][colIndex] = "selected";
         } else {
-          // Hapus kursi yang sudah terjual dari selectedSeats
           setSelectedSeats((prev) => prev.filter((s) => s !== seat));
         }
       }
