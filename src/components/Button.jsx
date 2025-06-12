@@ -4,10 +4,10 @@ function Button({ variant, className, children, ...props }) {
 
   if (variant === "primary") {
     selectedVariant =
-      "px-5 py-3 bg-primary rounded-full uppercase text-white hover:bg-orange-600";
+      "px-5 py-3 bg-primary rounded-full uppercase text-white hover:bg-primary/90";
   } else if (variant === "secondary") {
     selectedVariant =
-      "px-5 py-3 border rounded-full border-black uppercase hover:bg-orange-600 hover:text-white hover:border-1 hover:border-orange-600";
+      "px-5 py-3 border rounded-full border-black uppercase hover:bg-primary/90 hover:text-white hover:border-1 hover:border-primary/90";
   } else if (variant === "third") {
     selectedVariant = "px-3 py-1 bg-primary rounded";
   } else if (variant === "outline") {

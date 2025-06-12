@@ -4,7 +4,7 @@ function Input({ id, type, name, placeholder, ...props }) {
   return (
     <label
       htmlFor={id}
-      className="flex items-center gap-5 rounded-full border border-gray-950 py-3 px-4 bg-white"
+      className="flex items-center gap-5 rounded-full border border-primary/80 py-3 px-4 bg-eighth"
     >
       <IoSearch className="text-xl" />
       <input

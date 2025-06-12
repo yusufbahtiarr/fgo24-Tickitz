@@ -51,8 +51,8 @@ function BuyTicketPage() {
       <header>
         <Navbar></Navbar>
       </header>
-      <main className="flex flex-col mt-25 items-center gap-20 mb-8 sm:mb-0">
-        <div className="relative w-full h-[806px] mb-120 sm:mb-0">
+      <main className="flex flex-col mt-24 sm:mt-28 items-center mb-8 sm:mb-0">
+        <div className="relative w-full h-fit">
           <div
             className="w-full rounded-[48px] h-[520px] flex flex-row items-end justify-start text-left p-10 bg-no-repeat bg-cover bg-center relative overflow-hidden"
             style={{
@@ -90,9 +90,9 @@ function BuyTicketPage() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row py-10 text-left gap-5 sm:gap-10 sm:pr-40 mt-115 sm:mt-0 p-6 sm:pl-110 relative">
+          <div className="flex flex-col sm:flex-row text-left gap-5 sm:gap-10 sm:pr-40 mt-85 sm:mt-0 p-6 sm:pl-110 relative">
             <div className="flex flex-col sm:mt-0 gap-5 ">
-              <div className="flex flex-col  min-w-[200px]">
+              <div className="flex flex-col min-w-[200px]">
                 <div className="font-light text-[18px]">Release Date</div>
                 <div className="font-semibold text-[20px]">
                   {movies.release_date &&

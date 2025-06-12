@@ -7,7 +7,7 @@ function Badge({ variant, className, children, ...props }) {
   if (variant === "primary") {
     selectedVariant = "font-medium bg-sixth text-fourth";
   } else if (variant === "secondary") {
-    selectedVariant = "text-primary bg-third";
+    selectedVariant = "text-primary bg-fourth";
     ("bg- hover:bg-orange-600 hover:text-white hover:border-0 cursor-pointer");
   } else {
     selectedVariant = "px-3 py-2 text-white border border-white font-medium";

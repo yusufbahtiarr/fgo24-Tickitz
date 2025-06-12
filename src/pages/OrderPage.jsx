@@ -247,7 +247,7 @@ function OrderPage() {
                                 <div
                                   className={`w-full h-full ${
                                     status === "selected"
-                                      ? "bg-orange-500"
+                                      ? "bg-primary"
                                       : status === "sold"
                                       ? "bg-gray-500"
                                       : status === "lovenest"
@@ -291,12 +291,8 @@ function OrderPage() {
                     <span>Available</span>
                   </div>
                   <div className="flex items-center gap-2 w-1/2  mb-8 sm:mb-0">
-                    <div className="w-6 h-6 bg-orange-500 rounded"></div>
+                    <div className="w-6 h-6 bg-primary rounded"></div>
                     <span>Selected</span>
-                  </div>
-                  <div className="flex items-center gap-2 w-1/2  mb-8 sm:mb-0">
-                    <div className="w-6 h-6 bg-pink-400 rounded"></div>
-                    <span>Love nest</span>
                   </div>
                   <div className="flex items-center gap-2 w-1/2  mb-8 sm:mb-0">
                     <div className="w-6 h-6 bg-gray-500 rounded"></div>

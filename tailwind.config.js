@@ -9,6 +9,7 @@ export default {
         fifth: "var(--color-fifth)",
         sixth: "var(--color-sixth)",
         seventh: "var(--color-seventh)",
+        eighth: "var(--color-eighth)",
         dsprimary: "#333333",
         gray1: "var(--color-gray1)",
         gray2: "var(--color-gray2)",

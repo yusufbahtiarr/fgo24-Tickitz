@@ -57,7 +57,7 @@ function MoviePage() {
         <Navbar></Navbar>
       </header>
       <ScrollRestoration />
-      <main className="flex flex-col mt-25 items-center text-center">
+      <main className="flex flex-col mt-20 sm:mt-25 items-center text-center">
         <div className="w-full">
           <div className="p-6 sm:py-10 sm:px-20">
             <div className="flex flex-row items-end justify-start text-left bg-[url(../src/assets/images/heading.png)] h-[404px] p-10 rounded-[48px] bg-no-repeat bg-cover bg-center relative">
@@ -66,7 +66,7 @@ function MoviePage() {
                 <div className="flex justify-center sm:justify-start">
                   <Badge
                     variant="secondary"
-                    className="font-black h-[54px] w-[350px] flex items-center justify-center text-[20px]"
+                    className="font-black h-[54px] sm:w-[350px] flex items-center justify-center px-6 text-[16px] sm:text-[20px]"
                   >
                     LIST MOVIE OF THE WEEK
                   </Badge>
@@ -167,12 +167,12 @@ function ShowMovie({
 
   return (
     <div className="flex flex-col p-6 sm:px-20 w-full">
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-10 sm:py-10 mb-4 sm:mb-0">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-5 sm:gap-10 sm:py-10 mb-4 sm:mb-0">
         {filteredSearch.slice(OFFSET, LIMIT * PAGE).map((item) => (
           <div key={`list-movie-${item.id}`} className="mb-2 mx-auto">
-            <div className="relative lg:w-70 w-50 mb-4 mx-auto">
+            <div className="relative sm:w-70 w-fit mb-4 mx-auto">
               {item.vote_average > 7 && (
-                <div className="absolute text-primary bg-third font-bold px-2 py-1 rounded-br-lg ">
+                <div className="absolute text-primary bg-fourth text-sm sm:text-[16px] font-semibold sm:font-bold px-2 py-1 rounded-br-lg ">
                   Recommended
                 </div>
               )}

@@ -13,7 +13,7 @@ function AdminPage() {
   return (
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
-      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full sm:justify-center sm:w-full sm:items-center sm:w-330">
+      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full sm:justify-center sm:items-center sm:w-330">
         <div className="p-6 sm:px-15 sm:py-10 flex sm:w-260 flex-col gap-8 sm:gap-10 bg-white rounded-xl">
           <div>
             <span className="text-[18px] sm:text-2xl font-bold">

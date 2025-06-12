@@ -85,7 +85,7 @@ function ProfilePage() {
         <span className="font-normal border-b-2 border-primary py-6">
           Account Settings
         </span>
-        <span className="text-fourth">
+        <span className="text-seventh">
           <Link to="/order-history">Order History</Link>
         </span>
       </div>
@@ -177,7 +177,7 @@ function ProfilePage() {
                 <span className="font-normal border-b-2 border-primary py-6">
                   Account Settings
                 </span>
-                <span className="text-fourth">
+                <span className="text-seventh">
                   <Link to="/order-history">Order History</Link>
                 </span>
               </div>
@@ -188,7 +188,7 @@ function ProfilePage() {
                 <hr className="border-1 border-gray2 mb-4" />
                 <div className="flex flex-col sm:flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="firstName" className="text-fourth">
+                    <label htmlFor="firstName" className="text-seventh">
                       First Name
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
@@ -207,7 +207,7 @@ function ProfilePage() {
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="lastName" className="text-fourth">
+                    <label htmlFor="lastName" className="text-seventh">
                       Last Name
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
@@ -226,7 +226,7 @@ function ProfilePage() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="email" className="text-fourth">
+                    <label htmlFor="email" className="text-seventh">
                       E-mail
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
@@ -243,7 +243,7 @@ function ProfilePage() {
                     <span className="text-red">{errors.email?.message}</span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="Phone Number" className="text-fourth">
+                    <label htmlFor="Phone Number" className="text-seventh">
                       Phone Number
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
@@ -268,7 +268,7 @@ function ProfilePage() {
                 <hr className="border-1 border-gray2 mb-4" />
                 <div className="flex flex-col sm:flex-row gap-9">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="newPassword" className="text-fourth">
+                    <label htmlFor="newPassword" className="text-seventh">
                       New Password
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center justify-between">
@@ -297,7 +297,7 @@ function ProfilePage() {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="confirmPassword" className="text-fourth">
+                    <label htmlFor="confirmPassword" className="text-seventh">
                       Confirm Password
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center justify-between">

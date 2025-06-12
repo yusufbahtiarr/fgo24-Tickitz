@@ -22,31 +22,31 @@ function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 right-0 left-0 flex flex-row justify-between w-full bg-white px-6 sm:px-20 py-4 z-100 items-center">
+    <nav className="fixed top-0 right-0 left-0 flex flex-row justify-between w-full bg-third px-6 sm:px-20 py-4 z-100 border-b border-gray1 shadow items-center">
       <div className="">
         <Link to="/">
           <img className="w-35 sm:w-40" src={logo} alt="logo" />
         </Link>
       </div>
       <div className="  sm:flex hidden font-light justify-center items-center text-l h-10 gap-15">
-        <Link to="/">
-          <div className="flex justify-center flex-col items-center font-dmsans">
-            <span className="font-semibold hover:text-primary">HOME</span>
-            {/* <div className="h-[8px] flex justify-center w-[8px] bg-orange-500 rounded-full items-center"></div> */}
-          </div>
+        <Link to="/" className="font-semibold hover:text-primary">
+          HOME
         </Link>
-        <Link to="/movies" className="hover:text-primary">
+        <Link to="/movies" className="font-semibold hover:text-primary">
           MOVIE
         </Link>
-        <Link to="/buy-ticket" className="hover:text-primary">
+        <Link to="/buy-ticket" className="font-semibold hover:text-primary">
           BUY TICKET
         </Link>
         {users?.role === "Admin" && (
           <>
-            <Link to="/admin" className="hover:text-primary">
+            <Link to="/admin" className="font-semibold hover:text-primary">
               CHART
             </Link>
-            <Link to="/admin-movie" className="hover:text-primary">
+            <Link
+              to="/admin-movie"
+              className="font-semibold hover:text-primary"
+            >
               LIST MOVIE
             </Link>
           </>
@@ -100,7 +100,7 @@ function Navbar() {
           </div>
         )}
         {dropdown && (
-          <div className="absolute flex flex-col sm:right-16 items-center justify-between h-fit p-5 gap-4 top-19 sm:top-23 right-0 z-99 bg-white shadow rounded w-full sm:w-50">
+          <div className="absolute flex flex-col sm:right-16 items-center justify-between h-fit p-5 gap-4 top-17 sm:top-23 right-0 z-99 bg-third shadow rounded w-full sm:w-50">
             <div className="flex sm:hidden flex-col gap-6 justify-between items-center mb-2">
               <Link to="/">
                 <div className="flex justify-center flex-col items-center font-dmsans">

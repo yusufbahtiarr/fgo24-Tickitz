@@ -24,7 +24,7 @@ function Subscribe() {
   }
   return (
     <div className="w-full p-6 sm:p-20">
-      <div className="py-15 px-9 sm:py-20 sm:px-[244px] bg-third rounded-[48px] flex flex-col gap-20 m-auto">
+      <div className="py-15 px-9 sm:py-20 sm:px-[244px] bg-fourth rounded-[48px] flex flex-col gap-10 sm:gap-20 m-auto">
         <div className="w-full">
           <span className="text-3xl sm:title-section">
             Subscribe to Our Newsletter

@@ -23,7 +23,7 @@ function OrderHistoryPage() {
     <div>
       <Navbar />
       <div className="flex sm:hidden flex-row bg-white items-center justify-evenly text-[18px] mt-21 overflow-y-hidden">
-        <span className="text-fourth ">
+        <span className="text-seventh ">
           <Link to="/profile">Account Settings</Link>
         </span>
         <span className="font-normal border-b-2 border-primary py-6">
@@ -110,7 +110,7 @@ function OrderHistoryPage() {
           </div>
           <div className="sm:w-[70%] sm:min-h-180 mb-10 sm:mb-0 rounded-4xl flex flex-col gap-8 sm:gap-10 w-full">
             <div className="hidden sm:flex flex-row gap-10 bg-white rounded-3xl px-15 items-center text-[18px]">
-              <span className="text-fourth ">
+              <span className="text-seventh ">
                 <Link to="/profile">Account Settings</Link>
               </span>
               <span className="font-normal border-b-2 border-primary py-6">
@@ -128,7 +128,7 @@ function OrderHistoryPage() {
                     <div className="flex flex-col  sm:flex-row justify-between p-6 sm:px-12 sm:py-10 ">
                       <div className="flex flex-col justify-between gap-2">
                         {/* <span>{item.idTicket}</span> */}
-                        <span className="font-normal text-sm text-fourth">
+                        <span className="font-normal text-sm text-seventh">
                           {format(new Date(item.date), "EEEE, dd MMMM yyyy", {
                             locale: LocaleID,
                           })}{" "}

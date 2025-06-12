@@ -96,7 +96,7 @@ function Seat() {
                           <div
                             className={`w-full h-full ${
                               status === "selected"
-                                ? "bg-orange-500"
+                                ? "bg-primary"
                                 : status === "sold"
                                 ? "bg-gray-500"
                                 : status === "lovenest"

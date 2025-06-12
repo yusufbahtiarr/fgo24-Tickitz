@@ -11,7 +11,7 @@ function Card() {
           alt="movies"
         />
         <div>
-          <span className="font-medium absolute top-0 left-0 bg-third text-primary py-[8px] px-[12px] rounded-br-2xl">
+          <span className="font-medium absolute top-0 left-0 bg-fourth text-primary py-[8px] px-[12px] rounded-br-2xl">
             Rekomendasi
           </span>
         </div>

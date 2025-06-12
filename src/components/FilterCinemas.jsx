@@ -47,13 +47,13 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
   return (
     <div className="p-6 sm:px-20 flex flex-col w-full gap-10">
       <div className="flex flex-row w-full justify-between items-center gap-10">
-        <div className="text-3xl text-left sm:title-section">
+        <div className="text-xl sm:text-3xl text-left sm:title-section">
           Now Showing in Cinemas
         </div>
         <div>
           <Button
             variant="primary"
-            className="flex flex-row items-center h-[54px] font-bold gap-2"
+            className="flex flex-row items-center text-sm sm:text-[16px] sm:h-[54px] font-bold gap-2"
           >
             POPULER <FaAngleDown />
           </Button>
@@ -61,7 +61,7 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
       </div>
       <div className="flex flex-col sm:flex-row gap-10">
         <div className="flex flex-col gap-4">
-          <div className="text-[28px] text-left font-semibold w-95">
+          <div className="text-xl sm:text-[28px] text-left font-semibold w-95">
             Find movie
           </div>
           <div>
@@ -78,15 +78,17 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="text-[28px] font-semibold text-left">Filters</div>
+          <div className="text-xl sm:text-[28px] font-semibold text-left">
+            Filters
+          </div>
           <div className="flex space-x-2 flex-wrap gap-2">
             {displayGenres.slice(0, 4).map((genre) => (
               <button
                 key={genre.id}
-                className={`px-4 py-2 rounded-full border ${
+                className={`px-5 py-2 sm:py-3 rounded-full border ${
                   selectedGenre === genre.id
                     ? "bg-primary text-white"
-                    : "bg-white text-gray-600 border-gray-300"
+                    : "bg-eighth text-gray-600 border-gray-300"
                 } hover:bg-primary/90 hover:text-white transition-colors`}
                 onClick={() => handleGenreClick(genre.id, genre.name)}
               >

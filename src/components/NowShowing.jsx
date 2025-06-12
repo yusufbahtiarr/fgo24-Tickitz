@@ -66,7 +66,7 @@ function NowShowing() {
           <div key={item.id} className="mb-2">
             <div className="relative lg:w-70 w-50 mb-4">
               {item.vote_average > 7 && (
-                <div className="absolute text-primary bg-third font-bold px-2 py-1 rounded-b-lg ">
+                <div className="absolute text-primary bg-fourth font-bold px-2 py-1 rounded-br-lg ">
                   Recommended
                 </div>
               )}

@@ -13,7 +13,7 @@ const RenderGenres = ({
         return (
           <div
             key={id}
-            className={`text-sm bg-sixth text-fifth font-medium px-4 py-2 h-fit rounded-full ${className}`}
+            className={`text-sm bg-fourth/80 text-secondary font-medium px-4 py-2 h-fit rounded-full ${className}`}
           >
             {genre?.name}
           </div>

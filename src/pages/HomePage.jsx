@@ -15,9 +15,9 @@ function HomePage() {
       <header>
         <Navbar></Navbar>
       </header>
-      <main className="flex flex-col mt-25 items-center text-center">
+      <main className="flex flex-col mt-24 sm:mt-28 items-center text-center bg-third">
         <section className="flex flex-col items-center justify-center gap-4 mb-8">
-          <div className=" w-fit text-primary bg-third font-bold text-[14px] sm:text-xl mx-6 rounded-full px-6 py-3 primary sm:text-m">
+          <div className=" w-fit text-primary bg-fourth/40 font-bold text-[14px] sm:text-xl mx-6 rounded-full px-6 py-3 primary sm:text-m">
             MOVIE TICKET PURCHASES #1 IN INDONESIA
           </div>
           <div className="flex flex-col items-center text-4xl px-6 py-2 sm:text-[64px] leading-none">
@@ -34,7 +34,7 @@ function HomePage() {
           </div>
         </section>
         <NowShowing />
-        <div className="bg-black rounded-4xl p-6 sm:h-105 w-full h-fit flex flex-col sm:flex-row sm:p-20 gap-8">
+        <div className="bg-secondary rounded-4xl p-6 sm:h-105 w-full h-fit flex flex-col sm:flex-row sm:p-20 gap-8">
           <div className="flex flex-col gap-6 sm:gap-0 justify-between sm:w-[32%]">
             <Badge
               variant="secondary"

@@ -6,6 +6,7 @@ body {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
+  background-color: var(--color-third);
 }
 
 @theme {
@@ -13,15 +14,16 @@ body {
   --font-satoshi: "Satoshi", sans-serif;
   --font-exile: "Exile", sans-serif;
 
-  --color-primary: #e95102;
-  --color-secondary: #0f100d;
-  --color-third: #fdece3;
-  --color-fourth: #646464;
+  --color-primary: #009c97;
+  --color-secondary: #002524;
+  --color-third: #e3ecf5;
+  --color-fourth: #b3e6e3;
   --color-fifth: #878786;
   --color-sixth: #e0e0e0;
-  --color-seventh: #e951021f;
+  --color-seventh: #009c97;
+  --color-eighth: #f5f7fa;
   --color-gray1: #dedede;
-  --color-gray2: #d6d8e7;
+  --color-gray2: #eaf0f7;
   --color-gray3: #696f79;
   --color-violet: #6e7191;
   --color-pink: #f589d7;

@@ -54,7 +54,7 @@ function BookingTicket({ titleMovie }) {
             ${
               selectedCinema === value
                 ? "bg-primary/40 text-white"
-                : "bg-white text-black border-gray-300"
+                : "bg-third text-black border-gray-300"
             }
             `}
           htmlFor={idCinema}
