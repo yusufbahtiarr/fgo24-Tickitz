@@ -102,25 +102,24 @@ body {
   box-sizing: border-box;
 }
 
-/* Untuk WebKit (Chrome, Edge, Safari) */
-.-webkit-scrollbar {
-  height: 8px;
-  width: 1svw;
+.scroll-genre::-webkit-scrollbar {
+  display: none;
 }
 
-.-webkit-scrollbar-track {
-  background: #888;
+.scroll-x::-webkit-scrollbar {
+  height: 10px;
 }
 
-.-webkit-scrollbar-thumb {
-  background-color: oklch(70% 0.213 47.604);
-}
-.-webkit-scrollbar-thumb:hover {
-  background-color: #555;
+.scroll-x::-webkit-scrollbar-track {
+  background: var(--color-fourth);
+  border-radius: 4px;
 }
 
-/* Untuk Firefox */
-.custom-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: orange #f0f0f0;
+.scroll-x::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+.scroll-x::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
 }
