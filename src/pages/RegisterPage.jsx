@@ -60,7 +60,9 @@ function RegisterPage() {
       <div className="relative px-4 sm:px-0 w-full h-full flex justify-center items-center z-99">
         <div className="pt-2 w-full sm:w-[546px] h-fit bg-primary pb-4 flex flex-col bg-opacity-10 justify-center items-center rounded-2xl">
           <div className="w-[160px] py-2 sm:py-4 sm:w-[300px]">
-            <img className="w-206px h-104px" src={logo} alt="image 1" />
+            <Link to="/">
+              <img className="w-206px h-104px" src={logo} alt="image 1" />
+            </Link>
           </div>
           <div className="bg-third w-full rounded h-fit border border-orange-200 p-6 sm:p-10 flex flex-col gap-4 justify-center items-center pb-8">
             <div className="hidden sm:flex flex-row items-center gap-4 mb-10 w-full justify-between">

@@ -18,7 +18,7 @@ function Navbar() {
 
   function logout() {
     dispatch(logoutUser());
-    navigate("/login");
+    navigate("/");
   }
 
   return (
