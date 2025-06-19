@@ -68,7 +68,7 @@ function Footer() {
             </div>
             <div>
               <span className="flex sm:hidden">
-                © 2020 Tickitz. All Rights Reserved.
+                © 2025 Kukky. All Rights Reserved.
               </span>
             </div>
           </div>
