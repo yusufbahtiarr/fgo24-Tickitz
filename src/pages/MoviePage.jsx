@@ -27,6 +27,7 @@ function MoviePage() {
   const [selectedGenre, setSelectedGenre] = useState(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [sortOption, setSortOption] = useState("popular");
 
   // const initialGenre = searchParams.get("genre") || null;
 
@@ -109,7 +110,10 @@ function MoviePage() {
           genresList={genresList}
           selectedGenre={selectedGenre}
           setSelectedGenre={setSelectedGenre}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
         />
+
         <ShowMovie
           movies={movies}
           genresList={genresList}
@@ -117,7 +121,9 @@ function MoviePage() {
           setSearchParams={setSearchParams}
           navigate={navigate}
           selectedGenre={selectedGenre}
+          sortOption={sortOption}
         />
+
         <Subscribe />
       </main>
       <footer>
@@ -134,9 +140,24 @@ function ShowMovie({
   setSearchParams,
   navigate,
   selectedGenre,
+  sortOption,
 }) {
   const searchQuery = searchParams.get("search");
-  const filteredSearch = movies.filter((item) => {
+  let sortedMovies = [...movies];
+
+  if (sortOption === "latest") {
+    sortedMovies.sort(
+      (a, b) => new Date(b.release_date) - new Date(a.release_date)
+    );
+  } else if (sortOption === "asc") {
+    sortedMovies.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortOption === "desc") {
+    sortedMovies.sort((a, b) => b.title.localeCompare(a.title));
+  } else {
+    sortedMovies.sort((a, b) => b.vote_average - a.vote_average);
+  }
+
+  const filteredSearch = sortedMovies.filter((item) => {
     const matchesSearch = item.title
       ?.toLowerCase()
       .includes(searchQuery?.toLowerCase() || "");
@@ -144,6 +165,7 @@ function ShowMovie({
       !selectedGenre || item.genre_ids.includes(Number(selectedGenre));
     return matchesSearch && matchesGenre;
   });
+
   const PAGE = Number(searchParams.get("page")) || 1;
   const LIMIT = Number(searchParams.get("limit")) || 10;
   const OFFSET = (PAGE - 1) * LIMIT;

@@ -4,8 +4,15 @@ import Input from "./Input";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import SortDropdown from "./SortOptions";
 
-function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
+function FilterCinemas({
+  genresList,
+  selectedGenre,
+  setSelectedGenre,
+  sortOption,
+  setSortOption,
+}) {
   const { register, handleSubmit, setValue } = useForm();
   const [searchParams, setSearchParams] = useSearchParams();
   const handleGenreClick = (genreId, genreName) => {
@@ -50,13 +57,8 @@ function FilterCinemas({ genresList, selectedGenre, setSelectedGenre }) {
         <div className="text-xl sm:text-3xl text-left sm:title-section">
           Now Showing in Cinemas
         </div>
-        <div>
-          <Button
-            variant="primary"
-            className="flex flex-row items-center text-sm sm:text-[16px] sm:h-[54px] font-bold gap-2"
-          >
-            POPULER <FaAngleDown />
-          </Button>
+        <div className="relative inline-block text-left">
+          <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
         </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-10">
