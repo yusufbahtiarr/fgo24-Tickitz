@@ -75,7 +75,7 @@ function LoginPage() {
   return (
     <div className="w-screen h-screen bg-[url(../src/assets/images/background.png)] object-cover bg-no-repeat bg-center">
       <div className="absolute w-full min-h-full sm:h-full top-0 left-0 right-0 bg-black/60 z-0"></div>
-      <div className="relative px-4 sm:px-0 w-full h-full flex justify-center items-center">
+      <div className="relative px-4 sm:px-0 w-full h-full flex justify-center items-center z-99">
         <div className="pt-4 w-full sm:w-[546px] h-fit bg-primary pb-4 flex flex-col bg-opacity-10 justify-center items-center rounded-2xl">
           <div className="w-[160px] pb-3 sm:pb-4 sm:w-[300px]">
             <Link to="/">
