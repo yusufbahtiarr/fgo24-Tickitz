@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { loginUser } from "../redux/reducers/auths";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { showNotif } from "../utils/notif";
+import logo from "../assets/images/logowhite.png";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,16 +73,16 @@ function LoginPage() {
     }, 4000);
 
   return (
-    <div className="w-screen h-screen bg-[url(../src/assets/images/background.png)]  object-cover bg-no-repeat bg-center">
+    <div className="w-screen h-screen bg-[url(../src/assets/images/background.png)] object-cover bg-no-repeat bg-center">
       <div className="absolute w-full h-full top-0 left-0 right-0 bg-black/60 z-0"></div>
       <div className="relative px-4 sm:px-0 w-full h-full flex justify-center items-center">
         <div className="pt-4 w-full sm:w-[546px] h-fit bg-primary pb-4 flex flex-col bg-opacity-10 justify-center items-center rounded-2xl">
+          <div className="w-[160px] pb-3 sm:pb-4 sm:w-[300px]">
+            <Link to="/">
+              <img className="w-206px h-104px" src={logo} alt="image 1" />
+            </Link>
+          </div>
           <div className="bg-third w-full  h-fit p-6 sm:p-10 flex flex-col gap-4 justify-center items-center pb-8">
-            <div className="flex flex-row items-center gap-6 w-full">
-              <div className=" flex flex-col justify-between items-center gap-4">
-                <span className="font-bold text-[32px]">Welcome Back👋</span>
-              </div>
-            </div>
             <div className=" flex flex-col justify-between items-center gap-4">
               <span className="font-normal text-[18px] text-gray-600 text-justify">
                 Sign in with your data that you entered during your registration

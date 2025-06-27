@@ -79,6 +79,7 @@ To develop this app, we are using some dependencies:
 - React Hook Form
 - React Toastify
 - ApexCharts
+- Headless UI
 
 And frontend tooling, the one and only:
 

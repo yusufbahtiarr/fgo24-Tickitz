@@ -13,7 +13,12 @@ function SortDropdown({ sortOption, setSortOption }) {
 
   return (
     <div className="relative inline-block text-left w-40 sm:w-52 text-20 z-20">
-      <Listbox value={sortOption} onChange={setSortOption}>
+      <Listbox
+        value={sortOption}
+        onChange={(selected) => {
+          setSortOption(selected);
+        }}
+      >
         <div className="relative">
           <Listbox.Button className="w-full h-12 bg-primary text-white font-semibold px-4 pr-4 rounded-lg shadow-sm flex items-center justify-between text-lg">
             <span className="text-[16px] sm:text-[20px]">
