@@ -3,5 +3,5 @@ services:
     image: ghcr.io/yusufbahtiarr/tickitz:latest
     container_name: tickitz-frontend
     ports:
-      - "80:80"
+      - "9701:80"
     restart: always
