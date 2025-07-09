@@ -1,11 +1,10 @@
-name: Build & Push Frontend to GHCR
+name: Build & Deploy Frontend
 
 on: [push]
 
 jobs:
-  build-frontend:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -18,6 +17,28 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Push Docker Image
+        env:
+          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
         run: |
-          docker build -t ghcr.io/${{ github.repository }}:latest .
-          docker push ghcr.io/${{ github.repository }}:latest
+          docker build \
+            --build-arg VITE_TMDB_API_KEY=$VITE_TMDB_API_KEY \
+            -t ghcr.io/yusufbahtiarr/tickitz:latest .
+          docker push ghcr.io/yusufbahtiarr/tickitz:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to VPS via Docker Compose
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 146.190.102.54
+          username: yusuf
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 9701
+          script: |
+            cd ~/deploy/fgo24-tickitz
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker compose pull
+            docker compose down
+            docker compose up -d
