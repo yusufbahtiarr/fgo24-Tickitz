@@ -3,28 +3,32 @@ import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { loginUser } from "../redux/reducers/auths";
-import { comparePassword, isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
-import { loginUser } from "../redux/reducers/auths";
+import { useState, useEffect } from "react";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { showNotif } from "../utils/notif";
 import logo from "../assets/images/logowhite.png";
+import { jwtDecode } from "jwt-decode";
+import http from "../utils/axios";
+import { setCredentials } from "../redux/reducers/auths";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const users = useSelector((state) => state.users.data);
-  const usersAuth = useSelector((state) => state.auths.currentUser);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const authToken = useSelector((state) => state.auths.token);
 
   useEffect(() => {
-    if (usersAuth === "Admin") navigate("/admin");
-    else if (usersAuth === "User") navigate("/profile");
-  }, [usersAuth]);
+    const role =
+      authToken && typeof authToken === "string"
+        ? jwtDecode(authToken)?.role
+        : null;
+    if (role === "admin") navigate("/admin");
+    else if (role === "user") navigate("/profile");
+    else navigate("/login");
+  }, [authToken, navigate]);
 
   const schema = yup.object({
     email: yup
@@ -42,31 +46,36 @@ function LoginPage() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const handleLogin = async (data) => {
     setIsSubmitting(true);
-    const isExists = isEmailExists(users, data.email);
-    if (!isExists) {
-      showNotif("error", "Email tidak terdaftar.");
+    try {
+      const response = await http().post("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+      const token = response.data.results;
+
+      const decodedToken = jwtDecode(token);
+      const { role } = decodedToken;
+
+      dispatch(setCredentials(token));
+
+      if (role === "user") {
+        showNotif("success", "Anda berhasil login");
+        navigate("/profile");
+      } else if (role === "admin") {
+        showNotif("success", "Anda login sebagai Admin");
+        navigate("/admin");
+      } else {
+        throw new Error("Role tidak valid");
+      }
       activeBtn();
-      return;
-    }
-    const found = users.filter((user) => user.email === data.email)[0];
-    if (!comparePassword(found.password, data.password)) {
-      showNotif("error", "Password yang anda masukkan salah.");
-      activeBtn();
-      return;
-    }
-    dispatch(loginUser(found));
-    if (found.role === "Admin") {
-      showNotif("success", "Anda berhasil Login sebagai Admin.");
-      navigate("/admin");
-      activeBtn();
-    } else if (found.role === "User") {
-      showNotif("success", "Anda berhasil Login.");
-      navigate("/profile");
+    } catch {
+      showNotif("error", "Login gagal.");
       activeBtn();
     }
   };
+
   const activeBtn = () =>
     setTimeout(() => {
       setIsSubmitting(false);
@@ -89,7 +98,7 @@ function LoginPage() {
               </span>
             </div>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(handleLogin)}
               className="flex flex-col w-full items-center gap-5"
               autoComplete="off"
             >
@@ -105,6 +114,7 @@ function LoginPage() {
                     id="email"
                     placeholder="Enter your email"
                     className="outline-none py-3 px-4"
+                    autoComplete="off"
                   />
                 </div>
                 <span className="text-red">{errors.email?.message}</span>
@@ -121,6 +131,7 @@ function LoginPage() {
                     id="password"
                     placeholder="Enter your password"
                     className="outline-none py-3"
+                    autoComplete="off"
                   />
                   <button
                     type="button"

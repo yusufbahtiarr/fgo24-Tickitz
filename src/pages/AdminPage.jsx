@@ -3,17 +3,22 @@ import Button from "./../components/Button";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Charts from "../components/Charts";
+import { jwtDecode } from "jwt-decode";
 
 function AdminPage() {
-  const currentUser = useSelector((state) => state.auths.currentUser);
+  const authToken = useSelector((state) => state.auths.token);
+  const role =
+    authToken && typeof authToken === "string"
+      ? jwtDecode(authToken)?.role
+      : null;
 
-  if (!currentUser || currentUser.role !== "Admin") {
+  if (role !== "admin") {
     return <Navigate to="/login" replace />;
   }
   return (
-    <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
+    <div className="bg-gray2 min-h-[100vh] min-w-[100vw] overflow-y-hidden">
       <Navbar />
-      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full sm:justify-center sm:items-center sm:w-330">
+      <div className="flex flex-col p-6 mt-21 sm:px-33 sm:py-11 gap-10 w-full h-full sm:justify-center sm:items-center">
         <div className="p-6 sm:px-15 sm:py-10 flex sm:w-260 flex-col gap-8 sm:gap-10 bg-white rounded-xl">
           <div>
             <span className="text-[18px] sm:text-2xl font-bold">

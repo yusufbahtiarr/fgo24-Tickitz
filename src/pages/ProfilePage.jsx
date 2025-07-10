@@ -1,31 +1,56 @@
 import Navbar from "../components/Navbar";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Button from "./../components/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-// import { editUserAction } from "../redux/reducers/users";
-import { editUserAndSyncAuth } from "../redux/reducers/editUserAndSyncAuth";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import profile from "../assets/images/profile.png";
 import { showNotif } from "../utils/notif";
+import { jwtDecode } from "jwt-decode";
+import http from "../utils/axios";
 
 function ProfilePage() {
-  // const users = useSelector((state) => state.users.data);
-  const users = useSelector((state) => state.auths.currentUser);
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [profiles, setProfiles] = useState(null);
+  const authToken = useSelector((state) => state.auths.token);
+  const users =
+    authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
+
+  if (users.role == null) {
+    return <Navigate to="/login" replace />;
+  }
+
+  const getProfile = async () => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await http(authToken).get(`/user/profile`);
+      return response.data.results;
+    } catch (err) {
+      throw err;
+    }
+  };
 
   useEffect(() => {
-    if (users === null) {
-      navigate("/login");
-    }
-  }, []);
+    if (!users.userId) return;
+
+    const fetchProfile = async () => {
+      // eslint-disable-next-line no-useless-catch
+      try {
+        const profileData = await getProfile();
+        setProfiles(profileData);
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    fetchProfile();
+  }, [users.userId, authToken]);
 
   const schema = yup.object({
     firstName: yup.string().required("Nama depan wajib diisi"),
@@ -33,7 +58,7 @@ function ProfilePage() {
     email: yup.string().required("Email wajib diisi"),
     phone: yup.string().required("Nomor telepon wajib diisi"),
   });
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -56,9 +81,9 @@ function ProfilePage() {
       return;
     }
     if (
-      data.firstName === users.firstName &&
-      data.lastName === users.lastName &&
-      data.phone === users.phone &&
+      // data.firstName === users.firstName &&
+      // data.lastName === users.lastName &&
+      // data.phone === users.phone &&
       data.newPassword === "" &&
       data.confirmPassword === ""
     ) {
@@ -69,7 +94,6 @@ function ProfilePage() {
       return;
     }
     showNotif("success", "Data berhasil diperbaharui.");
-    dispatch(editUserAndSyncAuth(data));
     resetField("newPassword");
     resetField("confirmPassword");
 
@@ -108,9 +132,9 @@ function ProfilePage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  {users?.firstName
-                    ? `${users?.firstName} ${users?.lastName}`
-                    : users?.email.split("@")[0]}
+                  {profiles?.fullname
+                    ? profiles?.fullname
+                    : profiles?.email.split("@")[0]}
                 </span>
               </div>
               <div>
@@ -186,27 +210,27 @@ function ProfilePage() {
                   <span className="font-normal">Details Information</span>
                 </div>
                 <hr className="border-1 border-gray2 mb-4" />
-                <div className="flex flex-col sm:flex-row gap-9">
+                <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="firstName" className="text-seventh">
+                    <label htmlFor="fullName" className="text-seventh">
                       First Name
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
-                        {...register("firstName")}
+                        {...register("fullname")}
                         type="text"
-                        name="firstName"
-                        id="firstName"
-                        placeholder="input your firstname"
+                        name="fullname"
+                        id="fullName"
+                        placeholder="input your fullname"
                         className="outline-0 w-[85%]"
-                        defaultValue={users?.firstName}
+                        defaultValue={profiles?.fullname}
                       />
                     </div>
                     <span className="text-red">
                       {errors.firstName?.message}
                     </span>
                   </div>
-                  <div className="flex flex-1 flex-col gap-3">
+                  {/* <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="lastName" className="text-seventh">
                       Last Name
                     </label>
@@ -218,11 +242,11 @@ function ProfilePage() {
                         id="lastName"
                         placeholder="input your lastname"
                         className="outline-0 w-[85%]"
-                        defaultValue={users?.lastName}
+                        // defaultValue={users?.lastName}
                       />
                     </div>
                     <span className="text-red">{errors.lastName?.message}</span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
@@ -237,7 +261,7 @@ function ProfilePage() {
                         id="email"
                         placeholder="input your email"
                         className="outline-0 w-[85%]  "
-                        defaultValue={users?.email}
+                        defaultValue={profiles?.email}
                       />
                     </div>
                     <span className="text-red">{errors.email?.message}</span>
@@ -254,7 +278,7 @@ function ProfilePage() {
                         id="phone"
                         placeholder="input your phone"
                         className="outline-0 w-[85%]  "
-                        defaultValue={users?.phone}
+                        defaultValue={profiles?.phone}
                       />
                     </div>
                     <span className="text-red">{errors.phone?.message}</span>
@@ -279,6 +303,7 @@ function ProfilePage() {
                         id="newPassword"
                         placeholder="Write your password"
                         className="outline-0 w-[85%] "
+                        autoComplete="off"
                       />
                       <button
                         type="button"
@@ -308,6 +333,7 @@ function ProfilePage() {
                         id="confirmPassword"
                         placeholder="Confirm your password"
                         className="outline-0 w-[85%]"
+                        autoComplete="off"
                       />
                       <button
                         type="button"

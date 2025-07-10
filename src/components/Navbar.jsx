@@ -1,20 +1,57 @@
 import Button from "./Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { logoutUser } from "../redux/reducers/auths";
 import logo from "../assets/images/logobluegreensmall.png";
 import profile from "../assets/images/profile.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
+import { jwtDecode } from "jwt-decode";
+import http from "../utils/axios";
+// import { fetchData } from "./../utils/apiClient";
 
 function Navbar() {
-  const users = useSelector((state) => state.auths.currentUser);
+  let authToken = useSelector((state) => state.auths.token);
+  const userId =
+    authToken && typeof authToken === "string"
+      ? jwtDecode(authToken)?.userId
+      : null;
+  const role =
+    authToken && typeof authToken === "string"
+      ? jwtDecode(authToken)?.role
+      : null;
+  // console.log(userId);
 
+  const [profiles, setProfiles] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dropdown, setDropdown] = useState(false);
   const [hamburger, setHamburger] = useState(false);
+
+  const getProfile = async () => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await http(authToken).get(`/user/profile`);
+      return response.data.results;
+    } catch (err) {
+      throw err;
+    }
+  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      // eslint-disable-next-line no-useless-catch
+      try {
+        const profileData = await getProfile();
+        setProfiles(profileData);
+      } catch (err) {
+        throw err;
+      }
+    };
+    if (userId) {
+      fetchProfile();
+    }
+  }, [userId]);
 
   function logout() {
     dispatch(logoutUser());
@@ -38,7 +75,7 @@ function Navbar() {
         <Link to="/buy-ticket" className="font-semibold hover:text-primary">
           BUY TICKET
         </Link>
-        {users?.role === "Admin" && (
+        {role === "admin" && (
           <>
             <Link to="/admin" className="font-semibold hover:text-primary">
               CHART
@@ -75,7 +112,7 @@ function Navbar() {
             />
           )}
         </div>
-        {!users ? (
+        {!authToken ? (
           <div className="flex-1 hidden sm:flex gap-2 justify-end text-right">
             <Button variant="secondary">
               <Link to="/login">login</Link>
@@ -87,9 +124,9 @@ function Navbar() {
         ) : (
           <div className="hidden sm:flex flex-row gap-4 items-center relative">
             <span className="font-semibold">
-              {users?.firstName
-                ? `${users?.firstName} ${users?.lastName}`
-                : users?.email.split("@")[0]}
+              {profiles?.fullname
+                ? profiles?.fullname
+                : profiles?.email.split("@")[0]}
             </span>
             <img
               src={profile}
@@ -114,7 +151,7 @@ function Navbar() {
               <Link to="/buy-ticket" className=" hover:text-primary">
                 BUY TICKET
               </Link>
-              {users?.role === "Admin" && (
+              {role === "admin" && (
                 <>
                   <Link to="/admin" className=" hover:text-primary">
                     CHART
@@ -125,7 +162,7 @@ function Navbar() {
                 </>
               )}
             </div>
-            {!users ? (
+            {!authToken ? (
               <div className="flex-1 flex sm:hidden gap-2 justify-end text-right">
                 <Button variant="secondary">
                   <Link to="/login">login</Link>
@@ -137,7 +174,10 @@ function Navbar() {
             ) : (
               <>
                 <button
-                  onClick={() => navigate("/profile")}
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                    navigate("/profile");
+                  }}
                   className="p-2 rounded text-white bg-primary  hover:bg-primary/80 w-full"
                 >
                   Profile

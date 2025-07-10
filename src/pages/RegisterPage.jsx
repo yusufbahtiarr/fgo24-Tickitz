@@ -1,23 +1,22 @@
 import { useForm } from "react-hook-form";
 import { BsGoogle } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { addUserAction } from "../redux/reducers/users";
-import { isEmailExists } from "../utils/authentication";
+// import { isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import logo from "../assets/images/logowhite.png";
 import { showNotif } from "../utils/notif";
+import http from "../utils/axios";
 
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const users = useSelector((state) => state.users.data);
+  // const users = useSelector((state) => state.users.data);
 
   const schema = yup.object({
     email: yup
@@ -28,6 +27,10 @@ function RegisterPage() {
       .string()
       .min(8, "Password minimal 8 karakter")
       .required("Password wajib diisi"),
+    confirm_password: yup
+      .string()
+      .min(8, "Password minimal 8 karakter")
+      .required("Confirm Password wajib diisi"),
   });
   const {
     register,
@@ -36,22 +39,52 @@ function RegisterPage() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => {
+  const onSubmit = async (register) => {
     setIsSubmitting(true);
-    const isExists = isEmailExists(users, data.email);
-    if (isExists) {
-      showNotif("error", "Email sudah terdaftar.");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 4000);
-      return;
-    }
-    dispatch(addUserAction(data));
-    showNotif("success", "Registrasi Berhasil!.");
-    setTimeout(() => {
+
+    try {
+      const { data } = await http().post(
+        "/auth/register",
+        {
+          email: register.email,
+          password: register.password,
+          confirm_password: register.confirm_password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (data.success) {
+        console.log(data.message);
+        showNotif("success", data.message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      } else {
+        showNotif("error", data.message || "Registration failed!");
+      }
+    } catch (error) {
       setIsSubmitting(false);
-      navigate("/login");
-    }, 3000);
+      console.error(error);
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data.message;
+        if (status === 400) {
+          showNotif("error", `Bad Request: ${message}`);
+        } else if (status === 409) {
+          showNotif("error", `${message}`);
+        } else if (status === 500) {
+          showNotif("error", `Internal Server Error: ${message}`);
+        } else {
+          showNotif("error", `Error: ${message}`);
+        }
+      } else {
+        showNotif("error", "No response from server. Please try again later.");
+      }
+    }
   };
 
   return (
@@ -65,7 +98,7 @@ function RegisterPage() {
             </Link>
           </div>
           <div className="bg-third w-full rounded h-fit border border-orange-200 p-6 sm:p-10 flex flex-col gap-4 justify-center items-center pb-8">
-            <div className="hidden sm:flex flex-row items-center gap-4 mb-10 w-full justify-between">
+            {/* <div className="hidden sm:flex flex-row items-center gap-4 mb-10 w-full justify-between">
               <div className=" flex flex-col justify-between items-center gap-4">
                 <div className="rounded-full size-12 bg-primary flex items-center justify-center font-medium text-white">
                   <span className="text-third">1</span>
@@ -86,7 +119,7 @@ function RegisterPage() {
                 </div>
                 <span className="text-primary/50">Done</span>
               </div>
-            </div>
+            </div> */}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col w-full items-center gap-5 "
@@ -104,6 +137,7 @@ function RegisterPage() {
                     id="email"
                     placeholder="Enter your email"
                     className="outline-none py-3 px-4"
+                    autoComplete="off"
                   />
                 </div>
                 <span className="text-red">{errors.email?.message}</span>
@@ -120,6 +154,7 @@ function RegisterPage() {
                     id="password"
                     placeholder="Enter your password"
                     className="outline-none py-3 w-[90%]"
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"
@@ -137,6 +172,39 @@ function RegisterPage() {
                   </button>
                 </div>
                 <span className="text-red">{errors.password?.message}</span>
+              </div>
+              <div className="flex flex-col w-full gap-3">
+                <label htmlFor="confirm_password" className="w-full">
+                  Confirm Password
+                </label>
+                <div className="border rounded flex flex-row justify-between items-center px-5">
+                  <input
+                    {...register("confirm_password")}
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirm_password"
+                    id="confirm_password"
+                    placeholder="Enter your confirm password"
+                    className="outline-none py-3 w-[90%]"
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    className="cursor-pointer "
+                    tabIndex="-1"
+                    onClick={() => {
+                      setShowConfirmPassword(!showConfirmPassword);
+                    }}
+                  >
+                    {showConfirmPassword ? (
+                      <LuEyeClosed className="text-xl" />
+                    ) : (
+                      <LuEye className="text-xl" />
+                    )}
+                  </button>
+                </div>
+                <span className="text-red">
+                  {errors.confirm_password?.message}
+                </span>
               </div>
               <div className="flex flex-col w-full gap-3">
                 <div className="flex flex-row gap-3">
