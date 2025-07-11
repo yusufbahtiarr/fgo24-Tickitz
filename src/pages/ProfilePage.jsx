@@ -22,9 +22,29 @@ function ProfilePage() {
   const users =
     authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
 
-  if (users.role == null) {
-    return <Navigate to="/login" replace />;
-  }
+  const schema = yup.object({
+    fullname: yup.string().required("Nama wajib diisi"),
+    email: yup.string().required("Email wajib diisi"),
+    phone: yup.string().required("Nomor telepon wajib diisi"),
+  });
+  // const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    resetField,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      fullname: "",
+      email: "",
+      phone: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
 
   const getProfile = async () => {
     // eslint-disable-next-line no-useless-catch
@@ -37,7 +57,7 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    if (!users.userId) return;
+    if (!users || !users.userId) return;
 
     const fetchProfile = async () => {
       // eslint-disable-next-line no-useless-catch
@@ -50,57 +70,79 @@ function ProfilePage() {
     };
 
     fetchProfile();
-  }, [users.userId, authToken]);
+  }, [users, authToken]);
 
-  const schema = yup.object({
-    firstName: yup.string().required("Nama depan wajib diisi"),
-    lastName: yup.string().required("Nama belakang wajib diisi"),
-    email: yup.string().required("Email wajib diisi"),
-    phone: yup.string().required("Nomor telepon wajib diisi"),
-  });
-  // const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    resetField,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  useEffect(() => {
+    if (profiles) {
+      setValue("fullname", profiles.fullname || "");
+      setValue("email", profiles.email || "");
+      setValue("phone", profiles.phone || "");
+    }
+  }, [profiles, setValue]);
 
-  const onSubmit = (data) => {
+  const handleProfile = async (data) => {
     setIsSubmitting(true);
-    if (data.newPassword !== data.confirmPassword) {
+    try {
+      if (data.newPassword !== data.confirmPassword) {
+        showNotif(
+          "error",
+          "Password baru tidak sama dengan password konfirmasi."
+        );
+        resetField("newPassword");
+        resetField("confirmPassword");
+        setTimeout(() => {
+          setIsSubmitting(false);
+        }, 4000);
+        return;
+      }
+      if (
+        data.fullname === profiles.fullname &&
+        data.email === profiles.email &&
+        data.phone === profiles.phone &&
+        !data.newPassword &&
+        !data.confirmPassword
+      ) {
+        showNotif("info", "Data tidak ada yang diperbaharui.");
+        setTimeout(() => {
+          setIsSubmitting(false);
+        }, 4000);
+        return;
+      }
+
+      const updateData = {
+        fullname: data.fullname,
+        email: data.email,
+        phone: data.phone,
+      };
+      if (data.newPassword) {
+        updateData.new_password = data.newPassword;
+        updateData.confirm_password = data.confirmPassword;
+      }
+
+      await http(authToken).patch("/user/profile", updateData);
+
+      showNotif("success", "Data berhasil diperbaharui.");
+
+      reset();
+
+      const updateProfile = await getProfile();
+      setProfiles(updateProfile);
+
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 4000);
+    } catch (error) {
       showNotif(
         "error",
-        "Password baru tidak sama dengan password konfirmasi."
+        error.response?.data?.message || "Gagal memperbarui profil"
       );
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 4000);
-      return;
+      console.error("Error updating profile:", error);
     }
-    if (
-      // data.firstName === users.firstName &&
-      // data.lastName === users.lastName &&
-      // data.phone === users.phone &&
-      data.newPassword === "" &&
-      data.confirmPassword === ""
-    ) {
-      showNotif("info", "Data tidak ada yang diperbaharui.");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 4000);
-      return;
-    }
-    showNotif("success", "Data berhasil diperbaharui.");
-    resetField("newPassword");
-    resetField("confirmPassword");
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-    }, 5000);
   };
+
+  if (!users || users.role == null) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div>
@@ -193,7 +235,7 @@ function ProfilePage() {
           </div>
           <div className="sm:w-[70%] h-fit rounded-4xl flex flex-col gap-8 mb-8 sm:mb-0">
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(handleProfile)}
               className=" flex flex-col gap-8 sm:gap-10"
               autoComplete="off"
             >
@@ -212,41 +254,22 @@ function ProfilePage() {
                 <hr className="border-1 border-gray2 mb-4" />
                 <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="fullName" className="text-seventh">
-                      First Name
+                    <label htmlFor="fullname" className="text-seventh">
+                      Full Name
                     </label>
                     <div className="border border-gray2 rounded-2xl p-5 flex items-center">
                       <input
                         {...register("fullname")}
                         type="text"
                         name="fullname"
-                        id="fullName"
+                        id="fullname"
                         placeholder="input your fullname"
                         className="outline-0 w-[85%]"
                         defaultValue={profiles?.fullname}
                       />
                     </div>
-                    <span className="text-red">
-                      {errors.firstName?.message}
-                    </span>
+                    <span className="text-red">{errors.fullname?.message}</span>
                   </div>
-                  {/* <div className="flex flex-1 flex-col gap-3">
-                    <label htmlFor="lastName" className="text-seventh">
-                      Last Name
-                    </label>
-                    <div className="border border-gray2 rounded-2xl p-5 flex items-center">
-                      <input
-                        {...register("lastName")}
-                        type="text"
-                        name="lastName"
-                        id="lastName"
-                        placeholder="input your lastname"
-                        className="outline-0 w-[85%]"
-                        // defaultValue={users?.lastName}
-                      />
-                    </div>
-                    <span className="text-red">{errors.lastName?.message}</span>
-                  </div> */}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
@@ -266,6 +289,8 @@ function ProfilePage() {
                     </div>
                     <span className="text-red">{errors.email?.message}</span>
                   </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-9 sm:mb-4">
                   <div className="flex flex-1 flex-col gap-3">
                     <label htmlFor="Phone Number" className="text-seventh">
                       Phone Number
