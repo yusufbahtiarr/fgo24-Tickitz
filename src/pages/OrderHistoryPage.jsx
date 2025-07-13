@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { Link } from "react-router-dom";
@@ -11,20 +11,28 @@ import http from "../utils/axios";
 import { formatInTimeZone } from "date-fns-tz";
 
 function OrderHistoryPage() {
+  const [profiles, setProfiles] = useState(null);
   const authToken = useSelector((state) => state.auths.token);
   const users =
     authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
   const [transactionHistory, setTransactionHistory] = useState([]);
 
-  const fetchTransactionHistory = async () => {
+  const getProfile = useCallback(async () => {
+    const response = await http(authToken).get(`/user/profile`);
+    return response.data.results;
+  }, [authToken]);
+
+  const fetchData = async () => {
     const transactionHistoryRaw = await http(authToken).get(
       "user/transaction-history"
     );
+    const profileData = await getProfile();
+    setProfiles(profileData);
     setTransactionHistory(transactionHistoryRaw.data.results);
   };
 
   useEffect(() => {
-    fetchTransactionHistory();
+    fetchData();
   }, []);
   if (!users || users.role == null) {
     return <Navigate to="/login" replace />;
@@ -59,9 +67,9 @@ function OrderHistoryPage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  {/* {users?.fullname
-                    ? {users?.fullname}
-                    : users?.email.split("@")[0]} */}
+                  {profiles?.fullname
+                    ? profiles?.fullname
+                    : profiles?.email.split("@")[0]}
                 </span>
               </div>
               <div>
