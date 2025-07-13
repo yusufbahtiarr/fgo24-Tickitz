@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import Badge from "./Badge";
-import { fetchData } from "../utils/apiClient";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import http from "../utils/axios";
 
 function UpcomingMovie() {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
@@ -12,10 +12,9 @@ function UpcomingMovie() {
   useEffect(() => {
     const fetchDataAll = async () => {
       try {
-        // Fetch upcoming movie list
-        const upcomingRes = await fetchData.getUpcomingMovies();
+        const upcomingRes = await http().get("movies/upcoming");
         setUpcomingMovies(upcomingRes.data.results || []);
-        // console.log(upcomingRes.data.results);
+        console.log(upcomingRes.data.results);
       } catch (error) {
         console.error(
           "Error fetching data:",
@@ -43,12 +42,12 @@ function UpcomingMovie() {
             ref={sliderRef}
             className="flex flex-row justify-start sm:w-[73%] scroll-x overflow-hidden gap-10 justify-items-center scrollbar-hide"
           >
-            {upcomingMovies.slice(0, 12).map((item) => (
+            {upcomingMovies.map((item) => (
               <div key={item.id} className="">
                 <div className="flex col gap-8">
                   <div className="flex flex-col gap-2 relative items-center h-fit w-[190px]">
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                      src={`https://image.tmdb.org/t/p/w500${item.poster_url}`}
                       className="h-[282px] w-[190px] rounded-2xl object-cover"
                       alt="movies"
                     />
