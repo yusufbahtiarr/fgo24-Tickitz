@@ -75,8 +75,6 @@ function BookingTicket({ titleMovie, users }) {
     navigate(`/buy-ticket/${movieId}/seat`, { replace: true });
   }
 
-  console.log(fetchedCinemas);
-
   return (
     <div className="w-full h-fit p-6 sm:p-20">
       <div className="flex flex-col gap-10">
