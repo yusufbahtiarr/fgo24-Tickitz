@@ -1,24 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { id as LocaleID } from "date-fns/locale";
 import { format } from "date-fns";
 import profile from "../assets/images/profile.png";
+import { jwtDecode } from "jwt-decode";
+import http from "../utils/axios";
+import { formatInTimeZone } from "date-fns-tz";
 
 function OrderHistoryPage() {
-  const users = useSelector((state) => state.auths.currentUser);
-  const dataTickets = useSelector((state) => state.tickets.data);
+  const authToken = useSelector((state) => state.auths.token);
+  const users =
+    authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
+  const [transactionHistory, setTransactionHistory] = useState([]);
 
-  const dataMovie = dataTickets.filter((item) => item.idUser === users.id);
+  const fetchTransactionHistory = async () => {
+    const transactionHistoryRaw = await http(authToken).get(
+      "user/transaction-history"
+    );
+    setTransactionHistory(transactionHistoryRaw.data.results);
+  };
 
-  const navigate = useNavigate();
   useEffect(() => {
-    if (users === null) {
-      navigate("/login");
-    }
+    fetchTransactionHistory();
   }, []);
+  if (!users || users.role == null) {
+    return <Navigate to="/login" replace />;
+  }
   return (
     <div>
       <Navbar />
@@ -49,9 +59,9 @@ function OrderHistoryPage() {
               </div>
               <div>
                 <span className="text-secondary text-[20px] ffont-semibold">
-                  {users?.firstName
-                    ? `${users?.firstName} ${users?.lastName}`
-                    : users?.email.split("@")[0]}
+                  {/* {users?.fullname
+                    ? {users?.fullname}
+                    : users?.email.split("@")[0]} */}
                 </span>
               </div>
               <div>
@@ -117,8 +127,8 @@ function OrderHistoryPage() {
                 Order History
               </span>
             </div>
-            {dataMovie
-              ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+            {transactionHistory
+              ?.sort((a, b) => new Date(b.movie_date) - new Date(a.movie_date))
               .map((item, index) => {
                 return (
                   <div
@@ -127,20 +137,26 @@ function OrderHistoryPage() {
                   >
                     <div className="flex flex-col  sm:flex-row justify-between p-6 sm:px-12 sm:py-10 ">
                       <div className="flex flex-col justify-between gap-2">
-                        {/* <span>{item.idTicket}</span> */}
+                        <span>{item.idTicket}</span>
                         <span className="font-normal text-sm text-seventh">
-                          {format(new Date(item.date), "EEEE, dd MMMM yyyy", {
-                            locale: LocaleID,
-                          })}{" "}
-                          - {item.time}
+                          {format(
+                            new Date(item.movie_date),
+                            "EEEE, dd MMMM yyyy",
+                            {
+                              locale: LocaleID,
+                            }
+                          )}{" "}
+                          -{" "}
+                          {item.time &&
+                            formatInTimeZone(item.time, "UTC", "HH:mm:ss")}
                         </span>
                         <span className="text-xl sm:text-2xl font-semibold">
-                          {item.titleMovie}
+                          {item.title}
                         </span>
                         <span>
                           Seats :{" "}
                           <span className="font-semibold">
-                            {item.seats?.join(", ")}
+                            {item.seats.join(", ")}
                           </span>
                         </span>
                       </div>
