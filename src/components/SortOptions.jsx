@@ -4,8 +4,8 @@ import { FaAngleDown } from "react-icons/fa6";
 const sortOptions = [
   { id: "popular", label: "Popular" },
   { id: "latest", label: "Latest" },
-  { id: "asc", label: "Title A-Z" },
-  { id: "desc", label: "Title Z-A" },
+  { id: "title_asc", label: "Title A-Z" },
+  { id: "title_desc", label: "Title Z-A" },
 ];
 
 function SortDropdown({ sortOption, setSortOption }) {

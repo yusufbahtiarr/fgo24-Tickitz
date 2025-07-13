@@ -7,36 +7,25 @@ import { useEffect } from "react";
 import SortDropdown from "./SortOptions";
 
 function FilterCinemas({
-  genresList,
-  selectedGenre,
+  genres,
   setSelectedGenre,
   sortOption,
   setSortOption,
+  onSearchSubmit,
 }) {
   const { register, handleSubmit, setValue } = useForm();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const genreNameFromUrl = searchParams.get("genre");
+  const currentSelectedGenreId =
+    genres.find((g) => g.genre_name === genreNameFromUrl)?.id || null;
+
   const handleGenreClick = (genreId, genreName) => {
-    setSelectedGenre(genreId === selectedGenre ? null : genreId);
-
-    // Ambil parameter search jika ada
-    const searchQuery = searchParams.get("search");
-
-    if (genreId === selectedGenre) {
-      // Jika genre yang sama diklik lagi (toggle off), hapus genre, pertahankan search jika ada
-      if (searchQuery) {
-        setSearchParams({ search: searchQuery });
-      } else {
-        setSearchParams({});
-      }
-    } else {
-      // Saat genre baru dipilih, hanya simpan genre (dan search jika ada)
-      const newParams = searchQuery
-        ? { search: searchQuery, genre: genreName.toLowerCase() }
-        : { genre: genreName.toLowerCase() };
-      setSearchParams(newParams);
-    }
+    setSelectedGenre(
+      genreId === currentSelectedGenreId ? null : genreId,
+      genreName
+    );
   };
-  const displayGenres = genresList.slice(0, 5);
+  const displayGenres = genres.slice(0, 5);
 
   const searchQuery = searchParams.get("search") || "";
 
@@ -45,10 +34,7 @@ function FilterCinemas({
   }, [searchQuery, setValue]);
 
   const onSubmit = (data) => {
-    setSearchParams({
-      ...(data.search ? { search: data.search } : {}),
-      page: 1,
-    });
+    onSearchSubmit(data.search);
   };
 
   return (
@@ -88,13 +74,13 @@ function FilterCinemas({
               <button
                 key={genre.id}
                 className={`px-5 py-2 sm:py-3 rounded-full border ${
-                  selectedGenre === genre.id
+                  currentSelectedGenreId === genre.id
                     ? "bg-primary text-white"
                     : "bg-eighth text-gray-600 border-gray-300"
                 } hover:bg-primary/90 hover:text-white transition-colors`}
-                onClick={() => handleGenreClick(genre.id, genre.name)}
+                onClick={() => handleGenreClick(genre.id, genre.genre_name)}
               >
-                {genre.name}
+                {genre.genre_name}
               </button>
             ))}
           </div>

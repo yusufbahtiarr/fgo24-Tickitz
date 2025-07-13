@@ -11,47 +11,164 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Subscribe from "../components/Subscribe";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { fetchData } from "../utils/apiClient";
+import { useCallback, useEffect, useState } from "react";
 import Button from "../components/Button";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate, ScrollRestoration } from "react-router-dom";
 import RenderGenres from "../components/RenderGenres";
-// import { useSelector } from "react-redux";
+import http from "../utils/axios";
 
 function MoviePage() {
   const [movies, setMovies] = useState([]);
-  // const movieCustom = useSelector((state) => state.films.data);
-
-  const [genresList, setGenresList] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState(null);
-  const navigate = useNavigate();
+  const [genres, setGenres] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
+
+  const currentSearch = searchParams.get("search") || "";
+  const currentGenreName = searchParams.get("genre") || "";
+  const currentSort = searchParams.get("sort") || "popular";
+  const currentPageFromUrl = Number(searchParams.get("page")) || 1;
+
+  const [selectedGenreId, setSelectedGenreId] = useState(null);
   const [sortOption, setSortOption] = useState("popular");
 
-  // const initialGenre = searchParams.get("genre") || null;
+  useEffect(() => {
+    // This runs when URL params change, keeping the UI components consistent
+    const genreId =
+      genres.find((g) => g.genre_name === currentGenreName)?.id || null;
+    setSelectedGenreId(genreId);
+    setSortOption(currentSort);
+    setCurrentPage(currentPageFromUrl); // Sync internal page state with URL
+  }, [currentGenreName, currentSort, currentPageFromUrl, genres]);
 
-  const fetchDataAll = async () => {
+  const fetchDataAll = useCallback(async () => {
     try {
-      const movieRes = await fetchData.getNowPlaying();
-      setMovies(movieRes.data.results || []);
+      const movieRes = await http().get("/movies", {
+        params: {
+          search: currentSearch,
+          genre: currentGenreName,
+          sort: currentSort,
+          page: currentPageFromUrl,
+        },
+      });
+      const genreRes = await http().get("/movies/genres");
 
-      const genreRes = await fetchData.getMovieGenres();
-      setGenresList(genreRes.data.genres || []);
-      // const fetchMovies = movieRes.data.results || [];
-      // const combinedMovies = [...fetchMovies, ...movieCustom];
-      // setMovies(combinedMovies);
+      if (genres.length === 0 && genreRes.data.results) {
+        setGenres(genreRes.data.results);
+      }
+
+      setMovies(movieRes.data.results || []);
+      setTotalPages(movieRes.data.page_info.total_pages || 1);
+      setCurrentPage(movieRes.data.page_info.current_page || 1);
     } catch (error) {
       console.error(
         "Error fetching data:",
         error.response?.data || error.message
       );
+      setMovies([]);
+      setTotalPages(1);
     }
-  };
+  }, [
+    currentSearch,
+    currentGenreName,
+    currentSort,
+    currentPageFromUrl,
+    genres.length,
+  ]);
 
   useEffect(() => {
     fetchDataAll();
+  }, [fetchDataAll]);
+
+  useEffect(() => {
+    const fetchGenresOnce = async () => {
+      try {
+        const genreRes = await http().get("/movies/genres");
+        setGenres((prevGenres) => {
+          if (
+            prevGenres.length === 0 ||
+            JSON.stringify(prevGenres) !== JSON.stringify(genreRes.data.results)
+          ) {
+            return genreRes.data.results || [];
+          }
+          return prevGenres;
+        });
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+    fetchGenresOnce();
   }, []);
+
+  const handleSearchSubmit = useCallback(
+    (searchTerm) => {
+      setSearchParams(
+        (prev) => {
+          const newParams = new URLSearchParams(prev);
+          if (searchTerm) {
+            newParams.set("search", searchTerm);
+          } else {
+            newParams.delete("search");
+          }
+          newParams.set("page", "1");
+          return newParams;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
+
+  const handleGenreChange = useCallback(
+    (genreId, genreName) => {
+      setSearchParams(
+        (prev) => {
+          const newParams = new URLSearchParams(prev);
+          if (genreId) {
+            newParams.set("genre", genreName);
+          } else {
+            newParams.delete("genre");
+          }
+          newParams.set("page", "1");
+          return newParams;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
+
+  const handleSortChange = useCallback(
+    (newSortOption) => {
+      setSearchParams(
+        (prev) => {
+          const newParams = new URLSearchParams(prev);
+          newParams.set("sort", newSortOption);
+          newParams.set("page", "1");
+          return newParams;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
+
+  const handlePageChange = useCallback(
+    (newPage) => {
+      setSearchParams(
+        (prev) => {
+          const newParams = new URLSearchParams(prev);
+          newParams.set("page", String(newPage));
+          return newParams;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
+
   return (
     <>
       <header>
@@ -107,21 +224,19 @@ function MoviePage() {
           </div>
         </div>
         <FilterCinemas
-          genresList={genresList}
-          selectedGenre={selectedGenre}
-          setSelectedGenre={setSelectedGenre}
+          genres={genres}
+          setSelectedGenre={handleGenreChange}
           sortOption={sortOption}
-          setSortOption={setSortOption}
+          setSortOption={handleSortChange}
+          onSearchSubmit={handleSearchSubmit}
         />
 
         <ShowMovie
           movies={movies}
-          genresList={genresList}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
           navigate={navigate}
-          selectedGenre={selectedGenre}
-          sortOption={sortOption}
         />
 
         <Subscribe />
@@ -135,125 +250,66 @@ function MoviePage() {
 
 function ShowMovie({
   movies,
-  genresList,
-  searchParams,
-  setSearchParams,
+  currentPage,
+  totalPages,
+  onPageChange,
   navigate,
-  selectedGenre,
-  sortOption,
 }) {
-  const searchQuery = searchParams.get("search");
-  let sortedMovies = [...movies];
-
-  if (sortOption === "latest") {
-    sortedMovies.sort(
-      (a, b) => new Date(b.release_date) - new Date(a.release_date)
-    );
-  } else if (sortOption === "asc") {
-    sortedMovies.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sortOption === "desc") {
-    sortedMovies.sort((a, b) => b.title.localeCompare(a.title));
-  } else {
-    sortedMovies.sort((a, b) => b.vote_average - a.vote_average);
-  }
-
-  const filteredSearch = sortedMovies.filter((item) => {
-    const matchesSearch = item.title
-      ?.toLowerCase()
-      .includes(searchQuery?.toLowerCase() || "");
-    const matchesGenre =
-      !selectedGenre || item.genre_ids.includes(Number(selectedGenre));
-    return matchesSearch && matchesGenre;
-  });
-
-  const PAGE = Number(searchParams.get("page")) || 1;
-  const LIMIT = Number(searchParams.get("limit")) || 10;
-  const OFFSET = (PAGE - 1) * LIMIT;
-  const TOTALPAGE = Math.ceil(filteredSearch.length / LIMIT);
-
-  const getNotFoundMessage = () => {
-    const genreName =
-      genresList.find((g) => g.id === Number(selectedGenre))?.name || "";
-
-    if (searchQuery && selectedGenre) {
-      return `Pencarian dengan judul "${searchQuery}" dan genre "${genreName}" tidak ditemukan.`;
-    }
-    if (searchQuery) {
-      return `Pencarian dengan judul "${searchQuery}" tidak ditemukan.`;
-    }
-    if (selectedGenre) {
-      return `Pencarian dengan genre "${genreName}" tidak ditemukan.`;
-    }
-    return "Data tidak ditemukan.";
-  };
-
   return (
     <div className="flex flex-col p-6 sm:px-20 w-full">
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-5 sm:gap-10 sm:py-10 mb-4 sm:mb-0">
-        {filteredSearch.slice(OFFSET, LIMIT * PAGE).map((item) => (
-          <div key={`list-movie-${item.id}`} className="mb-2 mx-auto">
-            <div className="relative sm:w-70 w-fit mb-4 mx-auto">
-              {item.vote_average > 7 && (
-                <div className="absolute text-primary bg-fourth text-sm sm:text-[16px] font-semibold sm:font-bold px-2 py-1 rounded-br-lg ">
-                  Recommended
-                </div>
-              )}
-              <img
-                onClick={() => navigate(`/buy-ticket/${item.id}`)}
-                className="rounded-xl object-cover w-full cursor-pointer"
-                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                alt=""
-              />
+        {movies.length > 0 ? (
+          movies.map((item) => (
+            <div key={`list-movie-${item.id}`} className="mb-2 mx-auto">
+              <div className="relative sm:w-70 w-fit mb-4 mx-auto">
+                {item.rating > 7 && (
+                  <div className="absolute text-primary bg-fourth text-sm sm:text-[16px] font-semibold sm:font-bold px-2 py-1 rounded-br-lg ">
+                    Recommended
+                  </div>
+                )}
+                <img
+                  onClick={() => navigate(`/buy-ticket/${item.id}`)}
+                  className="rounded-xl object-cover w-full cursor-pointer"
+                  src={`https://image.tmdb.org/t/p/w500${item.poster_url}`}
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="text-xl font-bold">{item.title}</h3>
+              <div className="flex flex-row itens-center  justify-center gap-2 mt-2">
+                <RenderGenres genres={item.genre} limit={2} />
+              </div>
             </div>
-            <h3 className="text-xl font-bold">{item.title}</h3>
-            <div className="flex flex-row itens-center  justify-center gap-2 mt-2">
-              <RenderGenres genreIds={item.genre_ids} genresList={genresList} />
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <span className="col-span-full h-100 text-3xl font-medium">
+            No movies found.
+          </span>
+        )}
       </div>
-      {filteredSearch.length === 0 ? (
-        <span className="h-100 text-3xl font-medium">
-          {getNotFoundMessage()}
-        </span>
-      ) : (
+      {movies.length > 0 && (
         <div className="flex flex-row justify-center items-center gap-5">
           <Button
-            disabled={PAGE === 1}
-            onClick={() => {
-              setSearchParams({
-                ...(searchQuery ? { search: searchQuery } : {}),
-                page: String(PAGE - 1),
-              });
-            }}
+            disabled={currentPage === 1}
+            onClick={() => onPageChange(currentPage - 1)}
             variant="primary"
             className="text-[28px] p-2 size-[54px] flex justify-center items-center"
             children={<FaArrowLeft />}
           ></Button>
-          {Array.from({ length: TOTALPAGE }).map((_, index) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <Button
-              onClick={() => {
-                setSearchParams({
-                  ...(searchQuery ? { search: searchQuery } : {}),
-                  page: String(index + 1),
-                });
-              }}
+              onClick={() => onPageChange(index + 1)}
               key={`list-button-${index}`}
-              variant={PAGE === index + 1 ? "primary" : "secondary"}
-              disabled={PAGE === index + 1}
+              variant={currentPage === index + 1 ? "primary" : "secondary"}
+              disabled={currentPage === index + 1}
               className="text-2xl"
             >
               {index + 1}
             </Button>
           ))}
           <Button
-            disabled={PAGE === TOTALPAGE}
-            onClick={() => {
-              setSearchParams({
-                ...(searchQuery ? { search: searchQuery } : {}),
-                page: String(PAGE + 1),
-              });
-            }}
+            disabled={currentPage === totalPages}
+            onClick={() => onPageChange(currentPage + 1)}
             variant="primary"
             className="text-[28px] size-[54px] flex justify-center items-center"
             children={<FaArrowRight />}
