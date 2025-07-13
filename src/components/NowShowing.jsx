@@ -1,25 +1,20 @@
-import { fetchData } from "../utils/apiClient";
 import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import RenderGenres from "../components/RenderGenres";
 import { useNavigate } from "react-router-dom";
+import http from "../utils/axios";
 
 function NowShowing() {
   const [movies, setMovies] = useState([]);
-  const [genresList, setGenresList] = useState([]);
   const navigate = useNavigate();
+  console.log(movies);
 
   useEffect(() => {
     const fetchDataAll = async () => {
       try {
-        // Fetch movie list
-        const movieRes = await fetchData.getNowPlaying();
+        const movieRes = await http().get("/movies/now-showing");
         setMovies(movieRes.data.results || []);
-
-        // Fetch genre list
-        const genreRes = await fetchData.getMovieGenres();
-        setGenresList(genreRes.data.genres || []);
       } catch (error) {
         console.error(
           "Error fetching data:",
@@ -62,7 +57,7 @@ function NowShowing() {
         ref={sliderRef}
         className="scroll-x overflow-x-auto flex gap-5 justify-items-center pt-8 "
       >
-        {movies.map((item) => (
+        {movies.slice(0, 15).map((item) => (
           <div key={item.id} className="mb-2">
             <div className="relative lg:w-70 w-50 mb-4">
               {item.vote_average > 7 && (
@@ -73,13 +68,13 @@ function NowShowing() {
               <img
                 onClick={() => navigate(`/buy-ticket/${item.id}`)}
                 className="rounded-xl object-cover cursor-pointer"
-                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                src={item.poster_url}
                 alt="image-film"
               />
             </div>
             <h3 className="text-xl font-bold">{item.title}</h3>
             <div className="flex flex-row itens-center  justify-center gap-2 mt-2">
-              <RenderGenres genreIds={item.genre_ids} genresList={genresList} />
+              <RenderGenres genres={item.genre} limit={2} />
             </div>
           </div>
         ))}
