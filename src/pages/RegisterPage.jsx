@@ -16,7 +16,6 @@ function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  // const users = useSelector((state) => state.users.data);
 
   const schema = yup.object({
     email: yup
@@ -43,19 +42,11 @@ function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      const { data } = await http().post(
-        "/auth/register",
-        {
-          email: register.email,
-          password: register.password,
-          confirm_password: register.confirm_password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const { data } = await http().post("/auth/register", {
+        email: register.email,
+        password: register.password,
+        confirm_password: register.confirm_password,
+      });
 
       if (data.success) {
         console.log(data.message);
@@ -129,7 +120,7 @@ function RegisterPage() {
                 <label htmlFor="email" className="w-full">
                   Email
                 </label>
-                <div className="border rounded">
+                <div className="border rounded border-gray3">
                   <input
                     {...register("email")}
                     type="email"
