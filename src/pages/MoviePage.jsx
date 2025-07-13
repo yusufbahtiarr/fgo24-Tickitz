@@ -31,16 +31,16 @@ function MoviePage() {
   const currentSort = searchParams.get("sort") || "popular";
   const currentPageFromUrl = Number(searchParams.get("page")) || 1;
 
+  // eslint-disable-next-line no-unused-vars
   const [selectedGenreId, setSelectedGenreId] = useState(null);
   const [sortOption, setSortOption] = useState("popular");
 
   useEffect(() => {
-    // This runs when URL params change, keeping the UI components consistent
     const genreId =
       genres.find((g) => g.genre_name === currentGenreName)?.id || null;
     setSelectedGenreId(genreId);
     setSortOption(currentSort);
-    setCurrentPage(currentPageFromUrl); // Sync internal page state with URL
+    setCurrentPage(currentPageFromUrl);
   }, [currentGenreName, currentSort, currentPageFromUrl, genres]);
 
   const fetchDataAll = useCallback(async () => {

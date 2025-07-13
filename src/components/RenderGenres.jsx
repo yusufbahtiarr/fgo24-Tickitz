@@ -1,5 +1,6 @@
-const RenderGenres = ({ genres = [], limit = 2, className = "" }) => {
-  const displayedGenres = genres.slice(0, limit);
+const RenderGenres = ({ genres = [], limit, className = "" }) => {
+  const displayLimit = limit ?? 2;
+  const displayedGenres = genres.slice(0, displayLimit);
 
   return (
     <div className="flex flex-row gap-2 flex-wrap items-center">

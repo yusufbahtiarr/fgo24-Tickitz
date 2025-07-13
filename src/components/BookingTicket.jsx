@@ -5,15 +5,14 @@ import { addDays, format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { id as LocaleID } from "date-fns/locale";
 import { IoSearch } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTempTicketAction } from "../redux/reducers/tickets";
 import ebv from "../assets/images/ebv-gray.png";
 import hiflix from "../assets/images/hiflix-gray.png";
 import cineone from "../assets/images/cineone-gray.png";
 import xxi from "../assets/images/xxi.svg";
 
-function BookingTicket({ titleMovie }) {
-  const currentUser = useSelector((state) => state.auths.currentUser);
+function BookingTicket({ titleMovie, users }) {
   // const [btnBook, setBtnBook] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -82,7 +81,7 @@ function BookingTicket({ titleMovie }) {
     if (!data.date || !data.time || !data.location) return;
     data.idMovie = id;
     data.titleMovie = titleMovie;
-    data.idUser = currentUser.id;
+    data.idUser = users.userId;
     data.cinema = selectedCinema;
 
     dispatch(addTempTicketAction(data));
@@ -215,8 +214,8 @@ function BookingTicket({ titleMovie }) {
                   <span className="text-red-500 text-sm mt-2">{"error"}</span>
                 )}
               </div>
-              <Button variant="primary" disabled={!currentUser} type="submit">
-                {currentUser ? "BOOK NOW" : "Please login to book"}
+              <Button variant="primary" disabled={!users} type="submit">
+                {users ? "BOOK NOW" : "Please login to book"}
               </Button>
             </div>
           </div>
