@@ -1,15 +1,13 @@
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { isEmailExists } from "../utils/authentication";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import logo2 from "../assets/images/tickitz2.png";
+import logo from "../assets/images/logowhite.png";
 import { useState } from "react";
 import { showNotif } from "../utils/notif";
+import http from "../utils/axios";
 
 function ForgotPasswordPage() {
-  const users = useSelector((state) => state.users.data);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const schema = yup.object({
@@ -28,19 +26,37 @@ function ForgotPasswordPage() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (dataReset) => {
     setIsSubmitting(true);
-    const isExists = isEmailExists(users, data.email);
 
-    if (isExists) {
+    try {
+      await http().post("auth/forgot-password", {
+        email: dataReset.email,
+      });
+
       showNotif("success", "Silahkan cek di inbox email anda.");
-    } else {
-      showNotif("error", "Email tidak terdaftar.");
-    }
-    reset();
-    setTimeout(() => {
+      reset();
+      // setTimeout(() => {
+      //   setIsSubmitting(false);
+      // }, 4000);
+    } catch (error) {
       setIsSubmitting(false);
-    }, 4000);
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data.message;
+        if (status === 400) {
+          showNotif("error", `Bad Request: ${message}`);
+        } else if (status === 404) {
+          showNotif("error", `Email tidak terdaftar.`);
+        } else if (status === 500) {
+          showNotif("error", `Internal Server Error: ${message}`);
+        } else {
+          showNotif("error", `Error: ${message}`);
+        }
+      } else {
+        showNotif("error", "No response from server. Please try again later.");
+      }
+    }
   };
 
   return (
@@ -48,8 +64,10 @@ function ForgotPasswordPage() {
       <div className="absolute w-full h-full top-0 left-0 right-0 bg-black/60 z-0"></div>
       <div className="relative px-4 sm:px-0 w-full h-full flex justify-center items-center z-99">
         <div className="pt-2 w-full sm:w-[546px] h-fit bg-primary pb-4 flex flex-col bg-opacity-10 justify-center items-center rounded-2xl">
-          <div className="w-[160px] py-2 sm:py-0 sm:w-[300px]">
-            <img className="w-206px h-104px" src={logo2} alt="image 1" />
+          <div className="w-[160px] pb-3 sm:py-4 sm:w-[300px]">
+            <Link to="/">
+              <img className="w-206px h-104px" src={logo} alt="image 1" />
+            </Link>
           </div>
           <div className="bg-white w-full rounded h-fit border border-orange-200 p-6 sm:p-10 flex flex-col gap-4 justify-center items-center pb-8">
             <form
