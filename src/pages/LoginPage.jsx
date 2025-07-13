@@ -150,7 +150,9 @@ function LoginPage() {
                 <span className="text-red">{errors.password?.message}</span>
               </div>
               <div className="flex flex-row justify-end w-full gap-3">
-                <span className="text-primary">Forgot your password?</span>
+                <span className="text-primary">
+                  <Link to="/forgot-password">Forgot your password?</Link>
+                </span>
               </div>
               <button
                 type="Submit"
