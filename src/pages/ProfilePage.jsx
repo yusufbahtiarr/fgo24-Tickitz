@@ -4,7 +4,7 @@ import Button from "./../components/Button";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
@@ -22,63 +22,50 @@ function ProfilePage() {
   const users =
     authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
 
+  const getProfile = useCallback(async () => {
+    const response = await http(authToken).get(`/user/profile`);
+    return response.data.results;
+  }, [authToken]);
+
   const schema = yup.object({
     fullname: yup.string().required("Nama wajib diisi"),
     email: yup.string().required("Email wajib diisi"),
     phone: yup.string().required("Nomor telepon wajib diisi"),
   });
-  // const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
     reset,
     resetField,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      fullname: "",
-      email: "",
-      phone: "",
-      newPassword: "",
-      confirmPassword: "",
+      email: profiles?.email || "",
+      fullname: profiles?.fullname || "",
+      phone: profiles?.phone || "",
     },
   });
 
-  const getProfile = async () => {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      const response = await http(authToken).get(`/user/profile`);
-      return response.data.results;
-    } catch (err) {
-      throw err;
-    }
-  };
-
   useEffect(() => {
-    if (!users || !users.userId) return;
-
     const fetchProfile = async () => {
       // eslint-disable-next-line no-useless-catch
       try {
         const profileData = await getProfile();
         setProfiles(profileData);
+        reset({
+          email: profileData.email || "",
+          fullname: profileData.fullname || "",
+          phone: profileData.phone || "",
+        });
       } catch (err) {
         throw err;
       }
     };
 
     fetchProfile();
-  }, [users, authToken]);
-
-  useEffect(() => {
-    if (profiles) {
-      setValue("fullname", profiles.fullname || "");
-      setValue("email", profiles.email || "");
-      setValue("phone", profiles.phone || "");
-    }
-  }, [profiles, setValue]);
+  }, [reset, getProfile]);
 
   const handleProfile = async (data) => {
     setIsSubmitting(true);
@@ -123,10 +110,14 @@ function ProfilePage() {
 
       showNotif("success", "Data berhasil diperbaharui.");
 
-      reset();
-
       const updateProfile = await getProfile();
       setProfiles(updateProfile);
+
+      reset({
+        email: updateProfile.email || "",
+        fullname: updateProfile.fullname || "",
+        phone: updateProfile.phone || "",
+      });
 
       setTimeout(() => {
         setIsSubmitting(false);
@@ -265,7 +256,7 @@ function ProfilePage() {
                         id="fullname"
                         placeholder="input your fullname"
                         className="outline-0 w-[85%]"
-                        defaultValue={profiles?.fullname}
+                        // defaultValue={profiles?.fullname}
                       />
                     </div>
                     <span className="text-red">{errors.fullname?.message}</span>
@@ -284,7 +275,7 @@ function ProfilePage() {
                         id="email"
                         placeholder="input your email"
                         className="outline-0 w-[85%]  "
-                        defaultValue={profiles?.email}
+                        // defaultValue={profiles?.email}
                       />
                     </div>
                     <span className="text-red">{errors.email?.message}</span>
@@ -303,7 +294,7 @@ function ProfilePage() {
                         id="phone"
                         placeholder="input your phone"
                         className="outline-0 w-[85%]  "
-                        defaultValue={profiles?.phone}
+                        // defaultValue={profiles?.phone}
                       />
                     </div>
                     <span className="text-red">{errors.phone?.message}</span>
