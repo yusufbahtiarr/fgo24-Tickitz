@@ -4,151 +4,154 @@ import Footer from "../components/Footer";
 import Badge from "./../components/Badge";
 import Button from "./../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
-import { fetchData } from "../utils/apiClient";
+import { useEffect, useState, useCallback } from "react";
 import RenderGenres from "../components/RenderGenres";
 import { useDispatch, useSelector } from "react-redux";
 import { id as LocaleID } from "date-fns/locale";
 import { format } from "date-fns";
 import { addTempTicketAction } from "../redux/reducers/tickets";
 import { FaArrowDown, FaArrowRight } from "react-icons/fa";
+import http from "../utils/axios";
+import { jwtDecode } from "jwt-decode";
+
+const ROWS = ["A", "B", "C", "D", "E", "F", "G"];
+const COLS = 14;
 
 function OrderPage() {
-  const [movies, setMovies] = useState([]);
-  const [genresList, setGenresList] = useState([]);
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
-  const dataTicket = useSelector((state) => state.tickets.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const filteredHistory = useMemo(() => {
-    return dataTicket.filter(
-      (item) =>
-        item.titleMovie === tempTicket.titleMovie &&
-        item.location === tempTicket.location &&
-        item.cinema === tempTicket.cinema &&
-        item.time === tempTicket.time &&
-        item.date === tempTicket.date
-    );
-  }, [dataTicket, tempTicket]);
-
-  const rows = ["A", "B", "C", "D", "E", "F", "G"];
-  const cols = 14;
+  const authToken = useSelector((state) => state.auths.token);
+  const users =
+    authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
 
   const [seats, setSeats] = useState(() =>
-    Array(rows.length)
+    Array(ROWS.length)
       .fill(null)
-      .map(() => Array(cols).fill("available"))
+      .map(() => Array(COLS).fill("available"))
   );
+
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  // const seatsSold = filteredHistory.map((item) => item.seats);
+  const parseSeat = useCallback((seat) => {
+    if (!seat || typeof seat !== "string") return null;
+    const rowLetter = seat[0];
+    const colNumber = parseInt(seat.slice(1), 10);
+    const rowIndex = ROWS.indexOf(rowLetter);
+    const colIndex = colNumber - 1;
 
-  const fetchDataAll = async () => {
+    if (
+      rowIndex >= 0 &&
+      rowIndex < ROWS.length &&
+      colIndex >= 0 &&
+      colIndex < COLS
+    ) {
+      return [rowIndex, colIndex];
+    }
+    return null;
+  }, []);
+
+  const fetchDataAll = useCallback(async () => {
     try {
-      const movieRes = await fetchData.getNowPlaying();
-      setMovies(movieRes.data.results || []);
+      const bookedSeatsRes = await http(authToken).get(
+        `transactions/booked-seats`,
+        {
+          params: {
+            movie_id: tempTicket.idMovie,
+            date: tempTicket.date,
+            time_id: tempTicket.idTime,
+            location_id: tempTicket.idLocation,
+            cinema_id: tempTicket.idCinema,
+          },
+        }
+      );
+      const fetchedSoldSeats = bookedSeatsRes.data.results || [];
 
-      const genreRes = await fetchData.getMovieGenres();
-      setGenresList(genreRes.data.genres || []);
+      setSeats((prevSeats) => {
+        const newSeats = Array(ROWS.length)
+          .fill(null)
+          .map(() => Array(COLS).fill("available"));
+
+        fetchedSoldSeats.forEach((seat) => {
+          const parsed = parseSeat(seat);
+          if (parsed) {
+            const [rowIndex, colIndex] = parsed;
+            newSeats[rowIndex][colIndex] = "sold";
+          }
+        });
+
+        selectedSeats.forEach((seat) => {
+          const parsed = parseSeat(seat);
+          if (parsed) {
+            const [rowIndex, colIndex] = parsed;
+            if (newSeats[rowIndex][colIndex] !== "sold") {
+              newSeats[rowIndex][colIndex] = "selected";
+            } else {
+              setSelectedSeats((prev) => prev.filter((s) => s !== seat));
+            }
+          }
+        });
+        return newSeats;
+      });
     } catch (error) {
       console.error(
         "Error fetching data:",
         error.response?.data || error.message
       );
     }
-  };
+  }, [
+    authToken,
+    tempTicket.idMovie,
+    tempTicket.date,
+    tempTicket.idTime,
+    tempTicket.idLocation,
+    tempTicket.idCinema,
+    parseSeat,
+    selectedSeats,
+  ]);
 
   useEffect(() => {
-    fetchDataAll();
-  }, []);
-
-  const parseSeat = (seat) => {
-    if (!seat || typeof seat !== "string") return null;
-    const rowLetter = seat[0];
-    const colNumber = parseInt(seat.slice(1), 10);
-    const rowIndex = rows.indexOf(rowLetter);
-    const colIndex = colNumber - 1;
-
     if (
-      rowIndex >= 0 &&
-      rowIndex < rows.length &&
-      colIndex >= 0 &&
-      colIndex < cols
+      tempTicket.idMovie &&
+      tempTicket.date &&
+      tempTicket.idTime &&
+      tempTicket.idLocation &&
+      tempTicket.idCinema
     ) {
-      return [rowIndex, colIndex];
+      fetchDataAll();
     }
-    return null;
-  };
-
-  useEffect(() => {
-    const newSeats = Array(rows.length)
-      .fill(null)
-      .map(() => Array(cols).fill("available"));
-
-    const soldSeats = filteredHistory
-      .flatMap((item) => item.seats)
-      .map(parseSeat)
-      .filter((seat) => seat !== null);
-
-    soldSeats.forEach(([rowIndex, colIndex]) => {
-      newSeats[rowIndex][colIndex] = "sold";
-    });
-
-    selectedSeats.forEach((seat) => {
-      const parsed = parseSeat(seat);
-      if (parsed) {
-        const [rowIndex, colIndex] = parsed;
-        if (newSeats[rowIndex][colIndex] !== "sold") {
-          newSeats[rowIndex][colIndex] = "selected";
-        } else {
-          setSelectedSeats((prev) => prev.filter((s) => s !== seat));
-        }
-      }
-    });
-
-    setSeats(newSeats);
-  }, [filteredHistory]);
+  }, [
+    tempTicket.idMovie,
+    tempTicket.date,
+    tempTicket.idTime,
+    tempTicket.idLocation,
+    tempTicket.idCinema,
+    authToken,
+    fetchDataAll,
+  ]);
 
   const handleCheckboxChange = (rowIndex, colIndex) => {
-    const updatedSeats = [...seats];
-    const seatId = `${rows[rowIndex]}${colIndex + 1}`;
-    const currentStatus = updatedSeats[rowIndex][colIndex];
+    setSeats((prevSeats) => {
+      const updatedSeats = prevSeats.map((row) => [...row]);
+      const seatId = `${ROWS[rowIndex]}${colIndex + 1}`;
+      const currentStatus = updatedSeats[rowIndex][colIndex];
 
-    if (currentStatus === "sold" || currentStatus === "lovenest") return;
+      if (currentStatus === "sold" || currentStatus === "lovenest")
+        return prevSeats;
 
-    if (currentStatus === "selected") {
-      updatedSeats[rowIndex][colIndex] = "available";
-      setSelectedSeats(selectedSeats.filter((seat) => seat !== seatId));
-    } else {
-      updatedSeats[rowIndex][colIndex] = "selected";
-      setSelectedSeats([...selectedSeats, seatId]);
-    }
-
-    setSeats(updatedSeats);
+      if (currentStatus === "selected") {
+        updatedSeats[rowIndex][colIndex] = "available";
+        setSelectedSeats(selectedSeats.filter((seat) => seat !== seatId));
+      } else {
+        updatedSeats[rowIndex][colIndex] = "selected";
+        setSelectedSeats([...selectedSeats, seatId]);
+      }
+      return updatedSeats;
+    });
   };
 
-  const cinemas = [
-    {
-      name: "ebv.id",
-      image: "/src/assets/images/ebv-gray.png",
-    },
-    {
-      name: "hiflix",
-      image: "/src/assets/images/hiflix-gray.png",
-    },
-    {
-      name: "cineone21",
-      image: "/src/assets/images/cineone-gray.png",
-    },
-    {
-      name: "xxi",
-      image: "/src/assets/images/xxi.svg",
-    },
-  ];
-
-  const ticketPrice = 60000;
+  const ticketPrice = 50000;
   const totalPayment = selectedSeats.length * ticketPrice;
 
   function onSubmit() {
@@ -161,10 +164,6 @@ function OrderPage() {
     navigate(`/payment`, { replace: true });
   }
 
-  const movieId = movies?.find((movie) => movie.id == id);
-  const imageCinema =
-    cinemas?.find((item) => item.name === tempTicket.cinema)?.image || "";
-
   return (
     <div className="w-screen h-screen bg-gray2 *:box-border *:*:box-border overflow-x-hidden">
       <Navbar />
@@ -175,18 +174,17 @@ function OrderPage() {
             <div className="border flex flex-col sm:flex-row border-gray1 gap-4 py-4 px-6 w-full">
               <div className="h-[300px] sm:h-[117px] sm:w-[184px] overflow-y-hidden shrink-0">
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${movieId?.poster_path}`}
+                  src={tempTicket.posterPath}
                   alt="film"
                   className="object-cover position-center w-full h-full"
                 />
               </div>
               <div className=" flex gap-4 sm:gap-2 flex-col items-center sm:items-start justify-between w-full">
-                <span className="text-2xl font-semibold">{movieId?.title}</span>
+                <span className="text-2xl font-semibold">
+                  {tempTicket?.titleMovie}
+                </span>
                 <div className="flex flex-row gap-3">
-                  <RenderGenres
-                    genreIds={movieId?.genre_ids}
-                    genresList={genresList}
-                  />
+                  <RenderGenres genres={tempTicket?.genre} />
                 </div>
                 <div className="flex flex-col gap-4 sm:gap-0 sm:flex-row justify-between sm: w-full items-center sm:items-left">
                   <span>Regular - {tempTicket.time}</span>
@@ -210,7 +208,7 @@ function OrderPage() {
                 <div className="flex justify-center sm:justify-start">
                   <div className="hidden sm:flex flex-col mr-1 gap-2">
                     {/* Row A-G */}
-                    {rows.map((row, i) => (
+                    {ROWS.map((row, i) => (
                       <div
                         key={i}
                         className="w-6 h-6 sm:w-11 sm:h-11  flex items-center justify-center"
@@ -221,9 +219,9 @@ function OrderPage() {
                   </div>
                   <div>
                     {/* Seat */}
-                    {rows.map((row, rowIndex) => (
+                    {ROWS.map((row, rowIndex) => (
                       <div key={rowIndex} className="flex gap-2 mb-2">
-                        {Array(cols)
+                        {Array(COLS)
                           .fill(null)
                           .map((_, colIndex) => {
                             const status = seats[rowIndex][colIndex];
@@ -262,7 +260,7 @@ function OrderPage() {
                     ))}
                     {/* Column 1-14 */}
                     <div className="hidden sm:flex gap-2">
-                      {Array(cols)
+                      {Array(COLS)
                         .fill(null)
                         .map((_, colIndex) => (
                           <div
@@ -305,10 +303,14 @@ function OrderPage() {
           <div className="sm:w-[35%] flex flex-col">
             <div className="p-6 flex flex-col justify-center items-center  bg-white h-fit rounded">
               <div className="p-2">
-                <img src={imageCinema} alt="bioskop" className="p-6 w-60" />
+                <img
+                  src={tempTicket.cinemaImage}
+                  alt="bioskop"
+                  className="p-6 w-60"
+                />
               </div>
               <div className="mx-auto text-2xl font-semibold mb-10 capitalize">
-                {tempTicket.cinema} Cinema
+                {tempTicket.cinema}
               </div>
               <div className="flex flex-col w-full gap-4 mb-8">
                 <div className="flex flex-row justify-between">
