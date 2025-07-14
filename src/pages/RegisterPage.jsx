@@ -127,7 +127,7 @@ function RegisterPage() {
                     name="email"
                     id="email"
                     placeholder="Enter your email"
-                    className="outline-none py-3 px-4"
+                    className="outline-none py-3 px-4 w-full"
                     autoComplete="off"
                   />
                 </div>

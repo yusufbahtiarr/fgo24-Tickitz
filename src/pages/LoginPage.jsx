@@ -130,7 +130,7 @@ function LoginPage() {
                     name="password"
                     id="password"
                     placeholder="Enter your password"
-                    className="outline-none py-3"
+                    className="outline-none py-3 w-full"
                     autoComplete="off"
                   />
                   <button
