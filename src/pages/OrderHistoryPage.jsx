@@ -135,53 +135,51 @@ function OrderHistoryPage() {
                 Order History
               </span>
             </div>
-            {transactionHistory
-              ?.sort((a, b) => new Date(b.movie_date) - new Date(a.movie_date))
-              .map((item, index) => {
-                return (
-                  <div
-                    key={`list-movie-${index}`}
-                    className="bg-white rounded-3xl flex flex-col gap-4"
-                  >
-                    <div className="flex flex-col  sm:flex-row justify-between p-6 sm:px-12 sm:py-10 ">
-                      <div className="flex flex-col justify-between gap-2">
-                        <span>{item.idTicket}</span>
-                        <span className="font-normal text-sm text-seventh">
-                          {format(
-                            new Date(item.movie_date),
-                            "EEEE, dd MMMM yyyy",
-                            {
-                              locale: LocaleID,
-                            }
-                          )}{" "}
-                          -{" "}
-                          {item.time &&
-                            formatInTimeZone(item.time, "UTC", "HH:mm:ss")}
+            {transactionHistory.map((item, index) => {
+              return (
+                <div
+                  key={`list-movie-${index}`}
+                  className="bg-white rounded-3xl flex flex-col gap-4"
+                >
+                  <div className="flex flex-col  sm:flex-row justify-between p-6 sm:px-12 sm:py-10 ">
+                    <div className="flex flex-col justify-between gap-2">
+                      <span>{item.idTicket}</span>
+                      <span className="font-normal text-sm text-seventh">
+                        {format(
+                          new Date(item.movie_date),
+                          "EEEE, dd MMMM yyyy",
+                          {
+                            locale: LocaleID,
+                          }
+                        )}{" "}
+                        -{" "}
+                        {item.time &&
+                          formatInTimeZone(item.time, "UTC", "HH:mm:ss")}
+                      </span>
+                      <span className="text-xl sm:text-2xl font-semibold">
+                        {item.title}
+                      </span>
+                      <span>
+                        Seats :{" "}
+                        <span className="font-semibold">
+                          {item.seats.join(", ")}
                         </span>
-                        <span className="text-xl sm:text-2xl font-semibold">
-                          {item.title}
-                        </span>
-                        <span>
-                          Seats :{" "}
-                          <span className="font-semibold">
-                            {item.seats.join(", ")}
-                          </span>
-                        </span>
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-start  justify-between capitalize w-45">
+                      <div>
+                        Cinema :{" "}
+                        <span className="font-semibold">{item.cinema}</span>
                       </div>
-                      <div className="flex flex-col items-start  justify-between capitalize w-45">
-                        <div>
-                          Cinema :{" "}
-                          <span className="font-semibold">{item.cinema}</span>
-                        </div>
-                        <div>
-                          Location :{" "}
-                          <span className="font-semibold">{item.location}</span>
-                        </div>
+                      <div>
+                        Location :{" "}
+                        <span className="font-semibold">{item.location}</span>
                       </div>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
