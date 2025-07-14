@@ -13,7 +13,7 @@ import { addTempTicketAction } from "../redux/reducers/tickets";
 // import xxi from "../assets/images/xxi.svg";
 import http from "../utils/axios";
 
-function BookingTicket({ titleMovie, users }) {
+function BookingTicket({ movies, users }) {
   const { id: movieId } = useParams();
   const dispatch = useDispatch();
   const [fetchedShowtimes, setFetchedShowtimes] = useState([]);
@@ -67,9 +67,17 @@ function BookingTicket({ titleMovie, users }) {
   function onSubmit(data) {
     if (!data.date || !data.time || !data.location) return;
     data.idMovie = movieId;
-    data.titleMovie = titleMovie;
+    data.titleMovie = movies.title;
+    data.posterPath = movies.poster_url;
+    data.genre = movies.genre;
     data.idUser = users.userId;
-    data.cinema = selectedCinema;
+    data.idLocation = data.location;
+    data.idCinema = selectedCinema?.split("-")[0];
+    data.cinema = selectedCinema?.split("-")[1];
+    data.cinemaImage =
+      fetchedCinemas[selectedCinema?.split("-")[0] - 1].image_url;
+    data.idTime = data.time?.split("-")[0];
+    data.time = data.time?.split("-")[1];
 
     dispatch(addTempTicketAction(data));
     navigate(`/buy-ticket/${movieId}/seat`, { replace: true });
@@ -125,7 +133,10 @@ function BookingTicket({ titleMovie, users }) {
                       <option value="">Pilih Waktu</option>
                       {fetchedShowtimes.length > 0 ? (
                         fetchedShowtimes.map((item) => (
-                          <option key={item.id} value={item.id}>
+                          <option
+                            key={`${item.id}-${formatTime(item.time)}`}
+                            value={`${item.id}-${formatTime(item.time)}`}
+                          >
                             {formatTime(item.time)}
                           </option>
                         ))
@@ -178,9 +189,8 @@ function BookingTicket({ titleMovie, users }) {
                     <Cinema
                       key={cinema.id}
                       register={register}
-                      value={cinema.id}
+                      value={`${cinema.id}-${cinema.cinema_name}`}
                       cinemaImage={cinema.image_url}
-                      cinemaName={cinema.cinema_name}
                       selectedCinema={selectedCinema}
                       setSelectedCinema={setSelectedCinema}
                       idCinema={`cinema-${cinema.id}`}
@@ -209,8 +219,7 @@ function BookingTicket({ titleMovie, users }) {
 function Cinema({
   register,
   value,
-  // cinemaImage,
-  cinemaName,
+  cinemaImage,
   selectedCinema,
   setSelectedCinema,
   idCinema,
@@ -239,9 +248,8 @@ function Cinema({
           }}
           id={idCinema}
         />
-        <span className={`text-3xl font-bold`}>
-          {cinemaName}
-          {/* <img src={cinemaImage} alt="cinema" className="w-50"></img> */}
+        <span className={`text-xl`}>
+          <img src={cinemaImage} alt="cinema" className="w-50"></img>
         </span>
       </label>
     </div>

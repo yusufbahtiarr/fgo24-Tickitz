@@ -114,7 +114,7 @@ function BuyTicketPage() {
             </div>
           </div>
         </div>
-        <BookingTicket titleMovie={movies.title} users={users} />
+        <BookingTicket movies={movies} users={users} />
       </main>
       <footer>
         <Footer />
