@@ -10,6 +10,7 @@ import { nanoid } from "nanoid";
 function ModalPayment({ totalPayment, modal, setModal }) {
   const dateNow = format(new Date(), "EEEE, d MMMM yyyy", { locale: id });
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
+  console.log(tempTicket);
 
   const spanVirtual = useRef(null);
   const dispatch = useDispatch();
