@@ -8,7 +8,6 @@ import http from "../utils/axios";
 function NowShowing() {
   const [movies, setMovies] = useState([]);
   const navigate = useNavigate();
-  console.log(movies);
 
   useEffect(() => {
     const fetchDataAll = async () => {
