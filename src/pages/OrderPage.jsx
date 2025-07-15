@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Badge from "./../components/Badge";
 import Button from "./../components/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import RenderGenres from "../components/RenderGenres";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,6 @@ function OrderPage() {
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
   const authToken = useSelector((state) => state.auths.token);
   const users =
     authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
@@ -95,10 +94,10 @@ function OrderPage() {
         return newSeats;
       });
     } catch (error) {
-      console.error(
-        "Error fetching data:",
-        error.response?.data || error.message
-      );
+      // console.error(
+      //   "Error fetching data:",
+      //   error.response?.data || error.message
+      // );
     }
   }, [
     authToken,
@@ -162,6 +161,10 @@ function OrderPage() {
 
     dispatch(addTempTicketAction(data));
     navigate(`/payment`, { replace: true });
+  }
+
+  if (!users || users.userId == null) {
+    return <Navigate to="/login" replace />;
   }
 
   return (
