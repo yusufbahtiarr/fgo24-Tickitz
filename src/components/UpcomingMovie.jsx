@@ -41,7 +41,7 @@ function UpcomingMovie() {
             ref={sliderRef}
             className="flex flex-row justify-start sm:w-[73%] scroll-x overflow-hidden gap-10 justify-items-center scrollbar-hide"
           >
-            {upcomingMovies.map((item) => (
+            {upcomingMovies?.map((item) => (
               <div key={item.id} className="">
                 <div className="flex col gap-8">
                   <div className="flex flex-col gap-2 relative items-center h-fit w-[190px]">

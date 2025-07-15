@@ -56,7 +56,7 @@ function NowShowing() {
         ref={sliderRef}
         className="scroll-x overflow-x-auto flex gap-5 justify-items-center pt-8 "
       >
-        {movies.slice(0, 15).map((item) => (
+        {movies?.slice(0, 15).map((item) => (
           <div key={item.id} className="mb-2">
             <div className="relative lg:w-70 w-50 mb-4">
               {item.vote_average > 7 && (
