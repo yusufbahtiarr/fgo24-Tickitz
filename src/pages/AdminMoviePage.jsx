@@ -9,12 +9,15 @@ import { formatDuration } from "../utils/formatTime";
 import { jwtDecode } from "jwt-decode";
 import http from "../utils/axios";
 import { format } from "date-fns";
+import { showNotif } from "../utils/notif";
 
 function AdminMoviePage() {
   const authToken = useSelector((state) => state.auths.token);
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [showAlert, setShowAlert] = useState(false);
+  const [item, setItems] = useState(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -153,6 +156,23 @@ function AdminMoviePage() {
     console.log("Redirecting: User not logged in or not an Admin.");
     return <Navigate to="/login" replace />;
   }
+
+  const handleDeleteWithAlert = (id, title) => {
+    setItems({ id, title });
+    setShowAlert(true);
+  };
+
+  const confirmDeleteAlert = async () => {
+    try {
+      await http(authToken).delete(`/admin/movies/${item.id}`);
+      showNotif("success", `Data movie ${item.title} berhasil di hapus.`);
+      setItems(null);
+      setShowAlert(false);
+      fetchDataAll();
+    } catch (error) {
+      showNotif("error", `Data movie ${item.title} gagal di hapus.`);
+    }
+  };
   return (
     <div className="bg-gray2 min-h-[100vh] overflow-y-hidden">
       <Navbar />
@@ -230,13 +250,18 @@ function AdminMoviePage() {
                       </td>
                       <td className="py-4 px-2 sm:p-3">
                         <div className="flex flex-row gap-2 items-center justify-center">
-                          <button className="size-[33px] flex justify-center items-center bg-blue rounded">
+                          <button className="size-[33px] flex justify-center items-center bg-primary rounded">
                             <IoMdEye className="text-white" />
                           </button>
                           <button className="size-[33px] flex justify-center items-center bg-violet-600 rounded">
                             <FaPen className="text-white" />
                           </button>
-                          <button className="size-[33px] flex justify-center items-center bg-primary rounded">
+                          <button
+                            className="size-[33px] flex justify-center items-center bg-red rounded"
+                            onClick={() =>
+                              handleDeleteWithAlert(item.id, item.title)
+                            }
+                          >
                             <FaTrash className="text-white" />
                           </button>
                         </div>
@@ -294,6 +319,41 @@ function AdminMoviePage() {
           </div>
         </div>
       </div>
+      {showAlert && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+            <div className="flex items-center mb-4">
+              <div className="flex-shrink-0"></div>
+              <div className="mx-2 w-full">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  Delete Movie
+                </h3>
+                <hr className="border-gray3 border" />
+              </div>
+            </div>
+            <div className="mx-2 mb-1">
+              <p className="text-sm text-gray-600 mb-4">
+                Are you sure you want to delete the movie "
+                <strong>{item?.title}</strong>"?
+              </p>
+              <div className="flex space-x-3">
+                <button
+                  onClick={confirmDeleteAlert}
+                  className="px-4 py-[7px] text-sm bg-red text-white rounded hover:bg-red-600 transition-colors"
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => setShowAlert(false)}
+                  className="px-3 py-1 text-sm bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
