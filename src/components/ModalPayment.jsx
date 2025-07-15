@@ -5,21 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { addTicketAction } from "../redux/reducers/tickets";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "nanoid";
 
-function ModalPayment({ totalPayment, modal, setModal }) {
+function ModalPayment({ totalPayment, modal, transactionId }) {
   const dateNow = format(new Date(), "EEEE, d MMMM yyyy", { locale: id });
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
-  console.log(tempTicket);
 
   const spanVirtual = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleCopy = () => {
     navigator.clipboard.writeText(spanVirtual.current.textContent);
   };
-  const navigate = useNavigate();
   const handleSave = () => {
-    const idTicket = `TK-${nanoid()}`;
+    const idTicket = transactionId;
 
     dispatch(
       addTicketAction({
@@ -29,7 +27,7 @@ function ModalPayment({ totalPayment, modal, setModal }) {
       })
     );
 
-    navigate(`/ticket-result/${idTicket}`, { replace: true });
+    navigate(`/ticket-result`, { replace: true });
   };
   return (
     <div
@@ -104,7 +102,7 @@ function ModalPayment({ totalPayment, modal, setModal }) {
             <Button
               variant="third"
               className=" bg-white font-bold text-primary w-full shadow"
-              onClick={() => setModal(false)}
+              onClick={() => navigate("/order-history")}
             >
               Close
             </Button>

@@ -9,7 +9,6 @@ import { id } from "date-fns/locale";
 import { useForm } from "react-hook-form";
 import ModalPayment from "../components/ModalPayment";
 import { addTempTicketAction } from "../redux/reducers/tickets";
-import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -17,7 +16,6 @@ import http from "../utils/axios";
 import { showNotif } from "../utils/notif";
 
 function PaymentPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.auths.token);
   const users =
@@ -25,6 +23,7 @@ function PaymentPage() {
   const tempTicket = useSelector((state) => state.tickets.tempTicket);
   const [profiles, setProfiles] = useState(null);
   const [paymentMethods, setPaymentMethods] = useState(null);
+  const [transactionId, setTransactionId] = useState(null);
 
   const getProfile = useCallback(async () => {
     const response = await http(authToken).get(`/user/profile`);
@@ -99,14 +98,14 @@ function PaymentPage() {
         seats: tempTicket.seats,
         total_payment: Number(tempTicket.totalPayment),
       });
-
-      if (data.success) {
-        showNotif("success", data.message);
-      } else {
-        showNotif("error", data.message || "Transaction failed!");
-      }
+      setTransactionId(data.results.id);
+      // if (data.success) {
+      //   showNotif("success", data.message);
+      // } else {
+      //   showNotif("error", data.message || "Transaction failed!");
+      // }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       if (error.response) {
         const status = error.response.status;
         const message = error.response.data.message;
@@ -127,6 +126,10 @@ function PaymentPage() {
 
     setModal(true);
   };
+
+  if (!users || users.userId == null) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="h-fit bg-gray2 *:box-border *:*:box-border sm:overflow-x-hidden relative">
@@ -153,14 +156,14 @@ function PaymentPage() {
                 <span className="font-light text-sm text-gray-600 ">
                   MOVIE TITLE
                 </span>
-                <span className="font-normal">{tempTicket.titleMovie}</span>
+                <span className="font-normal">{tempTicket?.titleMovie}</span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
                 <span className="font-light text-sm text-gray-600 ">
                   CINEMA NAME
                 </span>
                 <span className="font-normal capitalize">
-                  {tempTicket.cinema} Cinema
+                  {tempTicket?.cinema} Cinema
                 </span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
@@ -168,7 +171,7 @@ function PaymentPage() {
                   NUMBER OF TICKETS
                 </span>
                 <span className="font-normal">
-                  {tempTicket.seats.length} pieces
+                  {tempTicket?.seats?.length} pieces
                 </span>
               </div>
               <div className="flex flex-col gap-4 border-b border-b-gray-200 pb-4">
@@ -176,7 +179,7 @@ function PaymentPage() {
                   TOTAL PAYMENT
                 </span>
                 <span className="font-bold text-blue">
-                  Rp. {tempTicket.totalPayment.toLocaleString("id-ID")}
+                  Rp. {tempTicket?.totalPayment?.toLocaleString("id-ID")}
                 </span>
               </div>
             </div>
@@ -270,9 +273,10 @@ function PaymentPage() {
         </section>
       </div>
       <ModalPayment
-        totalPayment={tempTicket.totalPayment.toLocaleString("id-ID")}
+        totalPayment={tempTicket?.totalPayment?.toLocaleString("id-ID")}
         modal={modal}
         setModal={setModal}
+        transactionId={transactionId}
       />
       <Footer />
     </div>

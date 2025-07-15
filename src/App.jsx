@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     element: <OrderPage />,
   },
   {
-    path: "/ticket-result/:id",
+    path: "/ticket-result",
     element: <TicketResultPage />,
   },
   {

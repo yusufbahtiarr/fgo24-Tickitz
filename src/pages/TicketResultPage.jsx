@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
@@ -7,20 +7,37 @@ import {
 } from "react-icons/hi";
 import Button from "../components/Button";
 import { HiOutlineDownload } from "react-icons/hi";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { id as localeID } from "date-fns/locale";
-import { format } from "date-fns";
 import logo from "../assets/images/logobluegreensmall.png";
 import qr from "../assets/images/qr.png";
 import background from "../assets/images/background.png";
+import { jwtDecode } from "jwt-decode";
+import http from "../utils/axios";
 
 function TicketResultPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const dataTicket = useSelector((state) => state.tickets.data).find(
-    (item) => item.idTicket === id
-  );
+  const authToken = useSelector((state) => state.auths.token);
+  const [ticketResult, setTicketResult] = useState({});
+  const users =
+    authToken && typeof authToken === "string" ? jwtDecode(authToken) : null;
+  // const { id } = useParams();
+  // const dataTicket = useSelector((state) => state.tickets.data).find(
+  // (item) => item.idTicket === id
+  // );
+
+  const fetchData = useCallback(async () => {
+    const response = await http(authToken).get("user/transaction-history");
+    setTicketResult(response.data.results[0]);
+  }, [authToken, setTicketResult]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  if (!users || users.userId == null) {
+    return <Navigate to="/login" replace />;
+  }
   return (
     <div>
       <Navbar />
@@ -81,7 +98,7 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Movie</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket?.titleMovie}
+                        {ticketResult?.title}
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
@@ -93,19 +110,29 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Date</span>
                       <span className="text-sm text-secondary">
-                        {format(
-                          new Date(dataTicket?.date),
-                          "EEEE, dd MMMM yyyy",
-                          {
-                            locale: localeID,
-                          }
-                        )}
+                        {ticketResult?.movie_date &&
+                          new Date(ticketResult.movie_date).toLocaleDateString(
+                            "id-ID",
+                            {
+                              weekday: "long",
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Time</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket?.time}
+                        {ticketResult?.time &&
+                          new Date(ticketResult.time).toLocaleTimeString(
+                            "id-ID",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
                       </span>
                     </div>
                   </div>
@@ -113,20 +140,20 @@ function TicketResultPage() {
                     <div className="flex w-[60%] flex-col gap-2">
                       <span className="text-xs text-gray1">Count</span>
                       <span className="text-sm text-secondary">
-                        {dataTicket?.seats.length} pcs
+                        {ticketResult?.seats?.length} pcs
                       </span>
                     </div>
                     <div className="flex w-[40%] flex-col gap-2">
                       <span className="text-xs text-gray1">Seats</span>
                       <span className="text-sm text-secondary">
-                        {Array.from(dataTicket?.seats).join(", ")}
+                        {ticketResult?.seats?.join(", ")}
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-row border p-4 border-gray1 rounded justify-between items-center">
                     <span className="text-secondary">Total</span>
                     <span className="text-secondary">
-                      Rp. {dataTicket?.totalPayment.toLocaleString("id-ID")}
+                      Rp. {ticketResult?.total_payment?.toLocaleString("id-ID")}
                     </span>
                   </div>
                 </div>
