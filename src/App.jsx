@@ -21,6 +21,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import AdminViewMoviePage from "./pages/AdminViewMoviePage";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
   {
     path: "/admin-new-movie",
     element: <AdminNewMoviePage />,
+  },
+  {
+    path: "/admin-movie/:id",
+    element: <AdminViewMoviePage />,
   },
   {
     path: "/order-history",

@@ -2,7 +2,7 @@ import Navbar from "./../components/Navbar";
 import Button from "./../components/Button";
 import { IoMdEye } from "react-icons/io";
 import { FaPen, FaTrash } from "react-icons/fa";
-import { Link, useSearchParams, Navigate } from "react-router-dom";
+import { Link, useSearchParams, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { formatDuration } from "../utils/formatTime";
@@ -18,6 +18,7 @@ function AdminMoviePage() {
   const [totalPages, setTotalPages] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
   const [item, setItems] = useState(null);
+  const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -250,7 +251,12 @@ function AdminMoviePage() {
                       </td>
                       <td className="py-4 px-2 sm:p-3">
                         <div className="flex flex-row gap-2 items-center justify-center">
-                          <button className="size-[33px] flex justify-center items-center bg-primary rounded">
+                          <button
+                            className="size-[33px] flex justify-center items-center bg-primary rounded"
+                            onClick={() => {
+                              navigate(`/admin-movie${item.id}`);
+                            }}
+                          >
                             <IoMdEye className="text-white" />
                           </button>
                           <button className="size-[33px] flex justify-center items-center bg-violet-600 rounded">
