@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://146.190.102.54:9703";
+const baseUrl = import.meta.env.VITE_API_URL;
 
 function http(token = null) {
   const instance = axios.create({
