@@ -10,8 +10,6 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import { RiCustomerService2Fill } from "react-icons/ri";
 
 function HomePage() {
-  console.log("API URL:", import.meta.env.VITE_API_URL);
-  console.log("All env vars:", import.meta.env);
   return (
     <>
       <header>
