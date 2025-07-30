@@ -18,10 +18,10 @@ jobs:
 
       - name: Build & Push Docker Image
         env:
-          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           docker build \
-            --build-arg VITE_TMDB_API_KEY=$VITE_TMDB_API_KEY \
+            --build-arg VITE_API_URL=$VITE_API_URL \
             -t ghcr.io/yusufbahtiarr/tickitz:latest .
           docker push ghcr.io/yusufbahtiarr/tickitz:latest
 
